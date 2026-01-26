@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MI_icons_1
+  m_Shader: {fileID: 4800000, guid: abc00000000014682124156670147626, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Material_Texture2D_0:
+        m_Texture: {fileID: 2800000, guid: abc00000000016058847005647578325, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_1:
+        m_Texture: {fileID: 2800000, guid: abc00000000006526686817615507032, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_2:
+        m_Texture: {fileID: 2800000, guid: abc00000000009038689408422001450, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Rotation_custom: 0.000000
+    - U_tile: 0.000000
+    - V_tile: 0.000000
+    - Tiling: 1.000000
+    - Base_UV___U_Tiling: 1.000000
+    - Base_UV___V_Tiling: 1.000000
+    - UTG_3_Normal_Strengh: 1.000000
+    - emissive_power: 0.000000
+    - UTG_1_color_tone: 0.000000
+    - UTG_1_Brightness: 1.000000
+    - UTG_1_contrast: 0.000000
+    - Metallic_Contrast_main_layer: 1.000000
+    - Metallic_Intensity_main_layer: 1.000000
+    - Specular_0: 0.150000
+    - UTG_2_Roughness_min: 0.000000
+    - UTG_2_Roughness_max: 1.000000
+    - UTG_4_Opacity_Mask_power: 1.000000
+    - UTG_1_SSS: 0.000000
+    - __SubsurfaceProfile: -1.000000
+    - UTG_2_AO_power: 1.000000
+    - _DstBlend: 0
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - SelectionColor: {r: 0.000000, g: 0.000000, b: 0.000000, a: 0.000000}
+    - emissive_color: {r: 1.000000, g: 1.000000, b: 1.000000, a: 0.000000}
+    - UTG_1_Tint_base_texture: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
