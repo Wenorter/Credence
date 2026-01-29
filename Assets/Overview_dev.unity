@@ -284,6 +284,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1427490484}
+  - {fileID: 805749869}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &272026961 stripped
@@ -710,7 +711,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   debugUI: {fileID: 1550027098}
   priestCamera: {fileID: 419351044}
-  angleCamera: {fileID: 1145440386}
+  angelCamera: {fileID: 1145440386}
+  priestInput: {fileID: 1427490483}
+  angelInput: {fileID: 805749868}
+  angel: {fileID: 1116357270}
+  priest: {fileID: 1603752756}
+  cage1: {fileID: 1541197121}
   priestCurrentRoom: 
 --- !u!4 &491096991 stripped
 Transform:
@@ -906,6 +912,104 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1030972220, guid: abc00000000009062353479644330918, type: 3}
   m_PrefabInstance: {fileID: 1030972226}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &805749868
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 805749869}
+  - component: {fileID: 805749870}
+  m_Layer: 0
+  m_Name: AngelInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &805749869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805749868}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 265065037}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &805749870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805749868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: afa7075e59cd91941a5c5cec6cf1481e, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1116357276}
+        m_TargetAssemblyTypeName: FpsMovement, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c3e14074-35f7-47d5-83cb-63d5dfaa6928
+    m_ActionName: 'FpsMovement/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1116357276}
+        m_TargetAssemblyTypeName: FpsMovement, Assembly-CSharp
+        m_MethodName: OnLook
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 29ea3e39-4160-435c-885e-af165e2ea303
+    m_ActionName: 'FpsMovement/Look[/Mouse/delta]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8aae364b-2569-4346-8e99-13eba6493802
+    m_ActionName: 'GameManager/SwitchCamera[/Keyboard/tab]'
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: Keyboard&Mouse
+  m_DefaultActionMap: FpsMovement
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!4 &809806054 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1030974396, guid: abc00000000002409406473895592497, type: 3}
@@ -11885,6 +11989,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1030972579, guid: abc00000000017345454571528682731, type: 3}
   m_PrefabInstance: {fileID: 1030972594}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1087677496
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1087677498}
+  - component: {fileID: 1087677497}
+  m_Layer: 0
+  m_Name: Cage-Room2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1087677497
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087677496}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1087677498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087677496}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -124.674, y: 7.76, z: 9.91}
+  m_LocalScale: {x: 9.027778, y: 3.021883, z: 8.415319}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1116357270
 GameObject:
   m_ObjectHideFlags: 0
@@ -11897,6 +12054,9 @@ GameObject:
   - component: {fileID: 1116357273}
   - component: {fileID: 1116357272}
   - component: {fileID: 1116357271}
+  - component: {fileID: 1116357276}
+  - component: {fileID: 1116357275}
+  - component: {fileID: 1116357277}
   m_Layer: 0
   m_Name: Angel
   m_TagString: Untagged
@@ -11992,14 +12152,75 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116357270}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.41158783, y: -0, z: -0, w: 0.91137016}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -117.25, y: 13.188551, z: -27.29421}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.38545, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1145440383}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 48.609, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &1116357275
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116357270}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1116357276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116357270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd43422e58884e49b07918b6a47ddd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FpsMovement
+  controller: {fileID: 1116357275}
+  cameraPivot: {fileID: 1145440383}
+  moveSpeed: 5
+  isEffectedByGravity: 0
+  mouseSensitivity: 0.12
+  minPitch: -80
+  maxPitch: 80
+  invertY: 0
+  lockCursorOnStart: 1
+--- !u!114 &1116357277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116357270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de74efe46cf3c5d45b7c488e4ce98d80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StayInsideBox
+  gameManager: {fileID: 487205794}
+  controller: {fileID: 1116357275}
+  cage: {fileID: 0}
 --- !u!4 &1122242505 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1030972561, guid: abc00000000016789909386596776940, type: 3}
@@ -12192,37 +12413,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1030974525, guid: abc00000000017405439785400213858, type: 3}
   m_PrefabInstance: {fileID: 1030974530}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1195344202
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1195344203}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1195344203
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195344202}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -124.012, y: 6.691, z: -1.493}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1238615989 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1030971965, guid: abc00000000008280567541372008129, type: 3}
@@ -12541,7 +12731,7 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1603752762}
-        m_TargetAssemblyTypeName: PriestMovement, Assembly-CSharp
+        m_TargetAssemblyTypeName: FpsMovement, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -12553,11 +12743,11 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: c3e14074-35f7-47d5-83cb-63d5dfaa6928
-    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+    m_ActionName: 'FpsMovement/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1603752762}
-        m_TargetAssemblyTypeName: PriestMovement, Assembly-CSharp
+        m_TargetAssemblyTypeName: FpsMovement, Assembly-CSharp
         m_MethodName: OnLook
         m_Mode: 0
         m_Arguments:
@@ -12569,38 +12759,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 29ea3e39-4160-435c-885e-af165e2ea303
-    m_ActionName: Priest/Look
+    m_ActionName: 'FpsMovement/Look[/Mouse/delta]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 487205794}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnSwitchCamera
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1603752762}
-        m_TargetAssemblyTypeName: PriestMovement, Assembly-CSharp
-        m_MethodName: OnSwitchCamera
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 0335a984-f4f7-4a09-9a9f-7c991f261828
-    m_ActionName: 'Priest/SwitchCamera[/Keyboard/tab]'
-  m_NeverAutoSwitchControlSchemes: 0
+      m_Calls: []
+    m_ActionId: 8aae364b-2569-4346-8e99-13eba6493802
+    m_ActionName: 'GameManager/SwitchCamera[/Keyboard/tab]'
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Priest
+  m_DefaultActionMap: FpsMovement
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!4 &1444317736 stripped
@@ -12644,7 +12810,7 @@ GameObject:
   - component: {fileID: 1541197120}
   - component: {fileID: 1541197121}
   m_Layer: 0
-  m_Name: RoomAngelCage
+  m_Name: Cage-Room1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12659,7 +12825,7 @@ Transform:
   m_GameObject: {fileID: 1541197119}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -124.674, y: 5.94288, z: -1.161}
+  m_LocalPosition: {x: -124.674, y: 6.262, z: -1.161}
   m_LocalScale: {x: 9.027778, y: 1.2818712, z: 8.415319}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12680,7 +12846,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -12870,7 +13036,7 @@ Transform:
   m_GameObject: {fileID: 1603752756}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -114.66609, y: 3.86, z: -16.75}
+  m_LocalPosition: {x: -123.09, y: 3.86, z: -3.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12917,6 +13083,7 @@ MonoBehaviour:
   controller: {fileID: 1603752761}
   cameraPivot: {fileID: 419351045}
   moveSpeed: 5
+  isEffectedByGravity: 1
   mouseSensitivity: 0.12
   minPitch: -80
   maxPitch: 80
@@ -13209,6 +13376,14 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 487205794}
+    - target: {fileID: 1011139777691451316, guid: b570d306af01238408f83d451f29c014, type: 3}
+      propertyPath: exitedRoomCage
+      value: 
+      objectReference: {fileID: 1541197121}
+    - target: {fileID: 1011139777691451316, guid: b570d306af01238408f83d451f29c014, type: 3}
+      propertyPath: enteredRoomCage
+      value: 
+      objectReference: {fileID: 1087677497}
     - target: {fileID: 1212088290329755672, guid: b570d306af01238408f83d451f29c014, type: 3}
       propertyPath: exitedRoom
       value: room2
@@ -13221,6 +13396,14 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 487205794}
+    - target: {fileID: 1212088290329755672, guid: b570d306af01238408f83d451f29c014, type: 3}
+      propertyPath: exitedRoomCage
+      value: 
+      objectReference: {fileID: 1087677497}
+    - target: {fileID: 1212088290329755672, guid: b570d306af01238408f83d451f29c014, type: 3}
+      propertyPath: enteredRoomCage
+      value: 
+      objectReference: {fileID: 1541197121}
     - target: {fileID: 3654036214035316667, guid: b570d306af01238408f83d451f29c014, type: 3}
       propertyPath: m_LocalPosition.x
       value: -124.904
@@ -13338,6 +13521,6 @@ SceneRoots:
   - {fileID: 362302378}
   - {fileID: 1116357274}
   - {fileID: 1296282208}
-  - {fileID: 1195344203}
   - {fileID: 1144084466501005687}
   - {fileID: 1541197120}
+  - {fileID: 1087677498}

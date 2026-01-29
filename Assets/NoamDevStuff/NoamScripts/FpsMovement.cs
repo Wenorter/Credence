@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PriestMovement : MonoBehaviour
+public class FpsMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private CharacterController controller;
@@ -9,6 +9,7 @@ public class PriestMovement : MonoBehaviour
     
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private bool isEffectedByGravity = true;
     
     [Header("Look")]
     [SerializeField] private float mouseSensitivity = 0.12f;
@@ -19,12 +20,10 @@ public class PriestMovement : MonoBehaviour
     [Header("Cursor")]
     [SerializeField] private bool lockCursorOnStart = true;
     
-    
     // fields
     private Vector2 _moveInput;
     private Vector2 _lookInput;
     private float _pitch;
-    private bool _isOnAngle;
     
     private void Awake()
     {
@@ -50,11 +49,8 @@ public class PriestMovement : MonoBehaviour
     private void Update()
     {
         // cant preform movement inputs like walking and looking if on angel
-        if (!_isOnAngle)
-        {
-            WalkingUpdateLogic();
-            LookingUpdateLogic();    
-        }
+        WalkingUpdateLogic();
+        LookingUpdateLogic();    
         // put gravity logic last
         GravityLogic();
     }
@@ -74,15 +70,34 @@ public class PriestMovement : MonoBehaviour
     }
     private void WalkingUpdateLogic()
     {
-        var move =
-            transform.right * _moveInput.x +
-            transform.forward * _moveInput.y;
+        Vector3 move;
+
+        if (isEffectedByGravity)
+        {
+            move =
+                transform.right * _moveInput.x +
+                transform.forward * _moveInput.y;
+        }
+        else
+        {
+            // Move in the direction the unit is looking (includes pitch if cameraPivot exists)
+            Vector3 lookDirection = cameraPivot != null ? cameraPivot.forward : transform.forward;
+
+            // W/S moves forward/back along look direction, A/D strafes relative to look direction
+            Vector3 right = Vector3.Cross(Vector3.up, lookDirection).normalized;
+            Vector3 forward = lookDirection.normalized;
+
+            move =
+                right * _moveInput.x +
+                forward * _moveInput.y;
+        }
 
         controller.Move(move * (moveSpeed * Time.deltaTime));
     }
 
     private void GravityLogic()
     {
+        if(!isEffectedByGravity) return;
         // gravity
         if (!controller.isGrounded)
         {
@@ -99,11 +114,4 @@ public class PriestMovement : MonoBehaviour
     {
         _lookInput = context.ReadValue<Vector2>();
     }
-    // switching to the angle and back
-    public void OnSwitchCamera(InputAction.CallbackContext context)
-    {
-        _isOnAngle = !_isOnAngle;
-    }
 }
-
-
