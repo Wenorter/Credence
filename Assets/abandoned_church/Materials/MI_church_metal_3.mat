@@ -2,20 +2,24 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MI_church_metal_3
   m_Shader: {fileID: 4800000, guid: abc00000000017890319907707352831, type: 3}
-  m_ShaderKeywords: 
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: Material_Texture2D_0
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -24,38 +28,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Material_Texture2D_1:
-        m_Texture: {fileID: 2800000, guid: abc00000000008083825538343083494, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Material_Texture2D_2:
-        m_Texture: {fileID: 2800000, guid: abc00000000012314270094485225741, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Material_Texture2D_3:
-        m_Texture: {fileID: 2800000, guid: abc00000000012314270094485225741, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Material_Texture2D_4:
-        m_Texture: {fileID: 2800000, guid: abc00000000016535980542504912054, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Material_Texture2D_5:
-        m_Texture: {fileID: 2800000, guid: abc00000000009037583517390869105, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Material_Texture2D_6:
-        m_Texture: {fileID: 2800000, guid: abc00000000008083825538343083494, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Material_Texture2D_7:
-        m_Texture: {fileID: 2800000, guid: abc00000000012314270094485225741, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Material_Texture2D_8:
-        m_Texture: {fileID: 2800000, guid: abc00000000009037583517390869105, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Material_Texture2D_9:
         m_Texture: {fileID: 2800000, guid: abc00000000008083825538343083494, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -95,121 +67,170 @@ Material:
         m_Texture: {fileID: 2800000, guid: abc00000000012314270094485225741, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_2:
+        m_Texture: {fileID: 2800000, guid: abc00000000012314270094485225741, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_3:
+        m_Texture: {fileID: 2800000, guid: abc00000000012314270094485225741, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_4:
+        m_Texture: {fileID: 2800000, guid: abc00000000016535980542504912054, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_5:
+        m_Texture: {fileID: 2800000, guid: abc00000000009037583517390869105, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_6:
+        m_Texture: {fileID: 2800000, guid: abc00000000008083825538343083494, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_7:
+        m_Texture: {fileID: 2800000, guid: abc00000000012314270094485225741, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_8:
+        m_Texture: {fileID: 2800000, guid: abc00000000009037583517390869105, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_9:
+        m_Texture: {fileID: 2800000, guid: abc00000000008083825538343083494, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Rotation_custom_main_layer: 0.000000
-    - U_tile_main_layer: 0.000000
-    - V_tile_main_layer: 0.000000
-    - UV_Tiling_main_layer: 10.000000
-    - Base_UV___U_Tiling_main_layer: 1.000000
-    - Base_UV___V_Tiling_main_layer: 1.000000
-    - Normal_intensity_main_layer: 5.000000
-    - Rotation_custom_R_channel: 0.000000
-    - U_tile_R_channel: 0.000000
-    - V_tile_R_channel: 0.000000
-    - UV_Tiling_R_channel: 10.000000
-    - Base_UV___U_Tiling_R_channel: 1.000000
-    - Base_UV___V_Tiling_R_channel: 1.000000
-    - Normal_intensity_R_channel: 5.000000
-    - R_channel_contrast: 1.000000
-    - Disp_Contrast_main_layer: 0.000000
-    - Disp_Intensity_main_layer: 1.000000
-    - Disp_Contrast_R_channel: 0.000000
-    - Disp_Intensity_R_channel: 1.000000
-    - R_channel_blend: 1.000000
-    - R_channel_extend: -0.472000
-    - UVmask_R_opacity_bloor: 1.000000
-    - UVmask_R_opacity: 1.000000
-    - Grunge_tiling_R_channel: 1.000000
-    - Grunge_channel_R_power: 1.000000
-    - Rotation_custom_G_channel: 0.000000
-    - U_tile_G_channel: 0.000000
-    - V_tile_G_channel: 0.000000
-    - UV_Tiling_G_channel: 10.000000
-    - Base_UV___U_Tiling_G_channel: 1.000000
-    - Base_UV___V_Tiling_G_channel: 1.000000
-    - Normal_intensity_G_channel: 1.000000
-    - G_channel_contrast: 1.601330
-    - Disp_Contrast_G_channel: 0.000000
-    - Disp_Intensity_G_channel: 1.000000
-    - G_channel_blend: 10.000000
-    - G_channel_extend: 0.300000
-    - UVmask_G_opacity_bloor: 1.000000
-    - UVmask_G_opacity: 1.000000
-    - Grunge_tiling_G_channel: 100.000000
-    - Grunge_channel_G_power: 10.000000
-    - Rotation_custom_B_channel: 0.000000
-    - U_tile_B_channel: 0.000000
-    - V_tile_B_channel: 0.000000
-    - UV_Tiling_B_channel: 10.000000
-    - Base_UV___U_Tiling_B_channel: 1.000000
-    - Base_UV___V_Tiling_B_channel: 1.000000
-    - Normal_intensity_B_channel: 1.000000
-    - B_channel_contrast: 2.000000
-    - Disp_Contrast_B_channel: 0.000000
-    - Disp_Intensity_B_channel: 1.000000
+    - AO_Contrast_B_channel: 1
+    - AO_Contrast_G_channel: 1
+    - AO_Contrast_R_channel: 1
+    - AO_Contrast_main_layer: 1
+    - AO_Intensity_B_channel: 1
+    - AO_Intensity_G_channel: 1
+    - AO_Intensity_R_channel: 1
+    - AO_Intensity_main_layer: 1
     - B_channel_blend: 8.829271
-    - B_channel_extend: 0.472540
-    - UVmask_B_opacity_bloor: 1.000000
-    - UVmask_B_opacity: 1.000000
-    - Grunge_tiling_B_channel: 10.000000
-    - Grunge_channel_B_power: 1.000000
-    - UVmask_Ab_opacity_bloor: 1.000000
-    - UVmask_Ab_opacity: 1.000000
-    - Grunge_tiling_Ab_channel: 1.000000
-    - Grunge_channel_Ab_power: 1.000000
-    - color_tone_main_layer: 0.000000
-    - Brightness_main_layer: 0.400000
-    - contrast_main_layer: 0.000000
-    - color_tone_R_channel: 0.000000
-    - Brightness_R_channel: 0.200000
-    - contrast_R_channel: 0.000000
-    - color_tone_G_channel: -0.982003
+    - B_channel_contrast: 2
+    - B_channel_extend: 0.47254
+    - Base_UV___U_Tiling_B_channel: 1
+    - Base_UV___U_Tiling_G_channel: 1
+    - Base_UV___U_Tiling_R_channel: 1
+    - Base_UV___U_Tiling_main_layer: 1
+    - Base_UV___V_Tiling_B_channel: 1
+    - Base_UV___V_Tiling_G_channel: 1
+    - Base_UV___V_Tiling_R_channel: 1
+    - Base_UV___V_Tiling_main_layer: 1
+    - Brightness_B_all_mask: 0.5
+    - Brightness_B_channel: 0.632
     - Brightness_G_channel: 0.828927
-    - contrast_G_channel: 0.000000
-    - color_tone_B_channel: 0.080000
-    - Brightness_B_channel: 0.632000
-    - contrast_B_channel: 0.000000
-    - color_tone_B_all_mask: 0.000000
-    - Brightness_B_all_mask: 0.500000
-    - contrast_B_all_mask: 0.000000
-    - Metallic_Contrast_main_layer: 1.000000
-    - Metallic_Intensity_main_layer: 1.000000
-    - Metallic_R_channel: 0.000000
-    - Metallic_G_channel: 0.000000
-    - Metallic_B_channel: 0.000000
-    - Specular_main_layer: 0.150000
-    - Specular_R_channel: 0.150000
-    - Specular_G_channel: 0.150000
-    - Specular_B_channel: 0.150000
-    - Roughness_min_main_layer: 0.000000
-    - Roughness_max_main_layer: 1.000000
-    - Roughness_min_R_channel: 0.000000
-    - Roughness_max_R_channel: 1.000000
-    - Roughness_min_G_channel: 0.000000
-    - Roughness_max_G_channel: 1.000000
-    - Roughness_min_B_channel: 0.000000
-    - Roughness_max_B_channel: 1.000000
-    - Roughness_min_B_all_mask: 0.000000
-    - Roughness_max_B_all_mask: 1.000000
-    - AO_Contrast_main_layer: 1.000000
-    - AO_Intensity_main_layer: 1.000000
-    - AO_Contrast_R_channel: 1.000000
-    - AO_Intensity_R_channel: 1.000000
-    - AO_Contrast_G_channel: 1.000000
-    - AO_Intensity_G_channel: 1.000000
-    - AO_Contrast_B_channel: 1.000000
-    - AO_Intensity_B_channel: 1.000000
+    - Brightness_R_channel: 0.2
+    - Brightness_main_layer: 0.4
+    - Disp_Contrast_B_channel: 0
+    - Disp_Contrast_G_channel: 0
+    - Disp_Contrast_R_channel: 0
+    - Disp_Contrast_main_layer: 0
+    - Disp_Intensity_B_channel: 1
+    - Disp_Intensity_G_channel: 1
+    - Disp_Intensity_R_channel: 1
+    - Disp_Intensity_main_layer: 1
+    - G_channel_blend: 10
+    - G_channel_contrast: 1.60133
+    - G_channel_extend: 0.3
+    - Grunge_channel_Ab_power: 1
+    - Grunge_channel_B_power: 1
+    - Grunge_channel_G_power: 10
+    - Grunge_channel_R_power: 1
+    - Grunge_tiling_Ab_channel: 1
+    - Grunge_tiling_B_channel: 10
+    - Grunge_tiling_G_channel: 100
+    - Grunge_tiling_R_channel: 1
+    - Metallic_B_channel: 0
+    - Metallic_Contrast_main_layer: 1
+    - Metallic_G_channel: 0
+    - Metallic_Intensity_main_layer: 1
+    - Metallic_R_channel: 0
+    - Normal_intensity_B_channel: 1
+    - Normal_intensity_G_channel: 1
+    - Normal_intensity_R_channel: 5
+    - Normal_intensity_main_layer: 5
+    - R_channel_blend: 1
+    - R_channel_contrast: 1
+    - R_channel_extend: -0.472
+    - Rotation_custom_B_channel: 0
+    - Rotation_custom_G_channel: 0
+    - Rotation_custom_R_channel: 0
+    - Rotation_custom_main_layer: 0
+    - Roughness_max_B_all_mask: 1
+    - Roughness_max_B_channel: 1
+    - Roughness_max_G_channel: 1
+    - Roughness_max_R_channel: 1
+    - Roughness_max_main_layer: 1
+    - Roughness_min_B_all_mask: 0
+    - Roughness_min_B_channel: 0
+    - Roughness_min_G_channel: 0
+    - Roughness_min_R_channel: 0
+    - Roughness_min_main_layer: 0
+    - Specular_B_channel: 0.15
+    - Specular_G_channel: 0.15
+    - Specular_R_channel: 0.15
+    - Specular_main_layer: 0.15
+    - UV_Tiling_B_channel: 10
+    - UV_Tiling_G_channel: 10
+    - UV_Tiling_R_channel: 10
+    - UV_Tiling_main_layer: 10
+    - UVmask_Ab_opacity: 1
+    - UVmask_Ab_opacity_bloor: 1
+    - UVmask_B_opacity: 1
+    - UVmask_B_opacity_bloor: 1
+    - UVmask_G_opacity: 1
+    - UVmask_G_opacity_bloor: 1
+    - UVmask_R_opacity: 1
+    - UVmask_R_opacity_bloor: 1
+    - U_tile_B_channel: 0
+    - U_tile_G_channel: 0
+    - U_tile_R_channel: 0
+    - U_tile_main_layer: 0
+    - V_tile_B_channel: 0
+    - V_tile_G_channel: 0
+    - V_tile_R_channel: 0
+    - V_tile_main_layer: 0
     - _DstBlend: 0
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
+    - color_tone_B_all_mask: 0
+    - color_tone_B_channel: 0.08
+    - color_tone_G_channel: -0.982003
+    - color_tone_R_channel: 0
+    - color_tone_main_layer: 0
+    - contrast_B_all_mask: 0
+    - contrast_B_channel: 0
+    - contrast_G_channel: 0
+    - contrast_R_channel: 0
+    - contrast_main_layer: 0
     m_Colors:
+    - LocalObjectBoundsMax: {r: 100, g: 100, b: 100, a: 0}
+    - LocalObjectBoundsMin: {r: 0, g: 0, b: 0, a: 0}
+    - SelectionColor: {r: 0, g: 0, b: 0, a: 0}
+    - Tint_base_color_B_all_mask: {r: 1, g: 1, b: 1, a: 1}
+    - Tint_base_color_B_channel: {r: 1, g: 1, b: 1, a: 1}
+    - Tint_base_color_G_channel: {r: 1, g: 1, b: 1, a: 1}
+    - Tint_base_color_R_channel: {r: 1, g: 1, b: 1, a: 1}
+    - Tint_base_color_main_layer: {r: 1, g: 1, b: 1, a: 1}
+    - View_BufferSizeAndInvSize: {r: 1920, g: 1080, b: 0.00052, a: 0.00092}
     - _Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - SelectionColor: {r: 0.000000, g: 0.000000, b: 0.000000, a: 0.000000}
-    - Tint_base_color_main_layer: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
-    - Tint_base_color_R_channel: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
-    - Tint_base_color_G_channel: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
-    - Tint_base_color_B_channel: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
-    - Tint_base_color_B_all_mask: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
