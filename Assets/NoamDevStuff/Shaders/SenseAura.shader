@@ -2,6 +2,7 @@ Shader "Custom/SenseAura"
 {
     Properties
     {
+        _Color ("Color", Color) = (1,1,1,1)
         _Sense ("Sense", Range(0,1)) = 0
         _Alpha ("Alpha", Range(0,1)) = 1
         _Glow  ("Glow",  Range(0,10)) = 6
@@ -27,6 +28,7 @@ Shader "Custom/SenseAura"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             CBUFFER_START(UnityPerMaterial)
+                float4 _Color;
                 float _Sense;
                 float _Alpha;
                 float _Glow;
@@ -63,7 +65,9 @@ Shader "Custom/SenseAura"
                 float glow = fresnel * _Sense * _Glow;
 
                 float a = saturate(glow) * _Alpha;
-                return half4(1,1,1,a);
+
+                // Use the tint color (RGB) and apply alpha separately
+                return half4(_Color.rgb, a);
             }
             ENDHLSL
         }

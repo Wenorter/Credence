@@ -64,7 +64,7 @@ public class SenseProbe : MonoBehaviour
 
             // Feed memory system
             var mem = rend.GetComponentInParent<Memorable>();
-            if (mem) MemoryManager.Instance.Observe(mem, strength);
+            if (mem && mem.ignoredProbeLayer != mem.layer) MemoryManager.Instance.Observe(mem, strength);
         }
 
         // Clear aura from things not sensed this tick

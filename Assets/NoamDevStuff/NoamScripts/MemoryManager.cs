@@ -48,7 +48,7 @@ public class MemoryManager : MonoBehaviour
             };
             _mem[m.Guid] = rec;
 
-            rec.ghost = GhostInstance.Create(ghostMaterial, m);
+            rec.ghost = GhostInstance.Create(ghostMaterial, m , m.color);
         }
 
         // Update last-known transform (this is the “truth” snapshot)
@@ -92,7 +92,7 @@ public class MemoryManager : MonoBehaviour
             float n2 = Mathf.PerlinNoise(rec.seed + 31.7f, now * driftSpeed);
             float n3 = Mathf.PerlinNoise(rec.seed + 99.1f, now * driftSpeed);
 
-            Vector3 drift = new Vector3(n1 - 0.5f, (n2 - 0.5f) * 0.3f, n3 - 0.5f) * 2f * driftAmp;
+            Vector3 drift = new Vector3(n1 - 0.5f, (n2 - 0.5f) * 0.3f, n3 - 0.5f) * (2f * driftAmp);
 
             rec.ghost.UpdateGhost(drift, rec.confidence);
         }
