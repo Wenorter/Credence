@@ -19,7 +19,7 @@ public class GhostInstance
     }
 
     
-    public static GhostInstance Create(Material ghostMat, Memorable src)
+    public static GhostInstance Create(Material ghostMat, Memorable src , Color color)
     {
         // If your objects are not MeshFilter-based (SkinnedMesh), consider using a proxy mesh instead.
         var mesh = src.MeshFilter ? src.MeshFilter.sharedMesh : null;
