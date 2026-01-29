@@ -5,7 +5,7 @@ public class FpsMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private CharacterController controller;
-    [SerializeField] private Transform cameraPivot;
+    [SerializeField] private Transform cameraPivot; // camera pitch pivot
     
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -17,98 +17,148 @@ public class FpsMovement : MonoBehaviour
     [SerializeField] private float maxPitch = 80f;
     [SerializeField] private bool invertY;
     
+    [Header("Lerp")]
+    [SerializeField] private bool isLerping;          // smooth movement & look when true
+    [SerializeField] private float moveLerpSpeed = 10f;
+    [SerializeField] private float lookLerpSpeed = 15f;
+    
     [Header("Cursor")]
     [SerializeField] private bool lockCursorOnStart = true;
     
-    // fields
+    // input state
     private Vector2 _moveInput;
     private Vector2 _lookInput;
-    private float _pitch;
+
+    // look state
+    private float _pitch;        // current vertical camera angle (smoothed)
+    private float _currentYaw;   // current horizontal rotation (smoothed)
+
+    private float _targetPitch;  // target vertical camera angle
+    private float _targetYaw;    // target horizontal rotation
+
+    // movement state
+    private Vector3 _currentMove; // smoothed movement vector
     
     private void Awake()
     {
-        // Starting the internal pitch value at whatever the camera is already looking at,
-        // and expressing it in a sane -180° to +180° format so clamping works.
         if (cameraPivot != null)
         {
             _pitch = cameraPivot.localEulerAngles.x;
             if (_pitch > 180f)
                 _pitch -= 360f;
         }
+
+        _currentYaw = transform.eulerAngles.y;
+
+        // start targets at current values so there's no snap on start
+        _targetPitch = _pitch;
+        _targetYaw = _currentYaw;
     }
+
     private void Start()
     {
-        
-        // making priest to snap onto the cursor location
         if (lockCursorOnStart)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
     }
+
     private void Update()
     {
-        // cant preform movement inputs like walking and looking if on angel
         WalkingUpdateLogic();
-        LookingUpdateLogic();    
-        // put gravity logic last
+        LookingUpdateLogic();
         GravityLogic();
     }
+
     private void LookingUpdateLogic()
     {
-        var yaw = _lookInput.x * mouseSensitivity;
+        // read mouse deltas
+        var yawDelta = _lookInput.x * mouseSensitivity;
         var pitchDelta = _lookInput.y * mouseSensitivity * (invertY ? 1f : -1f);
 
-        // rotate body (yaw)
-        transform.Rotate(0f, yaw, 0f, Space.Self);
-        
-        if (cameraPivot == null) return;
-        
-        // rotate camera (pitch)
-        _pitch = Mathf.Clamp(_pitch + pitchDelta, minPitch, maxPitch);
-        cameraPivot.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
+        // build targets instantly (this is what makes smoothing actually work)
+        _targetYaw += yawDelta;
+        _targetPitch = Mathf.Clamp(_targetPitch + pitchDelta, minPitch, maxPitch);
+
+        if (isLerping)
+        {
+            // smooth current values toward targets
+            _currentYaw = Mathf.Lerp(_currentYaw, _targetYaw, lookLerpSpeed * Time.deltaTime);
+            _pitch = Mathf.Lerp(_pitch, _targetPitch, lookLerpSpeed * Time.deltaTime);
+
+            transform.rotation = Quaternion.Euler(0f, _currentYaw, 0f);
+
+            if (cameraPivot == null) return;
+            cameraPivot.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
+        }
+        else
+        {
+            // instant values match targets
+            _currentYaw = _targetYaw;
+            _pitch = _targetPitch;
+
+            transform.rotation = Quaternion.Euler(0f, _currentYaw, 0f);
+
+            if (cameraPivot == null) return;
+            cameraPivot.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
+        }
     }
+
     private void WalkingUpdateLogic()
     {
-        Vector3 move;
+        Vector3 targetMove;
 
         if (isEffectedByGravity)
         {
-            move =
+            targetMove =
                 transform.right * _moveInput.x +
                 transform.forward * _moveInput.y;
         }
         else
         {
-            // Move in the direction the unit is looking (includes pitch if cameraPivot exists)
             Vector3 lookDirection = cameraPivot != null ? cameraPivot.forward : transform.forward;
 
-            // W/S moves forward/back along look direction, A/D strafes relative to look direction
             Vector3 right = Vector3.Cross(Vector3.up, lookDirection).normalized;
             Vector3 forward = lookDirection.normalized;
 
-            move =
+            targetMove =
                 right * _moveInput.x +
                 forward * _moveInput.y;
         }
 
-        controller.Move(move * (moveSpeed * Time.deltaTime));
+        if (isLerping)
+        {
+            _currentMove = Vector3.Lerp(
+                _currentMove,
+                targetMove,
+                moveLerpSpeed * Time.deltaTime
+            );
+        }
+        else
+        {
+            _currentMove = targetMove;
+        }
+
+        controller.Move(_currentMove * (moveSpeed * Time.deltaTime));
     }
 
     private void GravityLogic()
     {
-        if(!isEffectedByGravity) return;
-        // gravity
+        if (!isEffectedByGravity) return;
+
         if (!controller.isGrounded)
         {
             controller.Move(Physics.gravity * Time.deltaTime);
         }
     }
+
     // PlayerInput Event: Move
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
     }
+
     // PlayerInput Event: Look
     public void OnLook(InputAction.CallbackContext context)
     {

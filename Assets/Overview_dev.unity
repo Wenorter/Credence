@@ -12205,6 +12205,9 @@ MonoBehaviour:
   minPitch: -80
   maxPitch: 80
   invertY: 0
+  isLerping: 1
+  moveLerpSpeed: 3
+  lookLerpSpeed: 10
   lockCursorOnStart: 1
 --- !u!114 &1116357277
 MonoBehaviour:
@@ -13088,6 +13091,9 @@ MonoBehaviour:
   minPitch: -80
   maxPitch: 80
   invertY: 0
+  isLerping: 0
+  moveLerpSpeed: 10
+  lookLerpSpeed: 15
   lockCursorOnStart: 1
 --- !u!4 &1609315109 stripped
 Transform:
