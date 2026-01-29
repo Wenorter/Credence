@@ -57,7 +57,7 @@ public class GhostInstance
         _baseScale = scale;
     }
 
-    public void UpdateGhost(Vector3 drift, float confidence)
+    public void UpdateGhost(Vector3 drift, float fade)
     {
         if (!_go) return;
 
@@ -65,14 +65,21 @@ public class GhostInstance
         _go.transform.rotation = _baseRot;
         _go.transform.localScale = _baseScale;
 
-        // Fade out with confidence
-        float alpha = Mathf.Clamp01(confidence);
+        float alpha = Mathf.Clamp01(fade);
 
         _mr.GetPropertyBlock(_mpb);
         _mpb.SetFloat("_IsMemory", 1f);
+
+        // Main continuous fade
         _mpb.SetFloat("_Alpha", alpha);
+
+        // Optional: also reduce intensity so bloom fades smoothly
+        // (Only keep this if your ghost shader uses _Sense to drive emission)
+        _mpb.SetFloat("_Sense", alpha);
+
         _mr.SetPropertyBlock(_mpb);
     }
+
 
     public void Destroy()
     {

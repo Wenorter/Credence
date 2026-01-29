@@ -26,6 +26,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _Blind_Radius: 4
+    - _Clip: 0.01
+    - _Cutoff: 0.02
+    - _DitherPixelSize: 1
+    - _DitherScale: 2
     - _EdgeSoftness: 0.15
     - _FloorDotThreshold: 0.7
     - _FloorIntensity: 1.2
@@ -35,7 +39,7 @@ Material:
     - _NearPow: 1.5
     - _WallGlow: 8
     m_Colors:
-    - _Blind_PlayerPos: {r: 0, g: 0, b: 0, a: 1}
+    - _Blind_PlayerPos: {r: -129.16893, g: 1.6226652, b: -0.42554247, a: 1}
     - _FloorColor: {r: 0.059999965, g: 0.059999965, b: 0.059999965, a: 1}
     - _GridColor: {r: 0.21999997, g: 0.21999997, b: 0.21999997, a: 1}
   m_BuildTextureStacks: []

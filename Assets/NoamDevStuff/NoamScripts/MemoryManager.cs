@@ -10,6 +10,7 @@ public class MemoryManager : MonoBehaviour
     public float driftMaxMeters = 1.2f;         // how far ghosts can drift at low confidence
     public float driftSpeed = 0.25f;            // how fast drift moves
     public float minStrengthToWrite = 0.15f;    // don’t write super-weak observations
+    public float fadeExponent = 2f;
 
     [Header("Ghost Look")]
     public Material ghostMaterial;              // your white aura material (transparent/emissive)
@@ -94,9 +95,12 @@ public class MemoryManager : MonoBehaviour
 
             Vector3 drift = new Vector3(n1 - 0.5f, (n2 - 0.5f) * 0.3f, n3 - 0.5f) * 2f * driftAmp;
 
-            rec.ghost.UpdateGhost(drift, rec.confidence);
+            // Continuous fade (starts immediately)
+            float fade = Mathf.Pow(rec.confidence, fadeExponent);
+            rec.ghost.UpdateGhost(drift, fade);
         }
 
         foreach (var k in dead) _mem.Remove(k);
     }
+
 }

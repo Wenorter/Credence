@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1457616496565161595}
   - component: {fileID: 1439496836223936652}
   - component: {fileID: 3270556831070322205}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Angel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 5096230915517341893}
   - component: {fileID: 5886789856708438271}
   - component: {fileID: 7590489685489701760}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AngleCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
