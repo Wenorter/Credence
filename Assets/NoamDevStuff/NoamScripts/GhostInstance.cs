@@ -24,8 +24,13 @@ public class GhostInstance
             SetLayerRecursively(t.gameObject, layer);
     }
 
-    public static GhostInstance Create(Material ghostMat, Memorable src, Color color, string layer, float fadeInSeconds = 8f)
+    public static GhostInstance Create(Material ghostMat, Memorable src, Color color, string layer, bool isFading = true , float fadeInSeconds = 8f )
     {
+        if (!isFading)
+        {
+            fadeInSeconds = 0.001f;
+        }
+        
         var mesh = src.MeshFilter ? src.MeshFilter.sharedMesh : null;
 
         var go = new GameObject(layer);
@@ -77,12 +82,10 @@ public class GhostInstance
         _baseScale = scale;
     }
 
-    /// <param name="desiredFade">Your normal fade/brightness target (0..1).</param>
-    /// <param name="dt">Pass Time.deltaTime from your manager.</param>
+
     public void UpdateGhost(Vector3 drift, float desiredFade, float dt)
     {
         if (!_go) return;
-
         _go.transform.position = _basePos + drift;
         _go.transform.rotation = _baseRot;
         _go.transform.localScale = _baseScale;

@@ -34,7 +34,7 @@ public class MemoryManager : MonoBehaviour
         Instance = this;
     }
 
-    public void Observe(Memorable m, float strength)
+    public void Observe(Memorable m, float strength , bool isFading = true)
     {
         if (!m || strength < minStrengthToWrite) return;
 
@@ -48,8 +48,8 @@ public class MemoryManager : MonoBehaviour
                 lastSeenTime = Time.time,
             };
             _mem[m.Guid] = rec;
-
-            rec.ghost = GhostInstance.Create(ghostMaterial, m , m.color , m.layer);
+            
+            rec.ghost = GhostInstance.Create(ghostMaterial, m , m.color , m.layer , isFading);
         }
 
         // Update last-known transform (this is the “truth” snapshot)

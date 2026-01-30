@@ -12,10 +12,16 @@ public class RoomTrigger : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        gameManager.TrySwitchRoom(enteredRoom , enteredRoomCage);
+        if (other.CompareTag("Priest"))
+        {
+            gameManager.TrySwitchRoom(enteredRoom , enteredRoomCage);    
+        }
     }
     private void OnTriggerExit(Collider other)
     {
-        gameManager.TrySwitchRoom(exitedRoom , exitedRoomCage);
+        if (other.CompareTag("Priest"))
+        {
+            gameManager.TrySwitchRoom(exitedRoom , exitedRoomCage);
+        }
     }
 }
