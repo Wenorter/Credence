@@ -19,13 +19,13 @@ public class GhostInstance
     }
 
     
-    public static GhostInstance Create(Material ghostMat, Memorable src , Color color)
+    public static GhostInstance Create(Material ghostMat, Memorable src , Color color , string layer)
     {
         // If your objects are not MeshFilter-based (SkinnedMesh), consider using a proxy mesh instead.
         var mesh = src.MeshFilter ? src.MeshFilter.sharedMesh : null;
 
-        var go = new GameObject($"Ghost_{src.name}");
-        SetLayerRecursively(go, LayerMask.NameToLayer("Ghost"));
+        var go = new GameObject(layer);
+        SetLayerRecursively(go, LayerMask.NameToLayer(layer));
         var mf = go.AddComponent<MeshFilter>();
         var mr = go.AddComponent<MeshRenderer>();
 
@@ -45,6 +45,7 @@ public class GhostInstance
         gi._mpb.SetFloat("_IsMemory", 1f);
         gi._mpb.SetFloat("_Sense", 1f);
         gi._mpb.SetFloat("_Alpha", 0f);
+        gi._mpb.SetColor("_Color", color);
         gi._mr.SetPropertyBlock(gi._mpb);
 
         return gi;

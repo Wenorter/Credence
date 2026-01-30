@@ -49,7 +49,7 @@ public class MemoryManager : MonoBehaviour
             };
             _mem[m.Guid] = rec;
 
-            rec.ghost = GhostInstance.Create(ghostMaterial, m , m.color);
+            rec.ghost = GhostInstance.Create(ghostMaterial, m , m.color , m.layer);
         }
 
         // Update last-known transform (this is the “truth” snapshot)
