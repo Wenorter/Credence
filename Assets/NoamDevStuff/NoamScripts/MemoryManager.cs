@@ -34,7 +34,19 @@ public class MemoryManager : MonoBehaviour
         Instance = this;
     }
 
-    public void Observe(Memorable m, float strength , bool isFading = true)
+    // NEW: forget everything immediately
+    public void FlushMemory()
+    {
+        foreach (var kv in _mem)
+        {
+            var rec = kv.Value;
+            rec?.ghost?.Destroy();
+        }
+
+        _mem.Clear();
+    }
+
+    public void Observe(Memorable m, float strength, bool isFading = true)
     {
         if (!m || strength < minStrengthToWrite) return;
 
@@ -48,8 +60,8 @@ public class MemoryManager : MonoBehaviour
                 lastSeenTime = Time.time,
             };
             _mem[m.Guid] = rec;
-            
-            rec.ghost = GhostInstance.Create(ghostMaterial, m , m.color , m.layer , isFading);
+
+            rec.ghost = GhostInstance.Create(ghostMaterial, m, m.color, m.layer, isFading);
         }
 
         // Update last-known transform (this is the “truth” snapshot)
@@ -67,6 +79,13 @@ public class MemoryManager : MonoBehaviour
 
     void Update()
     {
+        // NEW: "just pressed this frame" (was not pressed last frame)
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            FlushMemory();
+            return; // optional: skip fading/drift work on the same frame
+        }
+
         float now = Time.time;
         var dead = new List<string>();
 
@@ -97,10 +116,9 @@ public class MemoryManager : MonoBehaviour
 
             // Continuous fade (starts immediately)
             float fade = Mathf.Pow(rec.confidence, fadeExponent);
-            rec.ghost.UpdateGhost(drift, fade , Time.deltaTime);
+            rec.ghost.UpdateGhost(drift, fade, Time.deltaTime);
         }
 
         foreach (var k in dead) _mem.Remove(k);
     }
-
 }

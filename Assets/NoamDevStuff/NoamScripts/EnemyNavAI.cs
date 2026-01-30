@@ -64,7 +64,7 @@ public class EnemyNavAI : MonoBehaviour
     private float _loseTimer;
     private float _nextChaseRepathTime;
     private float _nextAttackTime;
-
+    
     // runtime caches
     private readonly List<string> _availableRooms = new();
     private readonly Dictionary<string, List<Transform>> _pointsByRoom = new();
@@ -353,6 +353,41 @@ public class EnemyNavAI : MonoBehaviour
             }
         }
     }
+    public void OnResetDay(Transform newTransform)
+    {
+        transform.position = newTransform.position;
+        transform.rotation = newTransform.rotation;
+        // Forget runtime state
+        _state = State.Wander;
+
+        _lingerTimer = 0f;
+        _loseTimer = 0f;
+        _nextChaseRepathTime = 0f;
+        _nextAttackTime = 0f;
+
+        _currentTarget = null;
+
+        // Reset agent movement to "fresh start"
+        if (_agent)
+        {
+            _agent.isStopped = false;
+            _agent.speed = wanderSpeed;
+            _agent.stoppingDistance = 0f;
+
+            // Clear current path
+            _agent.ResetPath();
+
+            // Treat current position as the new "home" for this day (optional, but usually matches "reload")
+            _homePosition = transform.position;
+        }
+
+        // Rebuild cache in case rooms/points changed (safe even if unchanged)
+        BuildWaypointCache();
+
+        // Pick a new starting wander point like Start()
+        PickNextWanderPoint(forceSwitchRoom: true);
+    }
+
 
     private void OnDrawGizmosSelected()
     {

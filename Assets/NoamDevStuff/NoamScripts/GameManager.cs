@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -12,27 +14,34 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject angelInput;
     [SerializeField] private GameObject angel;
     [SerializeField] private GameObject priest;
-    [SerializeField] private BoxCollider cage1;
+    [SerializeField] private BoxCollider startingCage;
+    [SerializeField] private Transform priestSpawnPoint;
 
     [Header("Priest")]
     [SerializeField] private string priestCurrentRoom = "";
-    [SerializeField] private int priestHp = 5;
+    [SerializeField] private int priestCurrHp = 5;
+    [SerializeField] private int priestStartHp = 5;
 
     [Header("Angel")]
     [SerializeField] private int angelCurrentFear;
     [SerializeField] private int angelMaxFear = 5;
     [Tooltip("When angel fear reaches max, his fear resets and he gets locked out of moving/looking")]
     [SerializeField] private float angelStunDuration = 3f;
-
-    [Header("Angel Stun Visual")]
     [Tooltip("How strong the red overlay is while stunned.")]
     [Range(0f, 1f)]
     [SerializeField] private float stunTintAlpha = 0.35f;
-
+    
     [Header("Camera Fade Switch")]
     [SerializeField] private float fadeOutTime = 0.25f;
     [SerializeField] private float blackHoldTime = 0.05f;
     [SerializeField] private float fadeInTime = 0.25f;
+    
+    [Header("User Interface")]
+    [SerializeField] private UiCanvas uiCanvas;
+    
+    [Header("Events")]
+    [SerializeField] private UnityEvent onResetDayMemoryMan;
+    [SerializeField] private UnityEvent onResetDayAiMan;
 
     // fields
     private int _cameraIndex;
@@ -45,6 +54,10 @@ public class GameManager : MonoBehaviour
     private bool _isAngelStunned;
     private Coroutine _angelStunRoutine;
 
+    // day system
+    private int _currentDay = 1;
+    private readonly int _maxDay = 3;
+    
     // Overlay UI
     private Canvas _overlayCanvas;
     private Image _fadeImage;      // black fade overlay
@@ -62,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        TrySwitchRoom("room1", cage1);
+        TrySwitchRoom("room1", startingCage);
 
         // Ensure only current camera/input are active at start
         for (int i = 0; i < _cameras.Length; i++)
@@ -71,12 +84,19 @@ public class GameManager : MonoBehaviour
             _cameras[i].gameObject.SetActive(active);
             _inputObj[i].SetActive(active);
         }
+        uiCanvas.ChangeText($"Day {_currentDay}");
+        ResetDay();
     }
 
     private void Update()
     {
         if (Keyboard.current.tabKey.wasPressedThisFrame)
             OnSwitchCamera();
+        
+        if (Keyboard.current.rKey.wasPressedThisFrame || priestCurrHp <= 0)
+        {
+            ResetDay();
+        }
     }
 
     public void OnSwitchCamera()
@@ -217,8 +237,8 @@ public class GameManager : MonoBehaviour
 
     public void OnPriestAttacked()
     {
-        priestHp--;
-        DebugUI.OnChangeText(TextContext.PriestHp, priestHp.ToString());
+        priestCurrHp--;
+        DebugUI.OnChangeText(TextContext.PriestHp, priestCurrHp.ToString());
         AngelSpooked();
     }
 
@@ -264,5 +284,36 @@ public class GameManager : MonoBehaviour
         UpdateStunTint();
 
         _angelStunRoutine = null;
+    }
+    private void ResetDay()
+    {
+        if (!_cameras[0].isActiveAndEnabled)
+        {
+            OnSwitchCamera();   
+        }
+        
+        TrySwitchRoom("room1", startingCage);
+        onResetDayMemoryMan.Invoke();
+        onResetDayAiMan.Invoke();
+        priestCurrHp = priestStartHp;
+        var cc = priest.GetComponent<CharacterController>();
+        cc.enabled = false;
+        priest.transform.position = priestSpawnPoint.position;
+        priest.transform.rotation = priestSpawnPoint.rotation;
+        cc.enabled = true;
+        
+        uiCanvas.StartFadeOut();
+    }
+    private void CompleteCurrentDay()
+    {
+        if (_currentDay >= _maxDay)
+        {
+            //finish game.
+        }
+        else
+        {
+            _currentDay++;
+            uiCanvas.ChangeText($"Day {_currentDay}");
+        }
     }
 }

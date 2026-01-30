@@ -5,7 +5,6 @@ using UnityEngine.Serialization;
 public class StayInsideBox : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private GameManager gameManager;
     [SerializeField] private CharacterController controller;
     //
     public BoxCollider cage;

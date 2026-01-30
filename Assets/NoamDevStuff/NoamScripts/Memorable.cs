@@ -19,12 +19,12 @@ public class Memorable : MonoBehaviour
         Renderer = GetComponentInChildren<Renderer>();
         MeshFilter = GetComponentInChildren<MeshFilter>();
     }
-
     void Start()
     {
         if (layer == "")
         {
             layer = "Ghost";
+            color.a = 0.5f;
         }
     }
 
