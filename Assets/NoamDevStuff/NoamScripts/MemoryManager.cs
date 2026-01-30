@@ -97,7 +97,7 @@ public class MemoryManager : MonoBehaviour
 
             // Continuous fade (starts immediately)
             float fade = Mathf.Pow(rec.confidence, fadeExponent);
-            rec.ghost.UpdateGhost(drift, fade);
+            rec.ghost.UpdateGhost(drift, fade , Time.deltaTime);
         }
 
         foreach (var k in dead) _mem.Remove(k);

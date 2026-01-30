@@ -9,97 +9,111 @@ public class EnemyNavAI : MonoBehaviour
     private enum State { Wander, Chase, Return }
 
     [Header("References")]
-    [Tooltip("If left empty, the script finds an object tagged Player.")]
-    public Transform player;
+    [Tooltip("If left empty, the script finds an object tagged Priest.")]
+    [SerializeField] private Transform player;
+    [SerializeField] private GameManager gameManager;
 
-    private NavMeshAgent agent;
-    private State state = State.Wander;
+    private NavMeshAgent _agent;
+    private State _state = State.Wander;
 
     [Header("Waypoints per Room (set per enemy)")]
-    public RoomWaypoints[] roomWaypoints;
+    [SerializeField] private RoomWaypoints[] roomWaypoints;
 
     public enum WanderPickMode { Random, Sequential }
-    public WanderPickMode pickMode = WanderPickMode.Random;
+    [SerializeField] private WanderPickMode pickMode = WanderPickMode.Random;
 
     [Tooltip("If true, keep choosing points from the current room unless we decide to switch.")]
-    public bool stickToCurrentRoom = true;
+    [SerializeField] private bool stickToCurrentRoom = true;
 
     [Range(0f, 1f)]
     [Tooltip("Only used if stickToCurrentRoom = true. Chance to switch rooms after reaching a point.")]
-    public float switchRoomChance = 0.25f;
+    [SerializeField] private float switchRoomChance = 0.25f;
 
     [Header("Wander / Linger")]
-    public float wanderSpeed = 2.5f;
-    public float arriveDistance = 0.6f;
-    public float minLingerTime = 0.6f;
-    public float maxLingerTime = 2.0f;
+    [SerializeField] private float wanderSpeed = 2.5f;
+    [SerializeField] private float arriveDistance = 0.6f;
+    [SerializeField] private float minLingerTime = 0.6f;
+    [SerializeField] private float maxLingerTime = 2.0f;
 
     [Header("Detection")]
-    public float detectRadius = 8f;
+    [SerializeField] private float detectRadius = 8f;
 
     [Header("Chase")]
-    public float chaseSpeed = 4.5f;
-    public float loseRadius = 12f;
-    public float loseAfterSeconds = 2.0f;
-    public float chaseRepathInterval = 0.15f;
+    [SerializeField] private float chaseSpeed = 4.5f;
+    [SerializeField] private float loseRadius = 12f;
+    [SerializeField] private float loseAfterSeconds = 2.0f;
+    [SerializeField] private float chaseRepathInterval = 0.15f;
+
+    [Header("Chase - Stop Before Target")]
+    [Tooltip("How far from the target the enemy should stop while chasing (prevents pushing).")]
+    [SerializeField] private float chaseStopDistance = 1.2f;
+
+    [Header("Attack")]
+    [Tooltip("Seconds between attacks while in range.")]
+    [SerializeField] private float attackInterval = 1.0f;
+    [Tooltip("Distance at which the enemy can attack. Usually <= chaseStopDistance.")]
+    [SerializeField] private float attackRange = 1.2f;
 
     [Header("Return")]
-    public bool returnToHomeWhenLost = true;
-    public float returnSpeed = 3.0f;
-    public float returnArriveDistance = 0.8f;
+    [SerializeField] private bool returnToHomeWhenLost = true;
+    [SerializeField] private float returnSpeed = 3.0f;
+    [SerializeField] private float returnArriveDistance = 0.8f;
 
-    private Vector3 homePosition;
-    private float lingerTimer = 0f;
-    private float loseTimer = 0f;
-    private float nextChaseRepathTime = 0f;
+    private Vector3 _homePosition;
+    private float _lingerTimer;
+    private float _loseTimer;
+    private float _nextChaseRepathTime;
+    private float _nextAttackTime;
 
     // runtime caches
-    private readonly List<string> availableRooms = new();
-    private readonly Dictionary<string, List<Transform>> pointsByRoom = new();
-    private readonly Dictionary<string, int> sequentialIndexByRoom = new();
+    private readonly List<string> _availableRooms = new();
+    private readonly Dictionary<string, List<Transform>> _pointsByRoom = new();
+    private readonly Dictionary<string, int> _sequentialIndexByRoom = new();
 
-    private string currentRoom;
-    private Transform currentTarget;
+    private string _currentRoom;
+    private Transform _currentTarget;
 
     [Serializable]
-    public class RoomWaypoints
+    private class RoomWaypoints
     {
         public string room;
         public Transform[] points;
     }
 
-    void Awake()
+    private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        homePosition = transform.position;
+        _agent = GetComponent<NavMeshAgent>();
+        _homePosition = transform.position;
     }
 
-    void Start()
+    private void Start()
     {
-        if (player == null)
+        if (!player)
         {
-            GameObject p = GameObject.FindGameObjectWithTag("Priest");
-            if (p != null) player = p.transform;
+            var p = GameObject.FindGameObjectWithTag("Priest");
+            if (p) player = p.transform;
         }
+
+        if (!gameManager)
+            gameManager = FindFirstObjectByType<GameManager>();
 
         BuildWaypointCache();
 
-        agent.speed = wanderSpeed;
-        agent.stoppingDistance = 0f;
-        agent.autoBraking = true;
+        _agent.speed = wanderSpeed;
+        _agent.stoppingDistance = 0f;
+        _agent.autoBraking = true;
 
         PickNextWanderPoint(forceSwitchRoom: true);
     }
 
-    void Update()
+    private void Update()
     {
-        // Detect -> Chase
-        if (player != null && Vector3.Distance(transform.position, player.position) <= detectRadius)
+        if (player && Vector3.Distance(transform.position, player.position) <= detectRadius)
         {
-            if (state != State.Chase) EnterChase();
+            if (_state != State.Chase) EnterChase();
         }
 
-        switch (state)
+        switch (_state)
         {
             case State.Wander: TickWander(); break;
             case State.Chase:  TickChase();  break;
@@ -109,58 +123,56 @@ public class EnemyNavAI : MonoBehaviour
 
     private void BuildWaypointCache()
     {
-        availableRooms.Clear();
-        pointsByRoom.Clear();
-        sequentialIndexByRoom.Clear();
+        _availableRooms.Clear();
+        _pointsByRoom.Clear();
+        _sequentialIndexByRoom.Clear();
 
         if (roomWaypoints == null) return;
 
         foreach (var rw in roomWaypoints)
         {
-            if (rw == null || rw.points == null || rw.points.Length == 0) continue;
+            if (rw?.points == null || rw.points.Length == 0) continue;
 
-            if (!pointsByRoom.TryGetValue(rw.room, out var list))
+            if (!_pointsByRoom.TryGetValue(rw.room, out var list))
             {
                 list = new List<Transform>();
-                pointsByRoom[rw.room] = list;
-                availableRooms.Add(rw.room);
-                sequentialIndexByRoom[rw.room] = -1;
+                _pointsByRoom[rw.room] = list;
+                _availableRooms.Add(rw.room);
+                _sequentialIndexByRoom[rw.room] = -1;
             }
 
             foreach (var t in rw.points)
-                if (t != null) list.Add(t);
+                if (t) list.Add(t);
         }
 
-        if (availableRooms.Count > 0)
-            currentRoom = availableRooms[0];
+        if (_availableRooms.Count > 0)
+            _currentRoom = _availableRooms[0];
     }
 
     private void TickWander()
     {
-        if (availableRooms.Count == 0)
+        if (_availableRooms.Count == 0)
         {
-            // no points assigned
-            agent.SetDestination(homePosition);
+            _agent.SetDestination(_homePosition);
             return;
         }
 
-        // If current path is invalid/unreachable, pick another point
-        if (!agent.hasPath || agent.pathStatus != NavMeshPathStatus.PathComplete)
+        if (!_agent.hasPath || _agent.pathStatus != NavMeshPathStatus.PathComplete)
         {
             PickNextWanderPoint(forceSwitchRoom: !stickToCurrentRoom);
             return;
         }
 
-        if (!agent.pathPending && agent.remainingDistance <= arriveDistance)
+        if (!_agent.pathPending && _agent.remainingDistance <= arriveDistance)
         {
-            if (lingerTimer <= 0f)
-                lingerTimer = UnityEngine.Random.Range(minLingerTime, maxLingerTime);
+            if (_lingerTimer <= 0f)
+                _lingerTimer = UnityEngine.Random.Range(minLingerTime, maxLingerTime);
 
-            lingerTimer -= Time.deltaTime;
+            _lingerTimer -= Time.deltaTime;
 
-            if (lingerTimer <= 0f)
+            if (_lingerTimer <= 0f)
             {
-                bool forceSwitch = !stickToCurrentRoom;
+                var forceSwitch = !stickToCurrentRoom;
                 if (stickToCurrentRoom && UnityEngine.Random.value < switchRoomChance)
                     forceSwitch = true;
 
@@ -171,146 +183,193 @@ public class EnemyNavAI : MonoBehaviour
 
     private void TickChase()
     {
-        if (player == null)
+        if (!player)
         {
             ExitChase();
             return;
         }
 
-        float dist = Vector3.Distance(transform.position, player.position);
+        var playerPos = player.position;
+        var dist = Vector3.Distance(transform.position, playerPos);
 
-        if (Time.time >= nextChaseRepathTime)
+        // 1) Attack if in range and interval elapsed
+        if (dist <= attackRange)
         {
-            agent.SetDestination(player.position);
-            nextChaseRepathTime = Time.time + chaseRepathInterval;
+            TryAttack();
         }
 
+        // 2) Stop before target to avoid pushing
+        if (dist <= chaseStopDistance)
+        {
+            if (!_agent.isStopped) _agent.isStopped = true;
+        }
+        else
+        {
+            if (_agent.isStopped) _agent.isStopped = false;
+
+            if (Time.time >= _nextChaseRepathTime)
+            {
+                if (NavMesh.SamplePosition(playerPos, out var hit, 2.0f, NavMesh.AllAreas))
+                    _agent.SetDestination(hit.position);
+                else
+                    _agent.SetDestination(playerPos);
+
+                _nextChaseRepathTime = Time.time + chaseRepathInterval;
+            }
+        }
+
+        // 3) Lose target logic
         if (dist > loseRadius)
         {
-            loseTimer += Time.deltaTime;
-            if (loseTimer >= loseAfterSeconds)
+            _loseTimer += Time.deltaTime;
+            if (_loseTimer >= loseAfterSeconds)
                 ExitChase();
         }
         else
         {
-            loseTimer = 0f;
+            _loseTimer = 0f;
         }
+    }
+
+    private void TryAttack()
+    {
+        if (Time.time < _nextAttackTime) return;
+
+        _nextAttackTime = Time.time + Mathf.Max(0.01f, attackInterval);
+
+        // Damage is always 1, so we just notify the GameManager.
+        if (gameManager)
+            gameManager.OnPriestAttacked();
+        else
+            Debug.LogWarning($"{name}: No GameManager assigned/found. Attack happened but no one received it.");
     }
 
     private void TickReturn()
     {
-        if (!agent.pathPending && agent.remainingDistance <= returnArriveDistance)
+        if (!_agent.pathPending && _agent.remainingDistance <= returnArriveDistance)
         {
-            state = State.Wander;
-            agent.speed = wanderSpeed;
-            lingerTimer = 0f;
+            _state = State.Wander;
+            _agent.speed = wanderSpeed;
+            _agent.stoppingDistance = 0f;
+            _lingerTimer = 0f;
+
             PickNextWanderPoint(forceSwitchRoom: true);
         }
     }
 
     private void EnterChase()
     {
-        state = State.Chase;
-        agent.speed = chaseSpeed;
-        loseTimer = 0f;
-        nextChaseRepathTime = 0f; // repath immediately
+        _state = State.Chase;
+        _agent.speed = chaseSpeed;
+        _agent.stoppingDistance = chaseStopDistance;
+        _agent.isStopped = false;
+
+        _loseTimer = 0f;
+        _nextChaseRepathTime = 0f;
+        _nextAttackTime = 0f; // can attack immediately if in range
     }
 
     private void ExitChase()
     {
-        loseTimer = 0f;
+        _loseTimer = 0f;
+        _agent.isStopped = false;
+        _agent.stoppingDistance = 0f;
 
         if (returnToHomeWhenLost)
         {
-            state = State.Return;
-            agent.speed = returnSpeed;
-            agent.SetDestination(homePosition);
+            _state = State.Return;
+            _agent.speed = returnSpeed;
+            _agent.SetDestination(_homePosition);
         }
         else
         {
-            state = State.Wander;
-            agent.speed = wanderSpeed;
+            _state = State.Wander;
+            _agent.speed = wanderSpeed;
             PickNextWanderPoint(forceSwitchRoom: true);
         }
     }
 
     private void PickNextWanderPoint(bool forceSwitchRoom)
     {
-        lingerTimer = 0f;
+        _lingerTimer = 0f;
 
-        if (availableRooms.Count == 0) return;
+        if (_availableRooms.Count == 0) return;
 
-        // choose room
-        if (forceSwitchRoom || !pointsByRoom.ContainsKey(currentRoom))
-            currentRoom = availableRooms[UnityEngine.Random.Range(0, availableRooms.Count)];
+        if (forceSwitchRoom || !_pointsByRoom.ContainsKey(_currentRoom))
+            _currentRoom = _availableRooms[UnityEngine.Random.Range(0, _availableRooms.Count)];
 
-        if (!pointsByRoom.TryGetValue(currentRoom, out var points) || points.Count == 0)
+        if (!_pointsByRoom.TryGetValue(_currentRoom, out var points) || points.Count == 0)
             return;
 
         Transform next = null;
 
         if (pickMode == WanderPickMode.Random)
         {
-            // avoid picking the same target if possible
-            for (int tries = 0; tries < 10; tries++)
+            for (var tries = 0; tries < 10; tries++)
             {
                 var candidate = points[UnityEngine.Random.Range(0, points.Count)];
-                if (candidate != null && candidate != currentTarget) { next = candidate; break; }
+                if (candidate && candidate != _currentTarget) { next = candidate; break; }
             }
+
             next ??= points[UnityEngine.Random.Range(0, points.Count)];
         }
-        else // Sequential (per room)
+        else
         {
-            int idx = sequentialIndexByRoom.TryGetValue(currentRoom, out var v) ? v : -1;
+            var idx = _sequentialIndexByRoom.TryGetValue(_currentRoom, out var v) ? v : -1;
 
-            for (int i = 0; i < points.Count; i++)
+            for (var i = 0; i < points.Count; i++)
             {
                 idx = (idx + 1) % points.Count;
                 if (points[idx] != null) { next = points[idx]; break; }
             }
 
-            sequentialIndexByRoom[currentRoom] = idx;
+            _sequentialIndexByRoom[_currentRoom] = idx;
             next ??= points[0];
         }
 
-        if (next == null) return;
-        currentTarget = next;
+        if (!next) return;
+        _currentTarget = next;
 
-        // Keep destination on navmesh
         if (NavMesh.SamplePosition(next.position, out var hit, 2.0f, NavMesh.AllAreas))
         {
-            agent.speed = wanderSpeed;
-            agent.SetDestination(hit.position);
+            _agent.speed = wanderSpeed;
+            _agent.stoppingDistance = 0f;
+            _agent.isStopped = false;
+            _agent.SetDestination(hit.position);
         }
         else
         {
-            // If waypoint isn't on/near navmesh, try again
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var t = points[UnityEngine.Random.Range(0, points.Count)];
-                if (t != null && NavMesh.SamplePosition(t.position, out hit, 2.0f, NavMesh.AllAreas))
+                if (t && NavMesh.SamplePosition(t.position, out hit, 2.0f, NavMesh.AllAreas))
                 {
-                    currentTarget = t;
-                    agent.SetDestination(hit.position);
+                    _currentTarget = t;
+                    _agent.stoppingDistance = 0f;
+                    _agent.isStopped = false;
+                    _agent.SetDestination(hit.position);
                     return;
                 }
             }
         }
     }
 
-    // Optional: visualize in editor
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectRadius);
 
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
         Gizmos.color = Color.yellow;
         if (roomWaypoints == null) return;
+
         foreach (var rw in roomWaypoints)
         {
             if (rw?.points == null) continue;
             foreach (var t in rw.points)
-                if (t != null) Gizmos.DrawSphere(t.position, 0.12f);
+                if (t) Gizmos.DrawSphere(t.position, 0.12f);
         }
     }
 }
