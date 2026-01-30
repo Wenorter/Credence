@@ -28071,6 +28071,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: b380195cd1b2e3d45a6e63ac1ca6dfe3, type: 3}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &1372588697
 GameObject:
   m_ObjectHideFlags: 0
@@ -28260,6 +28261,8 @@ Transform:
 >>>>>>> origin/main
 =======
 >>>>>>> origin/main
+=======
+>>>>>>> parent of b68182c (model location fix)
 --- !u!1001 &1391579849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29535,6 +29538,7 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e71fd6da5febd9941bad8435565f72e6, type: 3}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1001 &2098138557
 =======
 --- !u!1001 &2023958451
@@ -29653,6 +29657,8 @@ PrefabInstance:
 =======
   m_SourcePrefab: {fileID: 100100000, guid: d8c4123783f9ce242887f66294bc1ff7, type: 3}
 >>>>>>> fd94973 (Liturgy assets)
+=======
+>>>>>>> parent of b68182c (model location fix)
 --- !u!1001 &2127870739
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30352,6 +30358,7 @@ SceneRoots:
   - {fileID: 372996876}
 =======
   - {fileID: 443145199}
+<<<<<<< HEAD
   - {fileID: 2098138557}
 >>>>>>> origin/main
 =======
@@ -30367,3 +30374,5 @@ SceneRoots:
   - {fileID: 1260171462}
   - {fileID: 1751760206}
 >>>>>>> fd94973 (Liturgy assets)
+=======
+>>>>>>> parent of b68182c (model location fix)
