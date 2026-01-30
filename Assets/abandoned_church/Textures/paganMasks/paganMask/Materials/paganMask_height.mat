@@ -15,7 +15,10 @@ Material:
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
 <<<<<<< HEAD
+<<<<<<< HEAD
   - _OCCLUSIONMAP
+=======
+>>>>>>> origin/main
 =======
 >>>>>>> origin/main
   m_InvalidKeywords: []

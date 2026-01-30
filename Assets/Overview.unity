@@ -27675,6 +27675,7 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b380195cd1b2e3d45a6e63ac1ca6dfe3, type: 3}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &1372588697
 GameObject:
   m_ObjectHideFlags: 0
@@ -27690,6 +27691,8 @@ GameObject:
   m_Layer: 0
   m_Name: Plane (2)
 =======
+=======
+>>>>>>> origin/main
 --- !u!1 &1369577460
 GameObject:
   m_ObjectHideFlags: 0
@@ -27703,12 +27706,16 @@ GameObject:
   - component: {fileID: 1369577461}
   m_Layer: 0
   m_Name: Priest
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
 >>>>>>> origin/main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
 <<<<<<< HEAD
 --- !u!64 &1372588698
 MeshCollider:
@@ -27740,6 +27747,8 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1372588697}
 =======
+=======
+>>>>>>> origin/main
 --- !u!23 &1369577461
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27747,6 +27756,9 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 443145199}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1369577460}
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
 >>>>>>> origin/main
   m_Enabled: 1
   m_CastShadows: 1
@@ -27767,7 +27779,11 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
 <<<<<<< HEAD
+<<<<<<< HEAD
   - {fileID: 2100000, guid: 43491fb9668f22b42a9e7bc7b866b5b0, type: 2}
+=======
+  - {fileID: 2100000, guid: d5c8523999b0f7045a5dc6d76f12baf5, type: 2}
+>>>>>>> origin/main
 =======
   - {fileID: 2100000, guid: d5c8523999b0f7045a5dc6d76f12baf5, type: 2}
 >>>>>>> origin/main
@@ -27795,6 +27811,7 @@ MeshRenderer:
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!33 &1372588700
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -27819,6 +27836,8 @@ Transform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -0.528, y: 218.279, z: 0.67}
 =======
+=======
+>>>>>>> origin/main
 --- !u!33 &1369577462
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -27842,6 +27861,9 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
 >>>>>>> origin/main
 --- !u!1001 &1391579849
 PrefabInstance:
@@ -29534,6 +29556,7 @@ SceneRoots:
   - {fileID: 1283552894}
   - {fileID: 1050909286}
 <<<<<<< HEAD
+<<<<<<< HEAD
   - {fileID: 1601406475}
   - {fileID: 1996425798}
   - {fileID: 1372588701}
@@ -29541,6 +29564,10 @@ SceneRoots:
   - {fileID: 302092017}
   - {fileID: 1179774225}
   - {fileID: 372996876}
+=======
+  - {fileID: 443145199}
+  - {fileID: 2098138557}
+>>>>>>> origin/main
 =======
   - {fileID: 443145199}
   - {fileID: 2098138557}
