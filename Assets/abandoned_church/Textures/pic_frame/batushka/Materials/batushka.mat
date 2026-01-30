@@ -1,10 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<< HEAD
---- !u!114 &-1803603778363657934
-=======
---- !u!114 &-2878790798727274618
->>>>>>> fd94973 (Liturgy assets)
+--- !u!114 &-642690666258159095
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24,16 +20,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: saints
+  m_Name: batushka
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _NORMALMAP
-<<<<<<< HEAD
-  - _OCCLUSIONMAP
-=======
->>>>>>> fd94973 (Liturgy assets)
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -48,11 +39,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: ede83d1ecfbddf549b7a8d976488f425, type: 3}
+        m_Texture: {fileID: 2800000, guid: 709d552ed2271b04384d42dd9452a754, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: abc00000000010145794681862714543, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -72,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ede83d1ecfbddf549b7a8d976488f425, type: 3}
+        m_Texture: {fileID: 2800000, guid: 709d552ed2271b04384d42dd9452a754, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -80,11 +71,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-<<<<<<< HEAD
-        m_Texture: {fileID: 2800000, guid: abc00000000015027519618683053716, type: 3}
-=======
         m_Texture: {fileID: 0}
->>>>>>> fd94973 (Liturgy assets)
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -114,11 +101,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-<<<<<<< HEAD
     - _BumpScale: 1
-=======
-    - _BumpScale: 0.5
->>>>>>> fd94973 (Liturgy assets)
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2

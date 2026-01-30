@@ -16,11 +16,14 @@ Material:
   - _NORMALMAP
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   - _OCCLUSIONMAP
 =======
 >>>>>>> origin/main
 =======
 >>>>>>> origin/main
+=======
+>>>>>>> fd94973 (Liturgy assets)
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
