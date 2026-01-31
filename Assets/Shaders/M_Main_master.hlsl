@@ -188,10 +188,7 @@ void InitializeExpressions()
 }
 float3 GetMaterialWorldPositionOffset(FMaterialVertexParameters Parameters)
 {
-SHADER_PUSH_WARNINGS_STATE
-SHADER_DISABLE_WARNINGS
 	return MaterialFloat3(0.00000000,0.00000000,0.00000000);;
-SHADER_POP_WARNINGS_STATE
 }
 void CalcPixelMaterialInputs(in out FMaterialPixelParameters Parameters, in out FPixelMaterialInputs PixelMaterialInputs)
 {
@@ -202,8 +199,6 @@ void CalcPixelMaterialInputs(in out FMaterialPixelParameters Parameters, in out 
 
 	float3 WorldNormalCopy = Parameters.WorldNormal;
 
-SHADER_PUSH_WARNINGS_STATE
-SHADER_DISABLE_WARNINGS
 	// Initial calculations (required for Normal)
 	MaterialFloat2 Local0 = Parameters.TexCoords[0].xy;
 	MaterialFloat2 Local1 = (MaterialFloat2(-0.50000000,-0.50000000) + DERIV_BASE_VALUE(Local0));
@@ -222,7 +217,6 @@ SHADER_DISABLE_WARNINGS
 	// The Normal is a special case as it might have its own expressions and also be used to calculate other inputs, so perform the assignment here
 	PixelMaterialInputs.Normal = MaterialFloat3(MaterialFloat2(Local11,Local12),Local9.rgb.b);
 
-SHADER_POP_WARNINGS_STATE
 
 #if TEMPLATE_USES_SUBSTRATE
 	Parameters.SubstratePixelFootprint = SubstrateGetPixelFootprint(Parameters.WorldPosition_CamRelative, GetRoughnessFromNormalCurvature(Parameters));
@@ -265,15 +259,13 @@ SHADER_POP_WARNINGS_STATE
 	Parameters.Particle.MotionBlurFade = 1.0f;
 #endif // !PARTICLE_SPRITE_FACTORY
 
-SHADER_PUSH_WARNINGS_STATE
-SHADER_DISABLE_WARNINGS
 	// Now the rest of the inputs
 	MaterialFloat3 Local13 = lerp(MaterialFloat3(0.00000000,0.00000000,0.00000000),Material.PreshaderBuffer[3].xyz,Material.PreshaderBuffer[2].y);
 	MaterialFloat Local14 = MaterialStoreTexCoordScale(Parameters, DERIV_BASE_VALUE(Local7), 6);
 	MaterialFloat4 Local15 = ProcessMaterialColorTextureLookup(Texture2DSample(Material_Texture2D_1,GetMaterialSharedSampler(samplerMaterial_Texture2D_1,View_MaterialTextureBilinearWrapedSampler),DERIV_BASE_VALUE(Local7)));
 	MaterialFloat Local16 = MaterialStoreTexSample(Parameters, Local15, 6);
 	MaterialFloat3 Local17 = (Local15.rgb * ((MaterialFloat3)Material.PreshaderBuffer[4].x));
-	MaterialFloat Local18 = dot(Local17,MaterialFloat3(0.21263900,0.71516865,0.07219232));
+	MaterialFloat Local18 = dot(Local17,MaterialFloat3(0.30000001,0.58999997,0.11000000));
 	MaterialFloat3 Local19 = lerp(Local17,((MaterialFloat3)Local18),Material.PreshaderBuffer[4].y);
 	MaterialFloat3 Local20 = RotateAboutAxis(MaterialFloat4(normalize(MaterialFloat3(1.00000000,1.00000000,1.00000000).rgb),Material.PreshaderBuffer[3].w),((MaterialFloat3)0.00000000),Local19);
 	MaterialFloat3 Local21 = (Local20 + Local19);
@@ -302,9 +294,8 @@ SHADER_DISABLE_WARNINGS
 	PixelMaterialInputs.ShadingModel = 1;
 	PixelMaterialInputs.FrontMaterial = GetInitialisedSubstrateData();
 	PixelMaterialInputs.SurfaceThickness = 0.01000000;
-	PixelMaterialInputs.Displacement = -1.00000000;
+	PixelMaterialInputs.Displacement = 0.50000000;
 
-SHADER_POP_WARNINGS_STATE
 
 #if MATERIAL_USES_ANISOTROPY
 	Parameters.WorldTangent = CalculateAnisotropyTangent(Parameters, PixelMaterialInputs);
