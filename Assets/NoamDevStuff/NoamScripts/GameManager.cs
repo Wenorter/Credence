@@ -133,10 +133,12 @@ public class GameManager : MonoBehaviour
 
     public void OnObjectivePicked()
     {
-        objectsInEachDay[_currentDay]--;
-        if (objectsInEachDay[_currentDay] == 0)
+        Debug.Log($"OnObjectivePicked");
+        objectsInEachDay[_currentDay-1]--;
+        if (objectsInEachDay[_currentDay-1] == 0)
         {
             CompleteCurrentDay();
+            
         }
     }
 

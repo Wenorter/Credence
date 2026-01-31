@@ -10,37 +10,50 @@ public class PriestActions : MonoBehaviour
 
     [Header("Raycast (center of screen)")]
     [SerializeField] private Camera viewCamera;
-    [SerializeField] private float interactDistance = 4f;
+    [SerializeField] private float interactDistance = 10f;
+
+    [Tooltip("Layers considered for ray hits (usually everything except ignore-raycast layers).")]
     [SerializeField] private LayerMask rayMask = ~0;
+
+    [Header("Objective Ghost Prop Filter")]
+    [Tooltip("The TAG on the ghost prop you spawn (e.g. 'Objective').")]
+    [SerializeField] private string objectiveGhostTag = "Objective";
 
     [Header("Hiding Lerp")]
     [SerializeField] private float lerpDuration = 0.6f;
 
     [Header("Disable Input While Busy")]
-    [Tooltip("Drag the PlayerInput component from the priest here (the component, not the GameObject).")]
     [SerializeField] private PlayerInput priestInput;
 
     [Header("Movement Script")]
-    [Tooltip("Drag your FpsMovement component here (must have public bool IsUserBusyWalking).")]
     [SerializeField] private FpsMovement fpsMovement;
 
     [Header("State")]
-    // True while entering (lerping), while hiding (staying inside), and while exiting (lerping).
-    // False only after fully exiting the hiding spot.
     public bool IsHiding { get; private set; }
+
+    [Header("Events")]
+    [SerializeField] private UnityEvent onInteractEvent;
 
     [Header("Gizmos")]
     [SerializeField] private Color gizmoRayColor = new Color(1f, 0.2f, 0.2f, 1f);
-    
-    [Header("Events")]
-    [SerializeField] private UnityEvent onInteract;
-    
-    
+
+    [Tooltip("When true, draws the interact ray and shows what it hits in the Scene view.")]
+    [SerializeField] private bool drawInteractGizmo = true;
+
+    [SerializeField] private Color interactMissColor = new Color(1f, 0.8f, 0.2f, 1f);
+    [SerializeField] private Color interactHitColor  = new Color(0.2f, 1f, 0.2f, 1f);
+
     private bool _isTransitioning;
     private Coroutine _lerpRoutine;
 
     private Transform _lastHitTransform;
     private Transform _currentHidableRoot;
+
+    // Cache last interact-ray result for gizmos (so gizmos reflects the same logic)
+    private bool _lastInteractHit;
+    private Vector3 _lastInteractHitPoint;
+    private bool _lastInteractWasObjective;
+    private string _lastInteractHitName;
 
     private void Awake()
     {
@@ -53,34 +66,97 @@ public class PriestActions : MonoBehaviour
     {
         SetBusy(false);
         SetInputEnabled(true);
-
-        // Not hiding at the start
         IsHiding = false;
     }
 
     private void Update()
     {
         UpdateLookRaycast();
+        UpdateInteractGizmoCache(); // NEW: updates the gizmo cache every frame
     }
 
     private void UpdateLookRaycast()
     {
         _lastHitTransform = null;
-
         if (!viewCamera) return;
 
         Ray ray = viewCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, rayMask, QueryTriggerInteraction.Ignore))
-        {
             _lastHitTransform = hit.collider.transform;
-        }
     }
 
+    // NEW: Interact ray logic (shared by OnInteract + gizmos)
+    private bool TryGetObjectiveGhostHit(out RaycastHit bestHit)
+    {
+        bestHit = default;
+
+        if (!viewCamera) return false;
+
+        Ray ray = viewCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+        // IMPORTANT: Collide so trigger colliders (your ghost prop) are included
+        RaycastHit[] hits = Physics.RaycastAll(ray, interactDistance, rayMask, QueryTriggerInteraction.Collide);
+        if (hits == null || hits.Length == 0) return false;
+
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            Collider col = hits[i].collider;
+            if (!col) continue;
+
+            // Only accept trigger colliders (the ghost prop collider isTrigger)
+            if (!col.isTrigger) continue;
+
+            // Tag can be on the collider object OR on the root parent
+            if (col.CompareTag(objectiveGhostTag) || col.transform.root.CompareTag(objectiveGhostTag))
+            {
+                bestHit = hits[i];
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    // Press E -> if aiming at ghost prop with Objective tag -> invoke event
     public void OnInteract()
     {
-        if (_lastHitTransform.gameObject.CompareTag("Objective"))
+        if (_isTransitioning) return;
+
+        if (TryGetObjectiveGhostHit(out _))
+            onInteractEvent?.Invoke();
+    }
+
+    // NEW: Cache gizmo info for the interact ray
+    private void UpdateInteractGizmoCache()
+    {
+        _lastInteractHit = false;
+        _lastInteractWasObjective = false;
+        _lastInteractHitName = null;
+        _lastInteractHitPoint = Vector3.zero;
+
+        if (!drawInteractGizmo) return;
+        if (!viewCamera) return;
+
+        Ray ray = viewCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+        // Find the first hit (any collider) for showing where the ray is blocked
+        if (Physics.Raycast(ray, out RaycastHit firstHit, interactDistance, rayMask, QueryTriggerInteraction.Ignore))
         {
-            onInteract.Invoke();
+            _lastInteractHit = true;
+            _lastInteractHitPoint = firstHit.point;
+            _lastInteractHitName = firstHit.collider ? firstHit.collider.name : null;
+        }
+
+        // Also check whether there is an objective ghost hit (might be behind blockers if using RaycastAll)
+        if (TryGetObjectiveGhostHit(out RaycastHit objectiveHit))
+        {
+            _lastInteractWasObjective = true;
+            _lastInteractHit = true;
+            _lastInteractHitPoint = objectiveHit.point;
+            _lastInteractHitName = objectiveHit.collider ? objectiveHit.collider.name : null;
         }
     }
 
@@ -88,9 +164,6 @@ public class PriestActions : MonoBehaviour
     {
         if (_isTransitioning) return;
 
-        // If already in hiding, right click exits.
-        // We use IsUserBusyWalking as the state for movement blocking,
-        // and IsHiding as the overall "hiding system" state.
         if (IsBusy())
         {
             if (_currentHidableRoot == null) return;
@@ -98,12 +171,10 @@ public class PriestActions : MonoBehaviour
             Transform exitSpot = FindDeepChildWithTagIncludingSelf(_currentHidableRoot, "ExitHidingSpot");
             if (exitSpot == null) return;
 
-            // Exiting: IsHiding stays true while we lerp out.
             StartLerpTo(exitSpot, onCompleteExit: true);
             return;
         }
 
-        // Not busy: try to enter
         if (_lastHitTransform == null) return;
 
         Transform root = _lastHitTransform.parent != null ? _lastHitTransform.parent : _lastHitTransform;
@@ -113,10 +184,7 @@ public class PriestActions : MonoBehaviour
 
         _currentHidableRoot = root;
 
-        // Entering begins: IsHiding becomes true immediately (includes the lerp-in).
         IsHiding = true;
-
-        // While entering, player becomes "busy" and input is disabled only during the lerp.
         SetBusy(true);
         StartLerpTo(enterSpot, onCompleteExit: false);
     }
@@ -129,7 +197,9 @@ public class PriestActions : MonoBehaviour
             StopCoroutine(_lerpRoutine);
 
         _lerpRoutine = StartCoroutine(LerpRoutine(target, onCompleteExit));
-        priestFpsMovement.LockViewTo(target);
+
+        if (priestFpsMovement != null)
+            priestFpsMovement.LockViewTo(target);
     }
 
     private IEnumerator LerpRoutine(Transform target, bool onCompleteExit)
@@ -138,7 +208,6 @@ public class PriestActions : MonoBehaviour
 
         float duration = Mathf.Max(0.0001f, lerpDuration);
 
-        // Disable input ONLY while lerping
         SetInputEnabled(false);
 
         Vector3 startPos = transform.position;
@@ -165,19 +234,16 @@ public class PriestActions : MonoBehaviour
         _isTransitioning = false;
         _lerpRoutine = null;
 
-        // Re-enable input after lerp (but keep Busy=true while inside hiding spot)
         SetInputEnabled(true);
 
         if (onCompleteExit)
         {
-            // Fully exited -> Busy ends here, and IsHiding becomes false ONLY here.
             SetBusy(false);
             _currentHidableRoot = null;
             IsHiding = false;
         }
         else
         {
-            // Arrived inside hiding -> remain Busy + IsHiding true until user exits later.
             SetBusy(true);
             IsHiding = true;
         }
@@ -222,10 +288,25 @@ public class PriestActions : MonoBehaviour
     {
         if (!viewCamera) return;
 
+        // Existing generic ray gizmo
         Gizmos.color = gizmoRayColor;
+        Ray baseRay = viewCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        Gizmos.DrawRay(baseRay.origin, baseRay.direction * interactDistance);
+        Gizmos.DrawWireSphere(baseRay.origin + baseRay.direction * interactDistance, 0.08f);
+
+        // NEW: Interact gizmo (uses interact logic)
+        if (!drawInteractGizmo) return;
 
         Ray ray = viewCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+        // Draw line in different color depending on whether we're aiming at an objective ghost
+        Gizmos.color = _lastInteractWasObjective ? interactHitColor : interactMissColor;
         Gizmos.DrawRay(ray.origin, ray.direction * interactDistance);
-        Gizmos.DrawWireSphere(ray.origin + ray.direction * interactDistance, 0.08f);
+
+        // If something is hit, mark the hit point
+        if (_lastInteractHit)
+        {
+            Gizmos.DrawWireSphere(_lastInteractHitPoint, 0.12f);
+        }
     }
 }

@@ -1306,7 +1306,7 @@ MonoBehaviour:
   angelMaxFear: 5
   angelStunDuration: 3
   stunTintAlpha: 0.35
-  objectsInEachDay: 010000000200000003000000
+  objectsInEachDay: 
   fadeOutTime: 0.8
   blackHoldTime: 0.1
   fadeInTime: 0.8
@@ -1835,15 +1835,6 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 0.0066404045
-      value: 0.35
-      inSlope: 1.178572
-      outSlope: 1.178572
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -2429,8 +2420,6 @@ MonoBehaviour:
   tagSeenDistances:
   - tag: GhostProp
     value: 4
-  - tag: Objective
-    value: 999
   viewAngle: 90
   alwaysRememberDistance: 1
   losSampleCount: 3
@@ -16832,10 +16821,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: viewCamera
       value: 
       objectReference: {fileID: 419351044}
@@ -16849,19 +16834,7 @@ PrefabInstance:
       objectReference: {fileID: 1427490485}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: rayMask.m_Bits
-      value: 5120
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: gizmoRayColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: gizmoRayColor.g
-      value: 0.16173649
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: gizmoRayColor.r
-      value: 0
+      value: 4096
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: playerController
@@ -16877,10 +16850,6 @@ PrefabInstance:
       objectReference: {fileID: 1603752764}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
@@ -16900,28 +16869,12 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnObjectivePicked
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 487205794}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractObjective.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnObjectivePicked
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractObjective.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -16940,19 +16893,11 @@ PrefabInstance:
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractObjective.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
@@ -17043,10 +16988,6 @@ PrefabInstance:
       propertyPath: moveSpeed
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 5418686359477494483, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: cameraTransform
-      value: 
-      objectReference: {fileID: 1517954880}
     - target: {fileID: 6123775996506991720, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: m_OcclusionCulling
       value: 1

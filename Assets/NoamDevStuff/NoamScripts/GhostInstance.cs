@@ -48,6 +48,9 @@ public class GhostInstance
 
         var mf = go.AddComponent<MeshFilter>();
         var mr = go.AddComponent<MeshRenderer>();
+        
+        if(src.isTrigger)
+            go.AddComponent<SphereCollider>().isTrigger = src.isTrigger;
 
         mf.sharedMesh = mesh;
         mr.sharedMaterial = ghostMat;
@@ -118,6 +121,8 @@ public class GhostInstance
             if (layerId >= 0)
                 SetLayerRecursively(_go, layerId);
         }
+        
+        _mf.tag = src.tag;
 
         // 3) Color
         SetGhostColor(src.color);

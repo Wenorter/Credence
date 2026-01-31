@@ -306,7 +306,7 @@ public class MemoryManager : MonoBehaviour
             _mem.Remove(k);
     }
 
-    public bool ApplyGhostFromMemorable(Memorable m, bool restartFadeIn = false)
+    public bool TryApplyGhostFromMemorable(Memorable m, bool restartFadeIn = false)
     {
         if (m == null) return false;
 
@@ -317,8 +317,7 @@ public class MemoryManager : MonoBehaviour
             return false;
 
         rec.ghost.ApplyFromMemorable(m, restartFadeIn, fadeInDurationSeconds);
-
-        rec.tag = m.gameObject.tag;
+        
         rec.maxAlpha = Mathf.Clamp01(m.color.a);
 
         rec.pos = m.transform.position;
