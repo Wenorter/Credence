@@ -39,7 +39,7 @@ Material:
     - _NearPow: 1.5
     - _WallGlow: 8
     m_Colors:
-    - _Blind_PlayerPos: {r: -125.03624, g: 1.6418021, b: 3.2541022, a: 1}
+    - _Blind_PlayerPos: {r: -126.22097, g: 1.6263847, b: 1.7953968, a: 1}
     - _FloorColor: {r: 0.059999965, g: 0.059999965, b: 0.059999965, a: 1}
     - _GridColor: {r: 0.21999997, g: 0.21999997, b: 0.21999997, a: 1}
   m_BuildTextureStacks: []

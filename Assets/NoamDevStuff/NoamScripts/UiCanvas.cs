@@ -1,22 +1,26 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UiCanvas : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private TMP_Text textToFade;
+    [SerializeField] private TMP_Text dayText;
+    [SerializeField] private TMP_Text dieText;
 
     [Header("Fade Settings")]
     [SerializeField] private float fadeOutDuration = 2f;
+    [Range(0, 255)]
+    [SerializeField] private int dieMaxAlpha255 = 170;
 
     private Coroutine _fadeRoutine;
 
     public void ChangeText(string value)
     {
-        if (textToFade == null) return;
+        if (dayText == null) return;
 
-        textToFade.text = value;
+        dayText.text = value;
 
         // Usually you want new text visible immediately
         SetAlpha(1f);
@@ -24,7 +28,7 @@ public class UiCanvas : MonoBehaviour
 
     public void StartFadeOut()
     {
-        if (textToFade == null) return;
+        if (dayText == null) return;
 
         // Stop any existing fade and clear the handle
         if (_fadeRoutine != null)
@@ -58,8 +62,21 @@ public class UiCanvas : MonoBehaviour
 
     private void SetAlpha(float a)
     {
-        var c = textToFade.color;
+        var c = dayText.color;
         c.a = a;
-        textToFade.color = c;
+        dayText.color = c;
+    }
+    // progress01: 0..1 from GameManager
+    public void SetDieTextAlpha(float progress01)
+    {
+        if (!dieText) return;
+
+        progress01 = Mathf.Clamp01(progress01);
+        float maxA = dieMaxAlpha255 / 255f;   // 170/255
+        float a = progress01 * maxA;          // 0..maxA
+
+        var c = dieText.color;
+        c.a = a;
+        dieText.color = c;
     }
 }

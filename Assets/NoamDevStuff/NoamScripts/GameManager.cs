@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -30,18 +29,22 @@ public class GameManager : MonoBehaviour
     [Tooltip("How strong the red overlay is while stunned.")]
     [Range(0f, 1f)]
     [SerializeField] private float stunTintAlpha = 0.35f;
-    
+
     [Header("Camera Fade Switch")]
     [SerializeField] private float fadeOutTime = 0.25f;
     [SerializeField] private float blackHoldTime = 0.05f;
     [SerializeField] private float fadeInTime = 0.25f;
-    
+
     [Header("User Interface")]
     [SerializeField] private UiCanvas uiCanvas;
-    
+
+    [Header("Hold R To Reset")]
+    [SerializeField] private float desiredHoldTime = 2f;
+
     [Header("Events")]
     [SerializeField] private UnityEvent onResetDayMemoryMan;
     [SerializeField] private UnityEvent onResetDayAiMan;
+    [SerializeField] private UnityEvent onResetDayObjMan;
 
     // fields
     private int _cameraIndex;
@@ -57,11 +60,15 @@ public class GameManager : MonoBehaviour
     // day system
     private int _currentDay = 1;
     private readonly int _maxDay = 3;
-    
+
     // Overlay UI
     private Canvas _overlayCanvas;
     private Image _fadeImage;      // black fade overlay
     private Image _stunTintImage;  // red tint overlay
+
+    // Hold-to-reset state
+    private float _heldTime;
+    private bool _ignoreResetHoldUntilRelease;
 
     private void Awake()
     {
@@ -84,19 +91,87 @@ public class GameManager : MonoBehaviour
             _cameras[i].gameObject.SetActive(active);
             _inputObj[i].SetActive(active);
         }
+
         uiCanvas.ChangeText($"Day {_currentDay}");
+
+        // Requirement: start with die alpha = 0 (progress 0)
+        _heldTime = 0f;
+        _ignoreResetHoldUntilRelease = false;
+        uiCanvas.SetDieTextAlpha(0f);
+
         ResetDay();
     }
 
     private void Update()
     {
+        if (Keyboard.current == null) return;
+
         if (Keyboard.current.tabKey.wasPressedThisFrame)
             OnSwitchCamera();
-        
-        if (Keyboard.current.rKey.wasPressedThisFrame || priestCurrHp <= 0)
+
+        // Keep instant reset on death
+        if (priestCurrHp <= 0)
         {
+            _ignoreResetHoldUntilRelease = false;
+            ResetHoldState();
             ResetDay();
+            return;
         }
+
+        HandleHoldReset();
+    }
+
+    private void HandleHoldReset()
+    {
+        float holdTarget = Mathf.Max(0.0001f, desiredHoldTime);
+
+        // After a reset, ignore holding R until the player releases it once.
+        if (_ignoreResetHoldUntilRelease)
+        {
+            if (Keyboard.current.rKey.isPressed)
+            {
+                uiCanvas.SetDieTextAlpha(0f);
+                return;
+            }
+
+            // Released -> re-arm
+            _ignoreResetHoldUntilRelease = false;
+            ResetHoldState();
+            return;
+        }
+
+        // Not pressing R -> reset timer + alpha
+        if (!Keyboard.current.rKey.isPressed)
+        {
+            ResetHoldState();
+            return;
+        }
+
+        // Holding -> accumulate and update progress (0..1)
+        _heldTime += Time.deltaTime;
+        float t = Mathf.Clamp01(_heldTime / holdTarget);
+
+        uiCanvas.SetDieTextAlpha(t);
+
+        // Reached hold duration -> trigger reset once, then ignore until release
+        if (t >= 1f)
+        {
+            uiCanvas.SetDieTextAlpha(1f); // UiCanvas caps to 170/255 (your change)
+
+            _ignoreResetHoldUntilRelease = true;
+            ResetDay();
+
+            // While still holding R, the text should not stay visible
+            uiCanvas.SetDieTextAlpha(0f);
+            _heldTime = 0f;
+        }
+    }
+
+    private void ResetHoldState()
+    {
+        _heldTime = 0f;
+        if (uiCanvas != null)
+            uiCanvas.SetDieTextAlpha(0f);
     }
 
     public void OnSwitchCamera()
@@ -285,30 +360,35 @@ public class GameManager : MonoBehaviour
 
         _angelStunRoutine = null;
     }
+
     private void ResetDay()
     {
         if (!_cameras[0].isActiveAndEnabled)
         {
-            OnSwitchCamera();   
+            OnSwitchCamera();
         }
-        
+
         TrySwitchRoom("room1", startingCage);
         onResetDayMemoryMan.Invoke();
         onResetDayAiMan.Invoke();
+        onResetDayObjMan.Invoke();
+
         priestCurrHp = priestStartHp;
+
         var cc = priest.GetComponent<CharacterController>();
         cc.enabled = false;
         priest.transform.position = priestSpawnPoint.position;
         priest.transform.rotation = priestSpawnPoint.rotation;
         cc.enabled = true;
-        
+
         uiCanvas.StartFadeOut();
     }
+
     private void CompleteCurrentDay()
     {
         if (_currentDay >= _maxDay)
         {
-            //finish game.
+            // finish game.
         }
         else
         {

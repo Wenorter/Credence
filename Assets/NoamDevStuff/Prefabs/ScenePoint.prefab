@@ -46,3 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScenePoint
   gizmoColor: {r: 1, g: 1, b: 1, a: 0.60784316}
   gizmoRadius: 0.75
+  rayLength: 2
+  rayColor: {r: 0, g: 0, b: 1, a: 1}
+  yOffset: 0.25

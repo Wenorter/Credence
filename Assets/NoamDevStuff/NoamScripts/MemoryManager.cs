@@ -79,13 +79,6 @@ public class MemoryManager : MonoBehaviour
 
     void Update()
     {
-        // NEW: "just pressed this frame" (was not pressed last frame)
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            FlushMemory();
-            return; // optional: skip fading/drift work on the same frame
-        }
-
         float now = Time.time;
         var dead = new List<string>();
 

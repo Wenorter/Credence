@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class FpsMovement : MonoBehaviour
 {
@@ -24,6 +25,10 @@ public class FpsMovement : MonoBehaviour
     
     [Header("Cursor")]
     [SerializeField] private bool lockCursorOnStart = true;
+    
+    [Header("Busy")]
+    public bool IsUserBusyWalking;
+    public bool IsUserBusyLooking;
     
     // input state
     private Vector2 _moveInput;
@@ -107,6 +112,8 @@ public class FpsMovement : MonoBehaviour
 
     private void WalkingUpdateLogic()
     {
+        if (IsUserBusyWalking) return;
+        
         Vector3 targetMove;
 
         if (isEffectedByGravity)

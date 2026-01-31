@@ -7,6 +7,9 @@ TagManager:
   - Priest
   - Objective
   - Throwable
+  - Hidable
+  - EnterHidingSpot
+  - ExitHidingSpot
   layers:
   - Default
   - TransparentFX
@@ -20,7 +23,7 @@ TagManager:
   - Church
   - Objective
   - ThrowableWall
-  - 
+  - Hidable
   - 
   - 
   - 
