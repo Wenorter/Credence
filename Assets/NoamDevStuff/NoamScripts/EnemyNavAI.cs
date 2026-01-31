@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyNavAI : MonoBehaviour
 {
-    private enum State { Wander, Chase, Return }
+    // ADDED InvestigateThrowable
+    private enum State { Wander, Chase, Return, InvestigateThrowable }
 
     [Header("References")]
     [Tooltip("If left empty, the script finds an object tagged Priest.")]
@@ -17,6 +17,7 @@ public class EnemyNavAI : MonoBehaviour
     private NavMeshAgent _agent;
     private State _state = State.Wander;
     public PriestActions priestLogic;
+
     [Header("Waypoints per Room (set per enemy)")]
     [SerializeField] private RoomWaypoints[] roomWaypoints;
 
@@ -60,12 +61,25 @@ public class EnemyNavAI : MonoBehaviour
     [SerializeField] private float returnSpeed = 3.0f;
     [SerializeField] private float returnArriveDistance = 0.8f;
 
+    [Header("Investigate Throwable")]
+    [Tooltip("Speed while investigating a thrown object.")]
+    [SerializeField] private float investigateSpeed = 4.0f;
+
+    [Tooltip("Stop this far from the throwable target.")]
+    [SerializeField] private float investigateStopDistance = 0.8f;
+
+    [Tooltip("How close counts as 'arrived' at the throwable.")]
+    [SerializeField] private float investigateArriveDistance = 1.0f;
+
+    [Tooltip("Optional: while investigating, repath this often (helps if throwable moves).")]
+    [SerializeField] private float investigateRepathInterval = 0.25f;
+
     private Vector3 _homePosition;
     private float _lingerTimer;
     private float _loseTimer;
     private float _nextChaseRepathTime;
     private float _nextAttackTime;
-    
+
     // runtime caches
     private readonly List<string> _availableRooms = new();
     private readonly Dictionary<string, List<Transform>> _pointsByRoom = new();
@@ -73,6 +87,10 @@ public class EnemyNavAI : MonoBehaviour
 
     private string _currentRoom;
     private Transform _currentTarget;
+
+    // NEW: investigate target
+    private Transform _throwableTarget;
+    private float _nextInvestigateRepathTime;
 
     [Serializable]
     private class RoomWaypoints
@@ -109,20 +127,125 @@ public class EnemyNavAI : MonoBehaviour
 
     private void Update()
     {
-        if (priestLogic.IsHiding)
+        // If priest hides, stop chasing / investigating and go back to wandering/return logic
+        if (priestLogic != null && priestLogic.IsHiding)
         {
-            ExitChase();
+            // If chasing -> leave chase
+            if (_state == State.Chase)
+                ExitChase();
+            // If investigating -> stop investigating and go wander
+            if (_state == State.InvestigateThrowable)
+                ExitInvestigateThrowable(toReturnHome: false);
         }
-        else if (player && Vector3.Distance(transform.position, player.position) <= detectRadius)
+        else
         {
-            if (_state != State.Chase) EnterChase();
+            // Normal detection: only start chase if not investigating
+            if (_state != State.InvestigateThrowable &&
+                player && Vector3.Distance(transform.position, player.position) <= detectRadius)
+            {
+                if (_state != State.Chase) EnterChase();
+            }
         }
 
         switch (_state)
         {
             case State.Wander: TickWander(); break;
-            case State.Chase:  TickChase();  break;
+            case State.Chase: TickChase(); break;
             case State.Return: TickReturn(); break;
+            case State.InvestigateThrowable: TickInvestigateThrowable(); break;
+        }
+    }
+
+    // NEW: called by EnemyManager
+    public void OnThrowableHeard(Transform throwable)
+    {
+        if (throwable == null) return;
+
+        // Lose interest in player immediately
+        if (_state == State.Chase)
+            ExitChase();
+
+        EnterInvestigateThrowable(throwable);
+    }
+
+    private void EnterInvestigateThrowable(Transform throwable)
+    {
+        _throwableTarget = throwable;
+        _state = State.InvestigateThrowable;
+
+        _agent.speed = investigateSpeed;
+        _agent.stoppingDistance = investigateStopDistance;
+        _agent.isStopped = false;
+
+        _nextInvestigateRepathTime = 0f;
+        _lingerTimer = 0f;
+        _loseTimer = 0f;
+
+        SetInvestigateDestination();
+    }
+
+    private void TickInvestigateThrowable()
+    {
+        if (_throwableTarget == null)
+        {
+            ExitInvestigateThrowable(toReturnHome: false);
+            return;
+        }
+
+        float dist = Vector3.Distance(transform.position, _throwableTarget.position);
+
+        // Stop before reaching the exact point
+        if (dist <= investigateStopDistance)
+        {
+            if (!_agent.isStopped) _agent.isStopped = true;
+        }
+        else
+        {
+            if (_agent.isStopped) _agent.isStopped = false;
+
+            if (Time.time >= _nextInvestigateRepathTime)
+            {
+                SetInvestigateDestination();
+                _nextInvestigateRepathTime = Time.time + Mathf.Max(0.05f, investigateRepathInterval);
+            }
+        }
+
+        // Arrived -> go back to wander
+        if (!_agent.pathPending && _agent.remainingDistance <= investigateArriveDistance)
+        {
+            ExitInvestigateThrowable(toReturnHome: false);
+        }
+    }
+
+    private void SetInvestigateDestination()
+    {
+        if (_throwableTarget == null) return;
+
+        Vector3 pos = _throwableTarget.position;
+
+        if (NavMesh.SamplePosition(pos, out var hit, 2.0f, NavMesh.AllAreas))
+            _agent.SetDestination(hit.position);
+        else
+            _agent.SetDestination(pos);
+    }
+
+    private void ExitInvestigateThrowable(bool toReturnHome)
+    {
+        _throwableTarget = null;
+        _agent.isStopped = false;
+        _agent.stoppingDistance = 0f;
+
+        if (toReturnHome && returnToHomeWhenLost)
+        {
+            _state = State.Return;
+            _agent.speed = returnSpeed;
+            _agent.SetDestination(_homePosition);
+        }
+        else
+        {
+            _state = State.Wander;
+            _agent.speed = wanderSpeed;
+            PickNextWanderPoint(forceSwitchRoom: true);
         }
     }
 
@@ -197,13 +320,9 @@ public class EnemyNavAI : MonoBehaviour
         var playerPos = player.position;
         var dist = Vector3.Distance(transform.position, playerPos);
 
-        // 1) Attack if in range and interval elapsed
         if (dist <= attackRange)
-        {
             TryAttack();
-        }
 
-        // 2) Stop before target to avoid pushing
         if (dist <= chaseStopDistance)
         {
             if (!_agent.isStopped) _agent.isStopped = true;
@@ -223,7 +342,6 @@ public class EnemyNavAI : MonoBehaviour
             }
         }
 
-        // 3) Lose target logic
         if (dist > loseRadius)
         {
             _loseTimer += Time.deltaTime;
@@ -242,7 +360,6 @@ public class EnemyNavAI : MonoBehaviour
 
         _nextAttackTime = Time.time + Mathf.Max(0.01f, attackInterval);
 
-        // Damage is always 1, so we just notify the GameManager.
         if (gameManager)
             gameManager.OnPriestAttacked();
         else
@@ -271,7 +388,7 @@ public class EnemyNavAI : MonoBehaviour
 
         _loseTimer = 0f;
         _nextChaseRepathTime = 0f;
-        _nextAttackTime = 0f; // can attack immediately if in range
+        _nextAttackTime = 0f;
     }
 
     private void ExitChase()
@@ -358,11 +475,12 @@ public class EnemyNavAI : MonoBehaviour
             }
         }
     }
+
     public void OnResetDay(Transform newTransform)
     {
         transform.position = newTransform.position;
         transform.rotation = newTransform.rotation;
-        // Forget runtime state
+
         _state = State.Wander;
 
         _lingerTimer = 0f;
@@ -371,28 +489,22 @@ public class EnemyNavAI : MonoBehaviour
         _nextAttackTime = 0f;
 
         _currentTarget = null;
+        _throwableTarget = null;
+        _nextInvestigateRepathTime = 0f;
 
-        // Reset agent movement to "fresh start"
         if (_agent)
         {
             _agent.isStopped = false;
             _agent.speed = wanderSpeed;
             _agent.stoppingDistance = 0f;
 
-            // Clear current path
             _agent.ResetPath();
-
-            // Treat current position as the new "home" for this day (optional, but usually matches "reload")
             _homePosition = transform.position;
         }
 
-        // Rebuild cache in case rooms/points changed (safe even if unchanged)
         BuildWaypointCache();
-
-        // Pick a new starting wander point like Start()
         PickNextWanderPoint(forceSwitchRoom: true);
     }
-
 
     private void OnDrawGizmosSelected()
     {

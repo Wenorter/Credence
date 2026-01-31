@@ -23,9 +23,6 @@ public class FpsMovement : MonoBehaviour
     [SerializeField] private float moveLerpSpeed = 10f;
     [SerializeField] private float lookLerpSpeed = 15f;
 
-    [Header("Cursor")]
-    [SerializeField] private bool lockCursorOnStart = true;
-
     [Header("Camera Collision")]
     [SerializeField] private bool enableCameraCollision = true;
 
@@ -101,16 +98,7 @@ public class FpsMovement : MonoBehaviour
             _camDistanceTarget = _defaultCamDistance;
         }
     }
-
-    private void Start()
-    {
-        if (lockCursorOnStart)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-    }
-
+    
     private void Update()
     {
         WalkingUpdateLogic();
@@ -127,9 +115,8 @@ public class FpsMovement : MonoBehaviour
 
     private void LookingUpdateLogic()
     {
-        // If you actually want to block looking when busy, uncomment:
-        // if (IsUserBusyLooking) return;
-
+        if(Time.deltaTime == 0) return;
+        
         var yawDelta = _lookInput.x * mouseSensitivity;
         var pitchDelta = _lookInput.y * mouseSensitivity * (invertY ? 1f : -1f);
 

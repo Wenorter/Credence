@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject priest;
     [SerializeField] private BoxCollider startingCage;
     [SerializeField] private Transform priestSpawnPoint;
+    [SerializeField] private GameObject gameUi;
+    [SerializeField] private GameObject menuUi;
 
     [Header("Priest")]
     [SerializeField] private string priestCurrentRoom = "";
@@ -30,6 +32,9 @@ public class GameManager : MonoBehaviour
     [Tooltip("How strong the red overlay is while stunned.")]
     [Range(0f, 1f)]
     [SerializeField] private float stunTintAlpha = 0.35f;
+    
+    [Header("Game")]
+    [SerializeField] private int[] objectsInEachDay;
 
     [Header("Camera Fade Switch")]
     [SerializeField] private float fadeOutTime = 0.25f;
@@ -46,12 +51,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UnityEvent onResetDayMemoryMan;
     [SerializeField] private UnityEvent onResetDayAiMan;
     [SerializeField] private UnityEvent onResetDayObjMan;
-
+    
+    
     // fields
     private int _cameraIndex;
     private Camera[] _cameras;
     private GameObject[] _inputObj;
-
     private bool _isSwitching;
     private Coroutine _switchRoutine;
 
@@ -71,6 +76,8 @@ public class GameManager : MonoBehaviour
     private float _heldTime;
     private bool _ignoreResetHoldUntilRelease;
 
+    private int _lockModeIndex = 1;
+
     private void Awake()
     {
         _cameras = new[] { priestCamera, angelCamera };
@@ -80,7 +87,6 @@ public class GameManager : MonoBehaviour
         SetFadeAlpha(0f);
         UpdateStunTint();
     }
-
     private void Start()
     {
         TrySwitchRoom("room1", startingCage);
@@ -109,6 +115,9 @@ public class GameManager : MonoBehaviour
 
         if (Keyboard.current.tabKey.wasPressedThisFrame)
             OnSwitchCamera();
+        
+        if(Keyboard.current.escapeKey.wasPressedThisFrame)
+            ToggleMouseLock();
 
         // Keep instant reset on death
         if (priestCurrHp <= 0)
@@ -120,6 +129,32 @@ public class GameManager : MonoBehaviour
         }
 
         HandleHoldReset();
+    }
+
+    public void OnObjectivePicked()
+    {
+        objectsInEachDay[_currentDay]--;
+        if (objectsInEachDay[_currentDay] == 0)
+        {
+            CompleteCurrentDay();
+        }
+    }
+
+    private void ToggleMouseLock()
+    {
+        _lockModeIndex++;
+        Cursor.lockState = (CursorLockMode)(_lockModeIndex % 2);
+        Cursor.visible = !Cursor.visible;
+        gameUi.SetActive(!gameUi.activeSelf);
+        menuUi.SetActive(!menuUi.activeSelf);
+        if (menuUi.activeSelf)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     private void HandleHoldReset()
@@ -396,6 +431,7 @@ public class GameManager : MonoBehaviour
         {
             _currentDay++;
             uiCanvas.ChangeText($"Day {_currentDay}");
+            ResetDay();
         }
     }
 }

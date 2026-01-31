@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 [Serializable]
 public struct TagValPair
 {
-    [TagSelector] public string tag;  // tag
-    public float value;               // lifetime seconds
+    [TagSelector] public string tag;
+    public float value;
 }
 
 public class MemoryManager : MonoBehaviour
@@ -22,13 +22,48 @@ public class MemoryManager : MonoBehaviour
     [SerializeField] private List<TagValPair> tagLifetimes = new List<TagValPair>();
 
     [Header("Ghost Drift / Fade")]
-    public float driftMaxMeters = 1.2f;         // how far ghosts can drift at low confidence
-    public float driftSpeed = 0.25f;            // how fast drift moves
-    public float minStrengthToWrite = 0.15f;    // don’t write super-weak observations
+    public float driftMaxMeters = 1.2f;
+    public float driftSpeed = 0.25f;
+    public float minStrengthToWrite = 0.15f;
     public float fadeExponent = 2f;
 
+    [Header("Drift Tuning (Subtle Memory Drift)")]
+    [Tooltip("Overall drift intensity multiplier (smaller = more subtle).")]
+    [SerializeField] private float driftStrengthMultiplier = 0.25f;
+
+    [Header("Drift Ramp (Linear by fade-out progress)")]
+    [Tooltip("Drift starts only after this fraction of fade-out progress (0 = immediately, 0.3 = after 30% faded).")]
+    [Range(0f, 0.95f)]
+    [SerializeField] private float driftStartAfterFadeFraction = 0.0f;
+
+    [Header("Fade-In")]
+    [Tooltip("How long it takes to fade IN from 0 to target when seen.")]
+    [SerializeField] private float fadeInDurationSeconds = 3f;
+
+    // NEW: fade-in curve shaping (inspector graph)
+    [Tooltip("If enabled, fade-in alpha rise is shaped by this curve (x=0..1 progress, y=0..1).")]
+    [SerializeField] private bool useFadeInCurve = true;
+
+    [Tooltip("Fade-in shaping curve: x=progress (0..1), y=alpha multiplier (0..1). Steep early => fast rise.")]
+    [SerializeField] private AnimationCurve fadeInCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+
+    [Tooltip("How long after Observe() we consider the object 'seen' (seconds). Set ~ 2/tickRate of your SenseProbe.")]
+    [SerializeField] private float seenWindowSeconds = 0.1f;
+
+    [Tooltip("Prevents 'invisible when seen' by forcing memory to at least this value when Observe() happens.")]
+    [Range(0f, 1f)]
+    [SerializeField] private float minVisibleOnSeen = 0.15f;
+
+    [Header("Forced Seen (Angel Highlight)")]
+    [Tooltip("When Observe(..., isFading=false) is used (Angel highlight), keep it 'seen' for this long so it can fade in without needing many clicks.")]
+    [SerializeField] private float forceSeenDurationSeconds = 3f;
+
+    [Header("Drift Return When Seen")]
+    [Tooltip("How quickly the drift offset returns to 0 when the object is seen again (higher = snaps faster).")]
+    [SerializeField] private float driftReturnSpeed = 6f;
+
     [Header("Ghost Look")]
-    public Material ghostMaterial;              // your white aura material (transparent/emissive)
+    public Material ghostMaterial;
 
     private class Record
     {
@@ -37,18 +72,22 @@ public class MemoryManager : MonoBehaviour
         public Vector3 pos;
         public Quaternion rot;
         public Vector3 scale;
+
         public float lastSeenTime;
-        public float confidence; // 1..0
+        public float confidence;
+        public float lastSeenStrength;
+        public float lastSeenStrengthRef;
+
         public float seed;
         public GhostInstance ghost;
 
-        // NEW: cap the max fade by Memorable's color alpha
-        public float maxAlpha; // 0..1
+        public float maxAlpha;
+        public Vector3 driftOffset;
+
+        public float forcedSeenUntil;
     }
 
     private readonly Dictionary<string, Record> _mem = new Dictionary<string, Record>();
-
-    // Runtime lookup: tag -> lifetime
     private readonly Dictionary<string, float> _tagLifetimeLookup = new Dictionary<string, float>();
 
     private void Awake()
@@ -60,6 +99,11 @@ public class MemoryManager : MonoBehaviour
     private void OnValidate()
     {
         RebuildTagLookup();
+        forceSeenDurationSeconds = Mathf.Max(0f, forceSeenDurationSeconds);
+
+        // NEW: keep curve in a sane state
+        if (fadeInCurve == null || fadeInCurve.length == 0)
+            fadeInCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
     }
 
     private void RebuildTagLookup()
@@ -89,10 +133,7 @@ public class MemoryManager : MonoBehaviour
     public void FlushMemory()
     {
         foreach (var kv in _mem)
-        {
-            var rec = kv.Value;
-            rec?.ghost?.Destroy();
-        }
+            kv.Value?.ghost?.Destroy();
 
         _mem.Clear();
     }
@@ -101,6 +142,8 @@ public class MemoryManager : MonoBehaviour
     {
         if (!m || strength < minStrengthToWrite) return;
 
+        strength = Mathf.Clamp01(strength);
+
         if (!_mem.TryGetValue(m.Guid, out var rec))
         {
             rec = new Record
@@ -108,11 +151,15 @@ public class MemoryManager : MonoBehaviour
                 src = m,
                 tag = m.gameObject.tag,
                 seed = Random.value * 1000f,
-                confidence = 1f,
-                lastSeenTime = Time.time,
 
-                // NEW: cache max alpha from memorable
+                confidence = 0f,
+                lastSeenTime = Time.time,
+                lastSeenStrength = strength,
+                lastSeenStrengthRef = strength,
+
                 maxAlpha = Mathf.Clamp01(m.color.a),
+                driftOffset = Vector3.zero,
+                forcedSeenUntil = 0f,
             };
             _mem[m.Guid] = rec;
 
@@ -121,19 +168,22 @@ public class MemoryManager : MonoBehaviour
         else
         {
             rec.tag = m.gameObject.tag;
-
-            // NEW: keep alpha cap updated in case you change Memorable.color at runtime
             rec.maxAlpha = Mathf.Clamp01(m.color.a);
+
+            rec.lastSeenTime = Time.time;
+            rec.lastSeenStrength = Mathf.Max(rec.lastSeenStrength, strength);
+            rec.lastSeenStrengthRef = Mathf.Max(rec.lastSeenStrengthRef, strength);
         }
+
+        if (!isFading && forceSeenDurationSeconds > 0f)
+            rec.forcedSeenUntil = Mathf.Max(rec.forcedSeenUntil, Time.time + forceSeenDurationSeconds);
 
         rec.pos = m.transform.position;
         rec.rot = m.transform.rotation;
         rec.scale = m.transform.lossyScale;
-        rec.lastSeenTime = Time.time;
-
-        rec.confidence = Mathf.Clamp01(Mathf.Max(rec.confidence, strength));
-
         rec.ghost.SetBaseTransform(rec.pos, rec.rot, rec.scale);
+
+        rec.confidence = Mathf.Max(rec.confidence, minVisibleOnSeen);
     }
 
     private void Update()
@@ -145,6 +195,17 @@ public class MemoryManager : MonoBehaviour
         {
             var rec = kv.Value;
 
+            if (rec.src != null)
+            {
+                rec.pos = rec.src.transform.position;
+                rec.rot = rec.src.transform.rotation;
+                rec.scale = rec.src.transform.lossyScale;
+
+                rec.maxAlpha = Mathf.Clamp01(rec.src.color.a);
+
+                rec.ghost.SetBaseTransform(rec.pos, rec.rot, rec.scale);
+            }
+
             float lifetime = GetLifetimeForTag(rec.tag);
             if (lifetime <= 0f)
             {
@@ -153,9 +214,22 @@ public class MemoryManager : MonoBehaviour
                 continue;
             }
 
-            float age = now - rec.lastSeenTime;
-            float t = Mathf.Clamp01(age / Mathf.Max(0.001f, lifetime));
-            rec.confidence = 1f - t;
+            bool seenRecently =
+                (now - rec.lastSeenTime) <= Mathf.Max(0.01f, seenWindowSeconds)
+                || now <= rec.forcedSeenUntil;
+
+            float target = seenRecently ? rec.lastSeenStrength : 0f;
+
+            float prev = rec.confidence;
+
+            float fadeOutRate = Time.deltaTime / Mathf.Max(0.001f, lifetime);
+            float fadeInRate  = Time.deltaTime / Mathf.Max(0.001f, fadeInDurationSeconds);
+
+            float rate = (target > rec.confidence) ? fadeInRate : fadeOutRate;
+            rec.confidence = Mathf.MoveTowards(rec.confidence, target, rate);
+
+            if (!seenRecently)
+                rec.lastSeenStrength = 0f;
 
             if (rec.confidence <= 0.001f)
             {
@@ -164,27 +238,94 @@ public class MemoryManager : MonoBehaviour
                 continue;
             }
 
-            float driftAmp = driftMaxMeters * (1f - rec.confidence);
+            // -----------------------------
+            // NEW: curve-shaped fade-in alpha
+            // -----------------------------
+            float shapedConfidence = rec.confidence;
 
-            float n1 = Mathf.PerlinNoise(rec.seed, now * driftSpeed);
-            float n2 = Mathf.PerlinNoise(rec.seed + 31.7f, now * driftSpeed);
-            float n3 = Mathf.PerlinNoise(rec.seed + 99.1f, now * driftSpeed);
+            bool fadingOut = rec.confidence < prev - 0.000001f;
+            bool fadingIn  = rec.confidence > prev + 0.000001f;
 
-            Vector3 drift = new Vector3(n1 - 0.5f, (n2 - 0.5f) * 0.3f, n3 - 0.5f) * (2f * driftAmp);
+            // Only shape when building up (fade-in). Fade-out remains your existing exponent/lifetime behavior.
+            if (useFadeInCurve && !fadingOut)
+            {
+                // Normalize confidence progress across the fade-in range [0..target]
+                float denom = Mathf.Max(0.0001f, target); // target is lastSeenStrength when seen
+                float p = Mathf.Clamp01(shapedConfidence / denom); // 0..1 progress to target
 
-            // NEW: fade is capped by Memorable.color.a (maxAlpha)
-            // Base fade from confidence curve:
-            float baseFade = Mathf.Pow(rec.confidence, fadeExponent);
+                float c = Mathf.Clamp01(fadeInCurve.Evaluate(p));  // 0..1 from curve
 
-            // Prefer live src alpha if still valid, else cached:
-            float maxAlpha = rec.src ? Mathf.Clamp01(rec.src.color.a) : rec.maxAlpha;
+                // Convert back into confidence space (0..target)
+                shapedConfidence = c * denom;
 
-            float fade = Mathf.Clamp01(baseFade * maxAlpha);
+                // Safety
+                shapedConfidence = Mathf.Clamp(shapedConfidence, 0f, denom);
+            }
 
-            rec.ghost.UpdateGhost(drift, fade, Time.deltaTime);
+            float baseFade = Mathf.Pow(shapedConfidence, fadeExponent);
+            float fade = Mathf.Clamp01(baseFade * rec.maxAlpha);
+
+            if (fadingOut)
+            {
+                float refStrength = Mathf.Max(0.001f, rec.lastSeenStrengthRef);
+                float fadeOutT = 1f - Mathf.Clamp01(rec.confidence / refStrength);
+
+                float driftT = Mathf.InverseLerp(driftStartAfterFadeFraction, 1f, fadeOutT);
+                driftT = Mathf.Clamp01(driftT);
+
+                float driftAmp =
+                    driftMaxMeters *
+                    Mathf.Clamp01(driftStrengthMultiplier) *
+                    driftT;
+
+                if (driftAmp > 0.00001f)
+                {
+                    float n1 = Mathf.PerlinNoise(rec.seed, now * driftSpeed);
+                    float n2 = Mathf.PerlinNoise(rec.seed + 31.7f, now * driftSpeed);
+                    float n3 = Mathf.PerlinNoise(rec.seed + 99.1f, now * driftSpeed);
+
+                    Vector3 noise = new Vector3(n1 - 0.5f, (n2 - 0.5f) * 0.15f, n3 - 0.5f) * 2f;
+                    Vector3 desiredDrift = noise * driftAmp;
+
+                    rec.driftOffset = Vector3.Lerp(rec.driftOffset, desiredDrift, 4f * Time.deltaTime);
+                }
+            }
+            else if (fadingIn || seenRecently)
+            {
+                rec.driftOffset = Vector3.Lerp(rec.driftOffset, Vector3.zero,
+                    Mathf.Max(0.01f, driftReturnSpeed) * Time.deltaTime);
+
+                if (seenRecently)
+                    rec.lastSeenStrengthRef = Mathf.Max(0.001f, target);
+            }
+
+            rec.ghost.UpdateGhost(rec.driftOffset, fade, Time.deltaTime);
         }
 
         foreach (var k in dead)
             _mem.Remove(k);
+    }
+
+    public bool ApplyGhostFromMemorable(Memorable m, bool restartFadeIn = false)
+    {
+        if (m == null) return false;
+
+        if (!_mem.TryGetValue(m.Guid, out var rec) || rec == null)
+            return false;
+
+        if (rec.ghost == null)
+            return false;
+
+        rec.ghost.ApplyFromMemorable(m, restartFadeIn, fadeInDurationSeconds);
+
+        rec.tag = m.gameObject.tag;
+        rec.maxAlpha = Mathf.Clamp01(m.color.a);
+
+        rec.pos = m.transform.position;
+        rec.rot = m.transform.rotation;
+        rec.scale = m.transform.lossyScale;
+        rec.ghost.SetBaseTransform(rec.pos, rec.rot, rec.scale);
+
+        return true;
     }
 }

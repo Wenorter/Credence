@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -64,16 +65,18 @@ public class AngelActions : MonoBehaviour
         var ray = new Ray(aimTransform.position, aimTransform.forward);
         if (Physics.Raycast(ray, out var hit, maxDistance, hitMask, QueryTriggerInteraction.Ignore))
         {
+            Debug.Log(hit.collider.tag);
             if (hit.collider.CompareTag(objectiveTag))
             {
-                var memorable = hit.collider.GetComponent<Memorable>();
-                if (memorable == null)
-                    memorable = hit.collider.gameObject.AddComponent<Memorable>();
+                var memorable = hit.collider.gameObject.GetComponent<Memorable>();
 
                 memorable.color = highlightColor;
                 memorable.layer = "Objective";
-                memorable.ignoredProbeLayer = "Objective";
-                MemoryManager.Instance.Observe(memorable, 5, false);
+                memorable.ignoredProbeLayer = "Default";
+                
+                Debug.Log("Hit! !! 111 1 1");
+                MemoryManager.Instance.ApplyGhostFromMemorable(memorable);
+                //MemoryManager.Instance.Observe(memorable, 1, false);    
             }
         }
     }
@@ -91,6 +94,8 @@ public class AngelActions : MonoBehaviour
                 TryPickUp(hit.collider);
         }
     }
+    
+    
 
     private void TryPickUp(Collider hitCol)
     {

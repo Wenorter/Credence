@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PriestActions : MonoBehaviour
@@ -30,7 +31,11 @@ public class PriestActions : MonoBehaviour
 
     [Header("Gizmos")]
     [SerializeField] private Color gizmoRayColor = new Color(1f, 0.2f, 0.2f, 1f);
-
+    
+    [Header("Events")]
+    [SerializeField] private UnityEvent onInteract;
+    
+    
     private bool _isTransitioning;
     private Coroutine _lerpRoutine;
 
@@ -56,9 +61,6 @@ public class PriestActions : MonoBehaviour
     private void Update()
     {
         UpdateLookRaycast();
-
-        if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame)
-            OnRightClick();
     }
 
     private void UpdateLookRaycast()
@@ -71,6 +73,14 @@ public class PriestActions : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, rayMask, QueryTriggerInteraction.Ignore))
         {
             _lastHitTransform = hit.collider.transform;
+        }
+    }
+
+    public void OnInteract()
+    {
+        if (_lastHitTransform.gameObject.CompareTag("Objective"))
+        {
+            onInteract.Invoke();
         }
     }
 

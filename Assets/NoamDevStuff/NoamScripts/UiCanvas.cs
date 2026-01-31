@@ -79,4 +79,6 @@ public class UiCanvas : MonoBehaviour
         c.a = a;
         dieText.color = c;
     }
+    
+    
 }
