@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 public class PriestActions : MonoBehaviour
 {
+    [Header("Priest")]
+    [SerializeField] private FpsMovement priestFpsMovement;
+
     [Header("Raycast (center of screen)")]
     [SerializeField] private Camera viewCamera;
     [SerializeField] private float interactDistance = 4f;
@@ -19,6 +22,11 @@ public class PriestActions : MonoBehaviour
     [Header("Movement Script")]
     [Tooltip("Drag your FpsMovement component here (must have public bool IsUserBusyWalking).")]
     [SerializeField] private FpsMovement fpsMovement;
+
+    [Header("State")]
+    // True while entering (lerping), while hiding (staying inside), and while exiting (lerping).
+    // False only after fully exiting the hiding spot.
+    public bool IsHiding { get; private set; }
 
     [Header("Gizmos")]
     [SerializeField] private Color gizmoRayColor = new Color(1f, 0.2f, 0.2f, 1f);
@@ -40,6 +48,9 @@ public class PriestActions : MonoBehaviour
     {
         SetBusy(false);
         SetInputEnabled(true);
+
+        // Not hiding at the start
+        IsHiding = false;
     }
 
     private void Update()
@@ -67,8 +78,9 @@ public class PriestActions : MonoBehaviour
     {
         if (_isTransitioning) return;
 
-        // If already in hiding (busy), right click exits.
-        // We use IsUserBusyWalking as the state instead of IsHiding.
+        // If already in hiding, right click exits.
+        // We use IsUserBusyWalking as the state for movement blocking,
+        // and IsHiding as the overall "hiding system" state.
         if (IsBusy())
         {
             if (_currentHidableRoot == null) return;
@@ -76,6 +88,7 @@ public class PriestActions : MonoBehaviour
             Transform exitSpot = FindDeepChildWithTagIncludingSelf(_currentHidableRoot, "ExitHidingSpot");
             if (exitSpot == null) return;
 
+            // Exiting: IsHiding stays true while we lerp out.
             StartLerpTo(exitSpot, onCompleteExit: true);
             return;
         }
@@ -83,13 +96,15 @@ public class PriestActions : MonoBehaviour
         // Not busy: try to enter
         if (_lastHitTransform == null) return;
 
-        // Use parent if exists, otherwise the collider transform itself (works either way)
         Transform root = _lastHitTransform.parent != null ? _lastHitTransform.parent : _lastHitTransform;
 
         Transform enterSpot = FindDeepChildWithTagIncludingSelf(root, "EnterHidingSpot");
         if (enterSpot == null) return;
 
         _currentHidableRoot = root;
+
+        // Entering begins: IsHiding becomes true immediately (includes the lerp-in).
+        IsHiding = true;
 
         // While entering, player becomes "busy" and input is disabled only during the lerp.
         SetBusy(true);
@@ -104,6 +119,7 @@ public class PriestActions : MonoBehaviour
             StopCoroutine(_lerpRoutine);
 
         _lerpRoutine = StartCoroutine(LerpRoutine(target, onCompleteExit));
+        priestFpsMovement.LockViewTo(target);
     }
 
     private IEnumerator LerpRoutine(Transform target, bool onCompleteExit)
@@ -144,14 +160,16 @@ public class PriestActions : MonoBehaviour
 
         if (onCompleteExit)
         {
-            // Fully exited -> Busy ends here.
+            // Fully exited -> Busy ends here, and IsHiding becomes false ONLY here.
             SetBusy(false);
             _currentHidableRoot = null;
+            IsHiding = false;
         }
         else
         {
-            // Arrived inside hiding -> remain Busy until user exits later.
+            // Arrived inside hiding -> remain Busy + IsHiding true until user exits later.
             SetBusy(true);
+            IsHiding = true;
         }
     }
 
@@ -176,7 +194,6 @@ public class PriestActions : MonoBehaviour
     {
         if (parent == null) return null;
 
-        // Check self first
         if (parent.CompareTag(tag))
             return parent;
 

@@ -9,7 +9,6 @@ public class Memorable : MonoBehaviour
     public Color color = Color.white;
     public string ignoredProbeLayer = ""; // this layer wont be seen if the player is close to it , only when the angly highlight it
     public string Guid => guid;
-    
 
     public Renderer Renderer { get; private set; }
     public MeshFilter MeshFilter { get; private set; }
@@ -24,7 +23,6 @@ public class Memorable : MonoBehaviour
         if (layer == "")
         {
             layer = "Ghost";
-            color.a = 0.5f;
         }
     }
 

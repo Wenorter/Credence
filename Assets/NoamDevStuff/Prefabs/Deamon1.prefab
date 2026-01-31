@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7275015858066197941}
   m_Layer: 6
   m_Name: Deamon1
-  m_TagString: Untagged
+  m_TagString: Demon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyNavAI
   player: {fileID: 0}
   gameManager: {fileID: 0}
+  priestLogic: {fileID: 0}
   roomWaypoints: []
   pickMode: 0
   stickToCurrentRoom: 1
@@ -204,7 +205,7 @@ GameObject:
   - component: {fileID: 1902409826323153512}
   m_Layer: 6
   m_Name: DeamonNose
-  m_TagString: Untagged
+  m_TagString: Demon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

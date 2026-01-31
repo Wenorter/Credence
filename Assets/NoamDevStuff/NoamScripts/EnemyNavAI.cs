@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyNavAI : MonoBehaviour
@@ -15,7 +16,7 @@ public class EnemyNavAI : MonoBehaviour
 
     private NavMeshAgent _agent;
     private State _state = State.Wander;
-
+    public PriestActions priestLogic;
     [Header("Waypoints per Room (set per enemy)")]
     [SerializeField] private RoomWaypoints[] roomWaypoints;
 
@@ -108,7 +109,11 @@ public class EnemyNavAI : MonoBehaviour
 
     private void Update()
     {
-        if (player && Vector3.Distance(transform.position, player.position) <= detectRadius)
+        if (priestLogic.IsHiding)
+        {
+            ExitChase();
+        }
+        else if (player && Vector3.Distance(transform.position, player.position) <= detectRadius)
         {
             if (_state != State.Chase) EnterChase();
         }

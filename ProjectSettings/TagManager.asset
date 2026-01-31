@@ -10,6 +10,8 @@ TagManager:
   - Hidable
   - EnterHidingSpot
   - ExitHidingSpot
+  - Demon
+  - GhostProp
   layers:
   - Default
   - TransparentFX

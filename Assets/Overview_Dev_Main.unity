@@ -496,7 +496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 32.824512
+      value: 32.67
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.y
@@ -536,7 +536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8775812478161144454, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_Name
-      value: TrowableWall (3)
+      value: InvisWall6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -671,15 +671,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4.2405877
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3.610994
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3.6073766
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalPosition.x
@@ -695,19 +695,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7152091
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.69891053
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -715,7 +715,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 88.679
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 1447580866254019693, guid: 3a5b4c503a520574ca8c5fd6af6c1d44, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -932,7 +932,7 @@ GameObject:
   - component: {fileID: 441577488}
   m_Layer: 6
   m_Name: HidingWall
-  m_TagString: Untagged
+  m_TagString: Hidable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1023,7 +1023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Memorable
   guid: e3937ec55f5d496898a8addb6b543cff
   layer: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 0.39215687}
   ignoredProbeLayer: 
 --- !u!65 &441577488
 BoxCollider:
@@ -1604,7 +1604,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b898d6628f621746b4f2c35aa29bae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MemoryManager
-  memoryLifetime: 6
+  defaultMemoryLifetime: 20
+  tagLifetimes:
+  - tag: GhostProp
+    value: 6
+  - tag: Demon
+    value: 20
   driftMaxMeters: 1.2
   driftSpeed: 0.25
   minStrengthToWrite: 0.15
@@ -1928,7 +1933,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -25.61554
+      value: -27.53
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1960,7 +1965,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8775812478161144454, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_Name
-      value: TrowableWall (5)
+      value: InvisWall3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2167,7 +2172,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f0ed360bf5d114e9a528cec37b4d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SenseProbe
-  radius: 4
+  defaultRadius: 4
+  globalMaxRadiusCap: 0
+  tagSeenDistances:
+  - tag: GhostProp
+    value: 4
   senseMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -2266,6 +2275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef8ea84a2bf4b4488a9e73b460e333d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+  priestLogicRef: {fileID: 1603752768}
   enemyPrefabs:
   - {fileID: 4321481851749286022, guid: 95928a1da3c56f94183d9a8355f231ef, type: 3}
   enemySpawnPoints:
@@ -2274,7 +2284,7 @@ MonoBehaviour:
   - {fileID: 1128060369}
   - {fileID: 1100534824}
   enemyAmountPerType: 01000000
-  isSpawning: 0
+  isSpawning: 1
 --- !u!4 &879503447 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1030972060, guid: abc00000000017596123490674801616, type: 3}
@@ -2430,8 +2440,8 @@ Transform:
   m_GameObject: {fileID: 966411463}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -128.23, y: 0.573, z: 2.47}
-  m_LocalScale: {x: 0.2772318, y: 0.27693206, z: 0.23579437}
+  m_LocalPosition: {x: -128.22, y: 0.56166, z: 2.4826}
+  m_LocalScale: {x: 0.42577597, y: 0.42531562, z: 0.36213583}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 441577486}
@@ -13518,7 +13528,7 @@ GameObject:
   - component: {fileID: 1086468736}
   m_Layer: 6
   m_Name: HidingWall (4)
-  m_TagString: Untagged
+  m_TagString: Hidable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13609,7 +13619,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Memorable
   guid: cb256e43c4be4f84ae56db207ff80413
   layer: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 0.39215687}
   ignoredProbeLayer: 
 --- !u!65 &1086468736
 BoxCollider:
@@ -13745,7 +13755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.535475
+      value: 11.83
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13777,7 +13787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8775812478161144454, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_Name
-      value: TrowableWall (2)
+      value: InvisWall4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13897,7 +13907,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1165665237}
   m_Layer: 6
-  m_Name: Room1ThrowableWalls
+  m_Name: Room1InvisWalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13984,7 +13994,7 @@ GameObject:
   - component: {fileID: 1263622910}
   m_Layer: 6
   m_Name: HidingWall (1)
-  m_TagString: Untagged
+  m_TagString: Hidable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14075,7 +14085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Memorable
   guid: 906e6a4199d9424c9c7d3061aeb01306
   layer: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 0.39215687}
   ignoredProbeLayer: 
 --- !u!65 &1263622910
 BoxCollider:
@@ -14416,7 +14426,7 @@ GameObject:
   - component: {fileID: 1419365554}
   m_Layer: 6
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: GhostProp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15015,7 +15025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.0921187
+      value: 1.52
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.y
@@ -15023,7 +15033,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -25.61554
+      value: -26.86
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15055,7 +15065,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8775812478161144454, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_Name
-      value: TrowableWall (1)
+      value: InvisWall2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15185,7 +15195,7 @@ GameObject:
   - component: {fileID: 1740044592}
   m_Layer: 6
   m_Name: HidingWall (2)
-  m_TagString: Untagged
+  m_TagString: Hidable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15276,7 +15286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Memorable
   guid: 77d6e280753e49fda86f7e92c7a83596
   layer: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 0.39215687}
   ignoredProbeLayer: 
 --- !u!65 &1740044592
 BoxCollider:
@@ -15603,7 +15613,7 @@ GameObject:
   - component: {fileID: 1945715073}
   m_Layer: 6
   m_Name: HidingWall (3)
-  m_TagString: Untagged
+  m_TagString: Hidable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15694,7 +15704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Memorable
   guid: bb306c9eb0c449c6b6ea533f000efecc
   layer: 
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 0.39215687}
   ignoredProbeLayer: 
 --- !u!65 &1945715073
 BoxCollider:
@@ -15921,7 +15931,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.535475
+      value: 11.81
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15953,7 +15963,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8775812478161144454, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_Name
-      value: TrowableWall (4)
+      value: InvisWall5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16006,7 +16016,7 @@ GameObject:
   - component: {fileID: 2128546762}
   m_Layer: 6
   m_Name: NavMeshObstacleTest
-  m_TagString: Untagged
+  m_TagString: GhostProp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16414,11 +16424,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalScale.z
-      value: 43.960716
+      value: 38.689827
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.076029
+      value: -4.15
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.y
@@ -16426,7 +16436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.955213
+      value: -7.44
       objectReference: {fileID: 0}
     - target: {fileID: 4680115165891231467, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16458,7 +16468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8775812478161144454, guid: 3bc7559796a0a974bbaa44221d50de16, type: 3}
       propertyPath: m_Name
-      value: TrowableWall
+      value: InvisWall1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16494,6 +16504,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1603752762}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
+      propertyPath: priestFpsMovement
+      value: 
+      objectReference: {fileID: 1603752762}
+    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: characterController
       value: 
       objectReference: {fileID: 1603752764}
@@ -16508,6 +16522,26 @@ PrefabInstance:
     - target: {fileID: 3153499346103244903, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: requireLineOfSight
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153499346103244903, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
+      propertyPath: tagSeenDistances.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153499346103244903, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
+      propertyPath: tagSeenDistances.Array.data[0].tag
+      value: GhostProp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153499346103244903, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
+      propertyPath: tagSeenDistances.Array.data[1].tag
+      value: Demon
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153499346103244903, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
+      propertyPath: tagSeenDistances.Array.data[0].value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153499346103244903, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
+      propertyPath: tagSeenDistances.Array.data[1].value
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3532894997142468027, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: m_Name

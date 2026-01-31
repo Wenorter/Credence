@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4680115165891231467}
   - component: {fileID: 4914909514557247059}
   m_Layer: 11
-  m_Name: TrowableWall
+  m_Name: InvisWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

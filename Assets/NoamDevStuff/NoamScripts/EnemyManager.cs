@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine.AI;
 using Random = System.Random;
 
 public class EnemyManager : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private PriestActions priestLogicRef;
     [SerializeField] private List<GameObject> enemyPrefabs;
     [SerializeField] private List<Transform> enemySpawnPoints;
+    
 
     [Header("Settings")]
     [Tooltip("How many Enemies to Spawn , index = enemy type (enemy prefab index)")]
@@ -29,6 +32,8 @@ public class EnemyManager : MonoBehaviour
                 var r = new Random();
                 var randVal = r.Next(0, enemySpawnPoints.Count);
                 var inst = Instantiate(enemyPrefabs[i1], enemySpawnPoints[randVal].position , enemySpawnPoints[randVal].rotation);
+                var instNav = inst.GetComponent<EnemyNavAI>();
+                instNav.priestLogic = priestLogicRef;
                 _enemies.Add(inst.GetComponent<EnemyNavAI>());
             }    
         }

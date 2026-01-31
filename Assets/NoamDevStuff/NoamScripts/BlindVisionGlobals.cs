@@ -15,7 +15,7 @@ public class BlindVisionGlobals : MonoBehaviour
         if (!blindBuildingMaterial) return;
 
         Vector3 p = blindPlayerRoot ? blindPlayerRoot.position : transform.position;
-        float r = senseProbe ? senseProbe.radius : 4f;
+        float r = senseProbe ? senseProbe.defaultRadius : 4f;
 
         blindBuildingMaterial.SetVector(PlayerPosID, new Vector4(p.x, p.y, p.z, 1f));
         blindBuildingMaterial.SetFloat(RadiusID, r);

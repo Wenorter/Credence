@@ -25,7 +25,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _Blind_Radius: 3
+    - _Blind_Radius: 4
     - _Clip: 0.01
     - _Cutoff: 0.02
     - _DitherPixelSize: 1
@@ -39,7 +39,7 @@ Material:
     - _NearPow: 1.5
     - _WallGlow: 8
     m_Colors:
-    - _Blind_PlayerPos: {r: -126.22097, g: 1.6263847, b: 1.7953968, a: 1}
+    - _Blind_PlayerPos: {r: -128.16446, g: 1.0178005, b: 2.4403474, a: 1}
     - _FloorColor: {r: 0.059999965, g: 0.059999965, b: 0.059999965, a: 1}
     - _GridColor: {r: 0.21999997, g: 0.21999997, b: 0.21999997, a: 1}
   m_BuildTextureStacks: []

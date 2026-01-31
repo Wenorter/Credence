@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -378,9 +379,10 @@ public class GameManager : MonoBehaviour
         var cc = priest.GetComponent<CharacterController>();
         cc.enabled = false;
         priest.transform.position = priestSpawnPoint.position;
-        priest.transform.rotation = priestSpawnPoint.rotation;
+        var fpsM = priest.GetComponent<FpsMovement>();
+        fpsM.LockViewTo(priestSpawnPoint);
         cc.enabled = true;
-
+        
         uiCanvas.StartFadeOut();
     }
 
