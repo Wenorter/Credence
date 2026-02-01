@@ -53,7 +53,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    public void OnResetDay()
+    public void OnResetDay(int asd)
     {
         foreach (var e in _enemies)
         {

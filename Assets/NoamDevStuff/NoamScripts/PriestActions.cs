@@ -32,7 +32,7 @@ public class PriestActions : MonoBehaviour
     public bool IsHiding { get; private set; }
 
     [Header("Events")]
-    [SerializeField] private UnityEvent onInteractEvent;
+    [SerializeField] private UnityEvent<Memorable> onInteractEvent;
 
     [Header("Gizmos")]
     [SerializeField] private Color gizmoRayColor = new Color(1f, 0.2f, 0.2f, 1f);
@@ -48,6 +48,8 @@ public class PriestActions : MonoBehaviour
 
     private Transform _lastHitTransform;
     private Transform _currentHidableRoot;
+    
+    private Memorable _currentObjMem;
 
     // Cache last interact-ray result for gizmos (so gizmos reflects the same logic)
     private bool _lastInteractHit;
@@ -85,7 +87,6 @@ public class PriestActions : MonoBehaviour
             _lastHitTransform = hit.collider.transform;
     }
 
-    // NEW: Interact ray logic (shared by OnInteract + gizmos)
     private bool TryGetObjectiveGhostHit(out RaycastHit bestHit)
     {
         bestHit = default;
@@ -94,26 +95,52 @@ public class PriestActions : MonoBehaviour
 
         Ray ray = viewCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
-        // IMPORTANT: Collide so trigger colliders (your ghost prop) are included
         RaycastHit[] hits = Physics.RaycastAll(ray, interactDistance, rayMask, QueryTriggerInteraction.Collide);
         if (hits == null || hits.Length == 0) return false;
 
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
+        int sensibleLayer = LayerMask.NameToLayer("Sensible");
+        if (sensibleLayer < 0)
+        {
+            Debug.LogError("Layer 'Sensible' does not exist.");
+            return false;
+        }
+
         for (int i = 0; i < hits.Length; i++)
         {
-            Collider col = hits[i].collider;
+            RaycastHit hit = hits[i];
+            Collider col = hit.collider;
             if (!col) continue;
 
-            // Only accept trigger colliders (the ghost prop collider isTrigger)
-            if (!col.isTrigger) continue;
-
-            // Tag can be on the collider object OR on the root parent
-            if (col.CompareTag(objectiveGhostTag) || col.transform.root.CompareTag(objectiveGhostTag))
+            if (!col.CompareTag("Objective"))
             {
-                bestHit = hits[i];
-                return true;
+                Debug.Log("col doesnt have obj tag"); continue;
             }
+            
+            // Must be on Sensible layer
+            if (col.gameObject.layer != sensibleLayer)
+            {
+                Debug.Log($"{col.gameObject.name} doesnt have sens layer");
+                continue;
+            }
+            // Must have Memorable and be highlighted
+            Memorable mem = col.GetComponent<Memorable>();
+            if (mem == null)
+            {
+                Debug.Log("mem is null");
+                continue;
+            }
+            if (!mem.isHighlighted)
+            {
+                Debug.Log("mem is not highlighted");
+                continue;
+            }
+            Debug.Log("got to the end");
+            _currentObjMem = mem;
+            Destroy(col.gameObject);
+            bestHit = hit;
+            return true;
         }
 
         return false;
@@ -121,12 +148,13 @@ public class PriestActions : MonoBehaviour
 
 
     // Press E -> if aiming at ghost prop with Objective tag -> invoke event
-    public void OnInteract()
+    public void OnInteract(InputAction.CallbackContext ctx)
     {
+        if (!ctx.performed) return;
+        Debug.Log("E");
         if (_isTransitioning) return;
-
         if (TryGetObjectiveGhostHit(out _))
-            onInteractEvent?.Invoke();
+            onInteractEvent?.Invoke(_currentObjMem);
     }
 
     // NEW: Cache gizmo info for the interact ray
@@ -148,15 +176,6 @@ public class PriestActions : MonoBehaviour
             _lastInteractHit = true;
             _lastInteractHitPoint = firstHit.point;
             _lastInteractHitName = firstHit.collider ? firstHit.collider.name : null;
-        }
-
-        // Also check whether there is an objective ghost hit (might be behind blockers if using RaycastAll)
-        if (TryGetObjectiveGhostHit(out RaycastHit objectiveHit))
-        {
-            _lastInteractWasObjective = true;
-            _lastInteractHit = true;
-            _lastInteractHitPoint = objectiveHit.point;
-            _lastInteractHitName = objectiveHit.collider ? objectiveHit.collider.name : null;
         }
     }
 

@@ -40,7 +40,6 @@ public class MemoryManager : MonoBehaviour
     [Tooltip("How long it takes to fade IN from 0 to target when seen.")]
     [SerializeField] private float fadeInDurationSeconds = 3f;
 
-    // NEW: fade-in curve shaping (inspector graph)
     [Tooltip("If enabled, fade-in alpha rise is shaped by this curve (x=0..1 progress, y=0..1).")]
     [SerializeField] private bool useFadeInCurve = true;
 
@@ -101,7 +100,6 @@ public class MemoryManager : MonoBehaviour
         RebuildTagLookup();
         forceSeenDurationSeconds = Mathf.Max(0f, forceSeenDurationSeconds);
 
-        // NEW: keep curve in a sane state
         if (fadeInCurve == null || fadeInCurve.length == 0)
             fadeInCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
     }
@@ -130,12 +128,34 @@ public class MemoryManager : MonoBehaviour
         return defaultMemoryLifetime;
     }
 
-    public void FlushMemory()
+    public void FlushMemory(int asd)
     {
         foreach (var kv in _mem)
             kv.Value?.ghost?.Destroy();
 
         _mem.Clear();
+    }
+
+    /// <summary>
+    /// Removes this Memorable from the memory system forever:
+    /// - Destroys its ghost (if exists)
+    /// - Removes record from dictionary
+    /// - Destroys the Memorable GameObject so it can never be observed again
+    /// </summary>
+    public void TryToRemoveMemory(Memorable m)
+    {
+        Debug.Log("tryToRemoveMemoryHappened");
+        if (m == null) return;
+
+        // Destroy ghost + remove record if we have one
+        if (_mem.TryGetValue(m.Guid, out var rec) && rec != null)
+        {
+            rec.ghost?.Destroy();
+            _mem.Remove(m.Guid);
+        }
+
+        // Destroy the source object so it can never trigger Observe again
+        Destroy(m.gameObject);
     }
 
     public void Observe(Memorable m, float strength, bool isFading = true)
@@ -223,7 +243,7 @@ public class MemoryManager : MonoBehaviour
             float prev = rec.confidence;
 
             float fadeOutRate = Time.deltaTime / Mathf.Max(0.001f, lifetime);
-            float fadeInRate  = Time.deltaTime / Mathf.Max(0.001f, fadeInDurationSeconds);
+            float fadeInRate = Time.deltaTime / Mathf.Max(0.001f, fadeInDurationSeconds);
 
             float rate = (target > rec.confidence) ? fadeInRate : fadeOutRate;
             rec.confidence = Mathf.MoveTowards(rec.confidence, target, rate);
@@ -238,28 +258,16 @@ public class MemoryManager : MonoBehaviour
                 continue;
             }
 
-            // -----------------------------
-            // NEW: curve-shaped fade-in alpha
-            // -----------------------------
             float shapedConfidence = rec.confidence;
 
             bool fadingOut = rec.confidence < prev - 0.000001f;
-            bool fadingIn  = rec.confidence > prev + 0.000001f;
 
-            // Only shape when building up (fade-in). Fade-out remains your existing exponent/lifetime behavior.
             if (useFadeInCurve && !fadingOut)
             {
-                // Normalize confidence progress across the fade-in range [0..target]
-                float denom = Mathf.Max(0.0001f, target); // target is lastSeenStrength when seen
-                float p = Mathf.Clamp01(shapedConfidence / denom); // 0..1 progress to target
-
-                float c = Mathf.Clamp01(fadeInCurve.Evaluate(p));  // 0..1 from curve
-
-                // Convert back into confidence space (0..target)
-                shapedConfidence = c * denom;
-
-                // Safety
-                shapedConfidence = Mathf.Clamp(shapedConfidence, 0f, denom);
+                float denom = Mathf.Max(0.0001f, target);
+                float p = Mathf.Clamp01(shapedConfidence / denom);
+                float c = Mathf.Clamp01(fadeInCurve.Evaluate(p));
+                shapedConfidence = Mathf.Clamp(c * denom, 0f, denom);
             }
 
             float baseFade = Mathf.Pow(shapedConfidence, fadeExponent);
@@ -290,10 +298,13 @@ public class MemoryManager : MonoBehaviour
                     rec.driftOffset = Vector3.Lerp(rec.driftOffset, desiredDrift, 4f * Time.deltaTime);
                 }
             }
-            else if (fadingIn || seenRecently)
+            else
             {
-                rec.driftOffset = Vector3.Lerp(rec.driftOffset, Vector3.zero,
-                    Mathf.Max(0.01f, driftReturnSpeed) * Time.deltaTime);
+                rec.driftOffset = Vector3.Lerp(
+                    rec.driftOffset,
+                    Vector3.zero,
+                    Mathf.Max(0.01f, driftReturnSpeed) * Time.deltaTime
+                );
 
                 if (seenRecently)
                     rec.lastSeenStrengthRef = Mathf.Max(0.001f, target);
@@ -317,7 +328,7 @@ public class MemoryManager : MonoBehaviour
             return false;
 
         rec.ghost.ApplyFromMemorable(m, restartFadeIn, fadeInDurationSeconds);
-        
+
         rec.maxAlpha = Mathf.Clamp01(m.color.a);
 
         rec.pos = m.transform.position;

@@ -75,6 +75,7 @@ public class AngelActions : MonoBehaviour
                 memorable.tag = "Objective";
                 memorable.ignoredProbeLayer = "Default";
                 memorable.isTrigger = true;
+                memorable.isHighlighted = true;
                 Debug.Log("Hit! !! 111 1 1");
                 MemoryManager.Instance.Observe(memorable, 1, false);    
                 MemoryManager.Instance.TryApplyGhostFromMemorable(memorable);

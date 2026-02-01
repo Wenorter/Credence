@@ -48,9 +48,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float desiredHoldTime = 2f;
 
     [Header("Events")]
-    [SerializeField] private UnityEvent onResetDayMemoryMan;
-    [SerializeField] private UnityEvent onResetDayAiMan;
-    [SerializeField] private UnityEvent onResetDayObjMan;
+    [SerializeField] private UnityEvent<int> onResetDay;
     
     
     // fields
@@ -131,13 +129,13 @@ public class GameManager : MonoBehaviour
         HandleHoldReset();
     }
 
-    public void OnObjectivePicked()
+    public void OnObjectivePicked(Memorable m)
     {
         Debug.Log($"OnObjectivePicked");
         objectsInEachDay[_currentDay-1]--;
         if (objectsInEachDay[_currentDay-1] == 0)
         {
-            CompleteCurrentDay();
+            //CompleteCurrentDay();
             
         }
     }
@@ -405,11 +403,11 @@ public class GameManager : MonoBehaviour
         {
             OnSwitchCamera();
         }
+        
+        Debug.Log($"curr day :{_currentDay}");
 
         TrySwitchRoom("room1", startingCage);
-        onResetDayMemoryMan.Invoke();
-        onResetDayAiMan.Invoke();
-        onResetDayObjMan.Invoke();
+        onResetDay.Invoke(_currentDay - 1);
 
         priestCurrHp = priestStartHp;
 

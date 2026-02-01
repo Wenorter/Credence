@@ -16,6 +16,8 @@ public class Memorable : MonoBehaviour
     public Renderer Renderer { get; private set; }
     public MeshFilter MeshFilter { get; private set; }
     public bool isTrigger;
+    
+    public bool isHighlighted;
 
     // Extra safety: if something accidentally duplicates a guid at runtime, we fix it.
     private static readonly HashSet<string> _usedGuidsRuntime = new HashSet<string>();

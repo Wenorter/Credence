@@ -958,7 +958,6 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 1}
   ignoredProbeLayer: 
   isTrigger: 0
-  isHighlighted: 0
 --- !u!208 &370999356
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1212,7 +1211,6 @@ MonoBehaviour:
   color: {r: 0.37924394, g: 0.051369097, b: 0.48247975, a: 0.60784316}
   ignoredProbeLayer: 
   isTrigger: 0
-  isHighlighted: 0
 --- !u!65 &441577488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1310,43 +1308,49 @@ MonoBehaviour:
   angelMaxFear: 5
   angelStunDuration: 3
   stunTintAlpha: 0.35
-  objectsInEachDay: 020000000200000003000000
+  objectsInEachDay: 010000000200000003000000
   fadeOutTime: 0.8
   blackHoldTime: 0.1
   fadeInTime: 0.8
   uiCanvas: {fileID: 1906576251}
   desiredHoldTime: 2
-  onResetDay:
+  onResetDayMemoryMan:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 661303227}
+        m_TargetAssemblyTypeName: MemoryManager, Assembly-CSharp
+        m_MethodName: FlushMemory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onResetDayAiMan:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 878417713}
+        m_TargetAssemblyTypeName: EnemyManager, Assembly-CSharp
+        m_MethodName: OnResetDay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onResetDayObjMan:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1401826919}
         m_TargetAssemblyTypeName: ObjectiveManager, Assembly-CSharp
         m_MethodName: OnResetDay
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 661303227}
-        m_TargetAssemblyTypeName: MemoryManager, Assembly-CSharp
-        m_MethodName: FlushMemory
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 878417713}
-        m_TargetAssemblyTypeName: EnemyManager, Assembly-CSharp
-        m_MethodName: OnResetDay
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -13879,7 +13883,6 @@ MonoBehaviour:
   color: {r: 0.37924394, g: 0.051369097, b: 0.48247975, a: 0.60784316}
   ignoredProbeLayer: 
   isTrigger: 0
-  isHighlighted: 0
 --- !u!65 &1086468736
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14347,7 +14350,6 @@ MonoBehaviour:
   color: {r: 0.37924394, g: 0.051369097, b: 0.48247975, a: 0.60784316}
   ignoredProbeLayer: 
   isTrigger: 0
-  isHighlighted: 0
 --- !u!65 &1263622910
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14526,7 +14528,6 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 1}
   ignoredProbeLayer: 
   isTrigger: 0
-  isHighlighted: 0
 --- !u!4 &1313527086 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1030971981, guid: abc00000000003685267738494263074, type: 3}
@@ -14711,7 +14712,6 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 0.7058824}
   ignoredProbeLayer: 
   isTrigger: 0
-  isHighlighted: 0
 --- !u!135 &1419365555
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -14928,7 +14928,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1603752768}
         m_TargetAssemblyTypeName: PriestActions, Assembly-CSharp
         m_MethodName: OnInteract
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -15575,7 +15575,6 @@ MonoBehaviour:
   color: {r: 0.37924394, g: 0.051369097, b: 0.48247975, a: 0.60784316}
   ignoredProbeLayer: 
   isTrigger: 0
-  isHighlighted: 0
 --- !u!65 &1740044592
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15994,7 +15993,6 @@ MonoBehaviour:
   color: {r: 0.37924394, g: 0.051369097, b: 0.48247975, a: 0.60784316}
   ignoredProbeLayer: 
   isTrigger: 0
-  isHighlighted: 0
 --- !u!65 &1945715073
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16327,7 +16325,6 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 0.7058824}
   ignoredProbeLayer: 
   isTrigger: 0
-  isHighlighted: 0
 --- !u!208 &2128546763
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -16861,7 +16858,7 @@ PrefabInstance:
       objectReference: {fileID: 1427490485}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: rayMask.m_Bits
-      value: 5184
+      value: 5120
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: gizmoRayColor.b
@@ -16884,10 +16881,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1603752762}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: tempSphereLifetime
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: characterController
       value: 
       objectReference: {fileID: 1603752764}
@@ -16897,7 +16890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractObjective.m_PersistentCalls.m_Calls.Array.size
@@ -16917,11 +16910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -16932,10 +16921,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 487205794}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 661303227}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractObjective.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -16944,16 +16929,8 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnObjectivePicked
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: TryToRemoveMemory
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractObjective.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -16976,10 +16953,6 @@ PrefabInstance:
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: MemoryManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractObjective.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameManager, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -16989,10 +16962,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
       propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}
-      propertyPath: onInteractEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2899705164078912741, guid: 5ccace7b25b45754ea09df264ccf34e3, type: 3}

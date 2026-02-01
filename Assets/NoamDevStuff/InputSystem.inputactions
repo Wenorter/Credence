@@ -145,9 +145,9 @@
                     "name": "",
                     "id": "40abac81-1219-45d3-bfe8-fa08f86e5c38",
                     "path": "<Keyboard>/e",
-                    "interactions": "Press",
+                    "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
