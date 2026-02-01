@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b2dd6687fa5b4fd4babd803594320b9b
+guid: 4e23d31ae23387d4eae5bea1155206ef
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -102,7 +102,7 @@ TextureImporter:
     secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 1
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -111,5 +111,5 @@ AssetOrigin:
   productId: 209880
   packageName: Gothic GUI Kit
   packageVersion: 1.2
-  assetPath: Assets/Gothic GUI Kit/01. PSD/Inventory Example.psd
+  assetPath: Assets/Gothic GUI Kit/02. PNG/Button 2.png
   uploadId: 527521

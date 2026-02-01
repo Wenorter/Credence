@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b2dd6687fa5b4fd4babd803594320b9b
+guid: 29d9265e3b8c769449b10e097a15618e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -102,7 +102,7 @@ TextureImporter:
     secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 1
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -111,5 +111,5 @@ AssetOrigin:
   productId: 209880
   packageName: Gothic GUI Kit
   packageVersion: 1.2
-  assetPath: Assets/Gothic GUI Kit/01. PSD/Inventory Example.psd
+  assetPath: Assets/Gothic GUI Kit/02. PNG/Info_Bar Variant 4.png
   uploadId: 527521
