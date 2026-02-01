@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="081bbe0e-f25d-45ec-8dc3-f05b8347cdf8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/NoamDevStuff/InputSystem.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/NoamDevStuff/InputSystem.inputactions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/AngleActions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/AngleActions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/EnemyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/EnemyManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/Memorable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/Memorable.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/MemoryManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/MemoryManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/ObjectiveManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/ObjectiveManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/PriestActions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/PriestActions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/NoamDevStuff/Shaders/M_BlindBuilding.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/NoamDevStuff/Shaders/M_BlindBuilding.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Overview_Dev_Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Overview_Dev_Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/UnifrakturMaguntia-Regular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/UnifrakturMaguntia-Regular SDF.asset" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/07c12a9d8ce247d18a35c5e3e7bb065f212200/23/6417a941/UnityEvent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/07c12a9d8ce247d18a35c5e3e7bb065f212200/48/a5a9cb6d/Random.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/4f/bab62522/Dictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9cf8845d65164eb794d56e0a8a79219412800/36/1ea9fc02/NavMeshAgent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/AngleActions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/Objective.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/PriestActions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/StayInsideBox.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/Throwable.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/NoamDevStuff/NoamScripts/UiCanvas.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ai.navigation@5218e4bf7edc/Runtime/NavMeshModifierVolume.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@552acc76aabe/InputSystem/Actions/InputAction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@552acc76aabe/InputSystem/Actions/InputActionState.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@552acc76aabe/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@19a9377c4ffa/Unity.Mathematics/random.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="38t4bA1zSXnlNPkD9gtQ8gI7Vie" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Dev&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\Noam\Documents\GitHub\Credence -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\Noam\Documents\GitHub\Credence" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\Noam\Documents\GitHub\Credence -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\Noam\Documents\GitHub\Credence" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="runtimes">
+        <list />
+      </option>
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="runtimes">
+        <list />
+      </option>
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="081bbe0e-f25d-45ec-8dc3-f05b8347cdf8" name="Changes" comment="" />
+      <created>1769605602419</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1769605602419</updated>
+      <workItem from="1769605605359" duration="1726000" />
+      <workItem from="1769607382535" duration="1095000" />
+      <workItem from="1769625241689" duration="2701000" />
+      <workItem from="1769628583635" duration="2000" />
+      <workItem from="1769692379672" duration="4585000" />
+      <workItem from="1769697675233" duration="22153000" />
+      <workItem from="1769773478084" duration="29222000" />
+      <workItem from="1769813177063" duration="9797000" />
+      <workItem from="1769852407896" duration="30593000" />
+      <workItem from="1769891982625" duration="5052000" />
+      <workItem from="1769939203788" duration="8257000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityProjectDiscoverer">
+    <option name="hasUnityReference" value="true" />
+    <option name="unityProject" value="true" />
+    <option name="unityProjectFolder" value="true" />
+  </component>
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>
