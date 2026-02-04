@@ -1,50 +1,81 @@
 // Assets/Editor/ChurchColliderGeneratorWindow.cs
 //
-// One MeshCollider per object on target layer.
-// FIX: Adaptive simplification by WORLD size (renderer bounds diagonal):
-// - Big meshes (buildings/walls/floors): much larger cell size + much lower triangle target
-// - Small props (candles etc): smaller cell + higher triangle target
+// Church Collider Generator (Editor-only)
 //
-// Also: disconnected island splitting to preserve thin parts, but auto-disabled for huge meshes
-// (big building meshes) to avoid massive editor time/memory.
+// Behavior:
+// - STATIC objects (no Rigidbody):
+//   Generates ONE non-convex MeshCollider per object using a simplified mesh asset saved to disk.
+//   Simplification is adaptive by world size (renderer bounds diagonal). Optional island-splitting for thin parts.
 //
-// MeshCollider only (no BoxCollider fallback).
+// - DYNAMIC objects (has Rigidbody):
+//   Temporarily adds a VHACD runtime component, generates compound convex MeshColliders,
+//   removes the runtime component, then marks the object as DynamicConvexMeshCollider.
+//   (For now the dynamic marker debug fields are left empty/zero.)
 
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public sealed class ChurchColliderGeneratorWindow : EditorWindow
 {
+    private const string MenuRoot = "Tools/Church Colliders/";
+    private const string WindowTitle = "Church Colliders";
+
     private Vector2 _scroll;
 
+    // -------------------------
+    // Targeting
+    // -------------------------
     [Header("Targeting")]
+    [Tooltip("Only GameObjects on this layer will be processed.")]
     [SerializeField] private string targetLayerName = "Church";
+
+    [Tooltip("If true, also processes inactive objects.")]
     [SerializeField] private bool includeInactive = true;
+
+    [Tooltip("If true, objects with a successful GeneratedColliderMarker are skipped.")]
     [SerializeField] private bool skipAlreadyMarkedObjects = true;
+
+    [Tooltip("If true, requires a MeshRenderer on the object to be considered.")]
     [SerializeField] private bool requireMeshRenderer = true;
 
+    // -------------------------
+    // Read/Write Auto-Fix
+    // -------------------------
     [Header("Read/Write Auto-Fix")]
+    [Tooltip("Attempts to enable Read/Write on model importers for meshes that need it.")]
     [SerializeField] private bool autoEnableReadWriteOnModelAssets = true;
+
+    [Tooltip("Prints which assets were changed to Read/Write enabled.")]
     [SerializeField] private bool logReadWriteChanges = true;
 
+    // -------------------------
+    // Cleanup
+    // -------------------------
     [Header("Cleanup")]
+    [Tooltip("Deletes empty leaf nodes (Transform-only objects) on the target layer.")]
     [SerializeField] private bool removeEmptyTransformOnlyLeafNodes = true;
 
-    [Tooltip("Remove existing colliders from objects that do NOT have GeneratedColliderMarker.\n" +
-             "Default is safe: only affects objects on the target layer.\n" +
-             "Use with caution if you disable the target-layer-only toggle.")]
+    [Tooltip(
+        "Removes colliders from objects on the target layer that do NOT have GeneratedColliderMarker.\n" +
+        "Useful for wiping bad artist colliders before generation.")]
     [SerializeField] private bool removeCollidersIfNoMarker = true;
 
-    [Tooltip("If true, only remove colliders (no marker) on the target layer. Recommended.")]
+    [Tooltip("If true, only removes colliders-without-marker on the target layer (recommended).")]
     [SerializeField] private bool removeCollidersNoMarker_TargetLayerOnly = true;
 
+    // -------------------------
+    // Replace behavior
+    // -------------------------
     [Header("Replace Behavior")]
+    [Tooltip("If true, removes ALL colliders on processed objects before generating new ones.")]
     [SerializeField] private bool alwaysReplaceCollidersOnUnmarkedObjects = true;
 
     // -------------------------
@@ -56,7 +87,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         [Tooltip("If world bounds diagonal >= this, tier applies. Sorted by minDiag ascending.")]
         public float minDiag;
 
-        [Tooltip("Starting base cell size (meters/units). Larger = fewer polygons.")]
+        [Tooltip("Starting base cell size (world units). Larger = fewer polygons.")]
         public float baseCellSize;
 
         [Tooltip("Hard cap for cell size during passes.")]
@@ -71,20 +102,21 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         [Tooltip("Multiply cell size by this each pass when too detailed / cooking fails.")]
         public float cellGrowFactor;
 
-        [Tooltip("Min cells across each axis for anisotropic cells (keeps thin parts alive).")]
+        [Tooltip("Min cells across each axis (helps keep thin parts alive).")]
         public int minCellsAcrossAxis;
 
-        [Tooltip("If planar handling enabled, min cells across the two large axes when planar.\n" +
-                 "Smaller = coarser big flat walls; larger = more detail.")]
+        [Tooltip(
+            "If planar handling is enabled and the mesh is planar, this controls the min cell count " +
+            "across the two large axes (walls/floors). Higher = more detail.")]
         public int planarMinCellsAcrossLargeAxes;
     }
 
     [Header("Adaptive STATIC tiers (by world size)")]
-    [Tooltip("Tiers are chosen by world bounds diagonal (renderer.bounds).\n" +
-             "Make big building meshes coarse and small props detailed.")]
-    [SerializeField] private StaticAdaptiveTier[] staticTiers = new StaticAdaptiveTier[]
+    [Tooltip(
+        "Tiers are chosen by world bounds diagonal.\n" +
+        "Make big building meshes coarse and small props more detailed.")]
+    [SerializeField] private StaticAdaptiveTier[] staticTiers =
     {
-        // Small props (candles, small furniture)
         new StaticAdaptiveTier
         {
             minDiag = 0f,
@@ -96,7 +128,6 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             minCellsAcrossAxis = 10,
             planarMinCellsAcrossLargeAxes = 20
         },
-        // Medium props (tables, chairs)
         new StaticAdaptiveTier
         {
             minDiag = 2.5f,
@@ -108,7 +139,6 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             minCellsAcrossAxis = 8,
             planarMinCellsAcrossLargeAxes = 16
         },
-        // Large props / sections
         new StaticAdaptiveTier
         {
             minDiag = 8f,
@@ -120,7 +150,6 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             minCellsAcrossAxis = 6,
             planarMinCellsAcrossLargeAxes = 12
         },
-        // Buildings / huge architecture
         new StaticAdaptiveTier
         {
             minDiag = 20f,
@@ -135,70 +164,76 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
     };
 
     // -------------------------
-    // Dynamic (Rigidbody)
-    // -------------------------
-    [Header("Dynamic (has Rigidbody) Convex MeshCollider (adaptive by size too)")]
-    [SerializeField] private float dynamicSmallDiag = 3.0f;
-
-    [Tooltip("Convex colliders must be simpler; small dynamic objects can still keep some detail.")]
-    [SerializeField] private float dynamicSmallBaseCell = 0.10f;
-    [SerializeField] private int dynamicSmallTargetTris = 800;
-
-    [Tooltip("Large dynamic objects: very coarse convex.")]
-    [SerializeField] private float dynamicLargeBaseCell = 0.30f;
-    [SerializeField] private int dynamicLargeTargetTris = 300;
-
-    [SerializeField] private int dynamicMaxPasses = 10;
-    [SerializeField] private float dynamicGrowFactor = 1.35f;
-    [SerializeField] private float dynamicMaxCell = 3.0f;
-
-    // -------------------------
     // Planar + degenerates
     // -------------------------
     [Header("Planar Mesh Handling")]
+    [Tooltip("If enabled, very thin planar meshes get a different cell layout (better walls/floors).")]
     [SerializeField] private bool enablePlanarMeshHandling = true;
 
-    [Tooltip("If minAxis/maxAxis below this, treat as planar.")]
+    [Tooltip("If minAxis/maxAxis is below this, treat mesh as planar.")]
     [Range(0.001f, 0.15f)]
     [SerializeField] private float planarRatioThreshold = 0.03f;
 
     [Header("Degenerate Triangle Cleanup (bounds-relative)")]
-    [Tooltip("Relative epsilon used to remove ONLY truly-degenerate triangles.\n" +
-             "If thin parts vanish, decrease (1e-10). If you see lots of sliver garbage, increase slightly (1e-8).")]
+    [Tooltip(
+        "Relative epsilon used to remove only truly degenerate triangles.\n" +
+        "If thin parts vanish, decrease slightly. If you see lots of sliver garbage, increase slightly.")]
     [Range(1e-12f, 1e-6f)]
     [SerializeField] private float degenerateAreaEpsRelative = 1e-9f;
 
     [Header("Preserve thin disconnected parts (island splitting)")]
+    [Tooltip("If true, splits disconnected triangle islands before simplification (helps thin parts).")]
     [SerializeField] private bool splitDisconnectedIslands = true;
 
-    [Tooltip("If the mesh is huge, island splitting is auto-disabled (performance).")]
+    [Tooltip("Auto-disables island splitting if world diagonal is above this (performance safety).")]
     [SerializeField] private float autoDisableIslandsIfWorldDiagAbove = 18f;
 
-    [Tooltip("If triangle count is above this, island splitting is auto-disabled (performance).")]
+    [Tooltip("Auto-disables island splitting if triangle count is above this (performance safety).")]
     [SerializeField] private int autoDisableIslandsIfTrisAbove = 200000;
 
     [Tooltip("Safety cap: if more islands than this, do not split.")]
     [Range(1, 256)]
     [SerializeField] private int maxIslandsToSplit = 64;
 
-    [Tooltip("Use average-of-vertices per cell rather than snapping to cell centers. Better quality.")]
+    [Tooltip("Use centroid-of-cell averaging rather than snapping to cell center (better quality).")]
     [SerializeField] private bool useCellCentroidAveraging = true;
 
+    // -------------------------
+    // Output + logging
+    // -------------------------
     [Header("Output")]
+    [Tooltip("Folder to store generated static collider mesh assets (must be under Assets/).")]
     [SerializeField] private string outputFolder = "Assets/GeneratedColliders";
 
     [Header("Logging")]
-    [SerializeField] private bool verbosePerObjectLogging = false;
+    [Tooltip("If enabled, prints per-object success/failure logs.")]
+    [SerializeField] private bool verbosePerObjectLogging;
 
-    [MenuItem("Tools/Church Colliders/Open Generator Window")]
+    // -------------------------
+    // DYNAMIC (VHACD Runtime)
+    // -------------------------
+    [Header("Dynamic (Rigidbody) - VHACD Runtime")]
+    [Tooltip("Type name of your runtime VHACD component. Example: 'VhacdRuntime'.")]
+    [SerializeField] private string vhacdRuntimeTypeName = "VhacdRuntime";
+
+    [Tooltip("Child container name to delete before regenerating dynamic hulls (if present).")]
+    [SerializeField] private string vhacdDynamicContainerName = "VHACD_Hulls";
+
+    private static Type _cachedVhacdRuntimeType;
+    private static string _cachedVhacdRuntimeTypeName;
+
+    // -------------------------
+    // Menu
+    // -------------------------
+    [MenuItem(MenuRoot + "Open Generator Window")]
     public static void OpenWindow()
     {
-        var window = GetWindow<ChurchColliderGeneratorWindow>("Church Colliders");
-        window.minSize = new Vector2(800, 740);
+        var window = GetWindow<ChurchColliderGeneratorWindow>(WindowTitle);
+        window.minSize = new Vector2(800, 700);
         window.Show();
     }
 
-    [MenuItem("Tools/Church Colliders/Generate (Active Scene)")]
+    [MenuItem(MenuRoot + "Generate (Active Scene)")]
     public static void GenerateFromMenu()
     {
         var temp = CreateInstance<ChurchColliderGeneratorWindow>();
@@ -206,7 +241,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         DestroyImmediate(temp);
     }
 
-    [MenuItem("Tools/Church Colliders/Remove Generated (Active Scene)")]
+    [MenuItem(MenuRoot + "Remove Generated (Active Scene)")]
     public static void RemoveFromMenu()
     {
         var temp = CreateInstance<ChurchColliderGeneratorWindow>();
@@ -214,117 +249,35 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         DestroyImmediate(temp);
     }
 
+    // -------------------------
+    // UI
+    // -------------------------
     private void OnGUI()
     {
         _scroll = EditorGUILayout.BeginScrollView(_scroll);
 
-        EditorGUILayout.LabelField("Church Collider Generator", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Church Collider Generator (Static + Dynamic)", EditorStyles.boldLabel);
         EditorGUILayout.Space(6);
 
         EditorGUILayout.HelpBox(
-            "One MeshCollider per object.\n\n" +
-            "Adaptive by WORLD size:\n" +
-            "- Big building meshes become coarse (few triangles)\n" +
-            "- Small props keep more detail\n\n" +
-            "Island splitting preserves thin parts, but auto-disables for huge meshes for performance.",
+            "STATIC (no Rigidbody): One NON-convex MeshCollider per object.\n" +
+            "DYNAMIC (has Rigidbody): Runs VHACD at edit-time to generate compound convex colliders, then removes the VHACD runtime component.\n\n" +
+            "Static generation is adaptive by WORLD size. Island splitting helps thin parts but auto-disables for huge meshes.",
             MessageType.Info);
 
         EditorGUILayout.Space(10);
 
-        EditorGUILayout.LabelField("Targeting", EditorStyles.boldLabel);
-        targetLayerName = EditorGUILayout.TextField("Target Layer Name", targetLayerName);
-        includeInactive = EditorGUILayout.ToggleLeft("Include inactive objects", includeInactive);
-        requireMeshRenderer = EditorGUILayout.ToggleLeft("Only process objects with MeshRenderer", requireMeshRenderer);
-        skipAlreadyMarkedObjects = EditorGUILayout.ToggleLeft("Skip objects already marked as success", skipAlreadyMarkedObjects);
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Read/Write Auto-Fix", EditorStyles.boldLabel);
-        autoEnableReadWriteOnModelAssets = EditorGUILayout.ToggleLeft("Auto-enable Read/Write on model assets", autoEnableReadWriteOnModelAssets);
-        logReadWriteChanges = EditorGUILayout.ToggleLeft("Log Read/Write changes", logReadWriteChanges);
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Cleanup", EditorStyles.boldLabel);
-        removeEmptyTransformOnlyLeafNodes = EditorGUILayout.ToggleLeft("Remove empty Transform-only leaf nodes", removeEmptyTransformOnlyLeafNodes);
-        removeCollidersIfNoMarker = EditorGUILayout.ToggleLeft("Remove colliders on objects WITHOUT marker", removeCollidersIfNoMarker);
-        removeCollidersNoMarker_TargetLayerOnly = EditorGUILayout.ToggleLeft("Only remove colliders on target layer (recommended)", removeCollidersNoMarker_TargetLayerOnly);
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Replace Behavior", EditorStyles.boldLabel);
-        alwaysReplaceCollidersOnUnmarkedObjects = EditorGUILayout.ToggleLeft("Always replace colliders on unmarked objects", alwaysReplaceCollidersOnUnmarkedObjects);
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Adaptive STATIC tiers", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox(
-            "Tiers are chosen by world bounds diagonal.\n" +
-            "If buildings are still too dense, lower targetMaxTriangles for the large tiers, or increase baseCellSize.",
-            MessageType.None);
-
-        if (staticTiers == null || staticTiers.Length == 0)
-        {
-            EditorGUILayout.HelpBox("staticTiers is empty. Add at least 1 tier.", MessageType.Warning);
-        }
-        else
-        {
-            for (int i = 0; i < staticTiers.Length; i++)
-            {
-                EditorGUILayout.Space(6);
-                EditorGUILayout.LabelField($"Tier {i}", EditorStyles.miniBoldLabel);
-                staticTiers[i].minDiag = EditorGUILayout.FloatField("Min Diagonal", staticTiers[i].minDiag);
-                staticTiers[i].baseCellSize = EditorGUILayout.FloatField("Base Cell Size", staticTiers[i].baseCellSize);
-                staticTiers[i].maxCellSize = EditorGUILayout.FloatField("Max Cell Size", staticTiers[i].maxCellSize);
-                staticTiers[i].targetMaxTriangles = EditorGUILayout.IntField("Target Max Tris", staticTiers[i].targetMaxTriangles);
-                staticTiers[i].maxPasses = EditorGUILayout.IntField("Max Passes", staticTiers[i].maxPasses);
-                staticTiers[i].cellGrowFactor = EditorGUILayout.FloatField("Grow Factor", staticTiers[i].cellGrowFactor);
-                staticTiers[i].minCellsAcrossAxis = EditorGUILayout.IntSlider("Min Cells Across Axis", staticTiers[i].minCellsAcrossAxis, 2, 32);
-                staticTiers[i].planarMinCellsAcrossLargeAxes = EditorGUILayout.IntSlider("Planar Min Cells (Large Axes)", staticTiers[i].planarMinCellsAcrossLargeAxes, 4, 40);
-            }
-        }
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Dynamic Convex (Rigidbody)", EditorStyles.boldLabel);
-        dynamicSmallDiag = EditorGUILayout.FloatField("Small Diag Threshold", dynamicSmallDiag);
-        dynamicSmallBaseCell = EditorGUILayout.FloatField("Small Base Cell", dynamicSmallBaseCell);
-        dynamicSmallTargetTris = EditorGUILayout.IntField("Small Target Tris", dynamicSmallTargetTris);
-        dynamicLargeBaseCell = EditorGUILayout.FloatField("Large Base Cell", dynamicLargeBaseCell);
-        dynamicLargeTargetTris = EditorGUILayout.IntField("Large Target Tris", dynamicLargeTargetTris);
-        dynamicMaxPasses = EditorGUILayout.IntField("Max Passes", dynamicMaxPasses);
-        dynamicGrowFactor = EditorGUILayout.FloatField("Grow Factor", dynamicGrowFactor);
-        dynamicMaxCell = EditorGUILayout.FloatField("Max Cell", dynamicMaxCell);
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Planar Handling", EditorStyles.boldLabel);
-        enablePlanarMeshHandling = EditorGUILayout.ToggleLeft("Enable planar handling", enablePlanarMeshHandling);
-        planarRatioThreshold = EditorGUILayout.Slider("Planar ratio threshold", planarRatioThreshold, 0.001f, 0.15f);
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Degenerate Triangle Cleanup", EditorStyles.boldLabel);
-        degenerateAreaEpsRelative = EditorGUILayout.Slider("Degenerate area eps (relative)", degenerateAreaEpsRelative, 1e-12f, 1e-6f);
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Island splitting (thin parts)", EditorStyles.boldLabel);
-        splitDisconnectedIslands = EditorGUILayout.ToggleLeft("Split disconnected islands", splitDisconnectedIslands);
-        maxIslandsToSplit = EditorGUILayout.IntSlider("Max islands to split", maxIslandsToSplit, 1, 256);
-        autoDisableIslandsIfWorldDiagAbove = EditorGUILayout.FloatField("Auto-disable if world diag >", autoDisableIslandsIfWorldDiagAbove);
-        autoDisableIslandsIfTrisAbove = EditorGUILayout.IntField("Auto-disable if tris >", autoDisableIslandsIfTrisAbove);
-        useCellCentroidAveraging = EditorGUILayout.ToggleLeft("Use centroid averaging", useCellCentroidAveraging);
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Output", EditorStyles.boldLabel);
-        outputFolder = EditorGUILayout.TextField("Output folder", outputFolder);
-
-        EditorGUILayout.Space(10);
-
-        EditorGUILayout.LabelField("Logging", EditorStyles.boldLabel);
-        verbosePerObjectLogging = EditorGUILayout.ToggleLeft("Verbose per-object logging", verbosePerObjectLogging);
+        DrawTargetingSection();
+        DrawReadWriteSection();
+        DrawCleanupSection();
+        DrawReplaceSection();
+        DrawDynamicSection();
+        DrawStaticAdaptiveSection();
+        DrawPlanarSection();
+        DrawDegenerateSection();
+        DrawIslandSection();
+        DrawOutputSection();
+        DrawLoggingSection();
 
         EditorGUILayout.Space(14);
 
@@ -341,6 +294,124 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         EditorGUILayout.EndScrollView();
     }
 
+    private void DrawTargetingSection()
+    {
+        EditorGUILayout.LabelField("Targeting", EditorStyles.boldLabel);
+        targetLayerName = EditorGUILayout.TextField("Target Layer Name", targetLayerName);
+        includeInactive = EditorGUILayout.ToggleLeft("Include inactive objects", includeInactive);
+        requireMeshRenderer = EditorGUILayout.ToggleLeft("Only process objects with MeshRenderer", requireMeshRenderer);
+        skipAlreadyMarkedObjects = EditorGUILayout.ToggleLeft("Skip objects already marked as success", skipAlreadyMarkedObjects);
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawReadWriteSection()
+    {
+        EditorGUILayout.LabelField("Read/Write Auto-Fix", EditorStyles.boldLabel);
+        autoEnableReadWriteOnModelAssets = EditorGUILayout.ToggleLeft("Auto-enable Read/Write on model assets", autoEnableReadWriteOnModelAssets);
+        logReadWriteChanges = EditorGUILayout.ToggleLeft("Log Read/Write changes", logReadWriteChanges);
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawCleanupSection()
+    {
+        EditorGUILayout.LabelField("Cleanup", EditorStyles.boldLabel);
+        removeEmptyTransformOnlyLeafNodes = EditorGUILayout.ToggleLeft("Remove empty Transform-only leaf nodes", removeEmptyTransformOnlyLeafNodes);
+        removeCollidersIfNoMarker = EditorGUILayout.ToggleLeft("Remove colliders on objects WITHOUT marker", removeCollidersIfNoMarker);
+        removeCollidersNoMarker_TargetLayerOnly = EditorGUILayout.ToggleLeft("Only remove colliders on target layer (recommended)", removeCollidersNoMarker_TargetLayerOnly);
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawReplaceSection()
+    {
+        EditorGUILayout.LabelField("Replace Behavior", EditorStyles.boldLabel);
+        alwaysReplaceCollidersOnUnmarkedObjects = EditorGUILayout.ToggleLeft("Always replace colliders on unmarked objects", alwaysReplaceCollidersOnUnmarkedObjects);
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawDynamicSection()
+    {
+        EditorGUILayout.LabelField("Dynamic (Rigidbody) - VHACD Runtime", EditorStyles.boldLabel);
+        vhacdRuntimeTypeName = EditorGUILayout.TextField("VHACD Runtime Type Name", vhacdRuntimeTypeName);
+        vhacdDynamicContainerName = EditorGUILayout.TextField("Dynamic Hull Container Name", vhacdDynamicContainerName);
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawStaticAdaptiveSection()
+    {
+        EditorGUILayout.LabelField("Adaptive STATIC tiers", EditorStyles.boldLabel);
+        EditorGUILayout.HelpBox(
+            "Tiers are chosen by world bounds diagonal.\n" +
+            "If buildings are still too dense, lower targetMaxTriangles for large tiers, or increase baseCellSize.",
+            MessageType.None);
+
+        if (staticTiers == null || staticTiers.Length == 0)
+        {
+            EditorGUILayout.HelpBox("staticTiers is empty. Add at least 1 tier.", MessageType.Warning);
+            EditorGUILayout.Space(10);
+            return;
+        }
+
+        for (var i = 0; i < staticTiers.Length; i++)
+        {
+            EditorGUILayout.Space(6);
+            EditorGUILayout.LabelField($"Tier {i}", EditorStyles.miniBoldLabel);
+
+            staticTiers[i].minDiag = EditorGUILayout.FloatField("Min Diagonal", staticTiers[i].minDiag);
+            staticTiers[i].baseCellSize = EditorGUILayout.FloatField("Base Cell Size", staticTiers[i].baseCellSize);
+            staticTiers[i].maxCellSize = EditorGUILayout.FloatField("Max Cell Size", staticTiers[i].maxCellSize);
+            staticTiers[i].targetMaxTriangles = EditorGUILayout.IntField("Target Max Tris", staticTiers[i].targetMaxTriangles);
+            staticTiers[i].maxPasses = EditorGUILayout.IntField("Max Passes", staticTiers[i].maxPasses);
+            staticTiers[i].cellGrowFactor = EditorGUILayout.FloatField("Grow Factor", staticTiers[i].cellGrowFactor);
+            staticTiers[i].minCellsAcrossAxis = EditorGUILayout.IntSlider("Min Cells Across Axis", staticTiers[i].minCellsAcrossAxis, 2, 32);
+            staticTiers[i].planarMinCellsAcrossLargeAxes = EditorGUILayout.IntSlider("Planar Min Cells (Large Axes)", staticTiers[i].planarMinCellsAcrossLargeAxes, 4, 40);
+        }
+
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawPlanarSection()
+    {
+        EditorGUILayout.LabelField("Planar Handling", EditorStyles.boldLabel);
+        enablePlanarMeshHandling = EditorGUILayout.ToggleLeft("Enable planar handling", enablePlanarMeshHandling);
+        planarRatioThreshold = EditorGUILayout.Slider("Planar ratio threshold", planarRatioThreshold, 0.001f, 0.15f);
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawDegenerateSection()
+    {
+        EditorGUILayout.LabelField("Degenerate Triangle Cleanup", EditorStyles.boldLabel);
+        degenerateAreaEpsRelative = EditorGUILayout.Slider("Degenerate area eps (relative)", degenerateAreaEpsRelative, 1e-12f, 1e-6f);
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawIslandSection()
+    {
+        EditorGUILayout.LabelField("Island splitting (thin parts)", EditorStyles.boldLabel);
+        splitDisconnectedIslands = EditorGUILayout.ToggleLeft("Split disconnected islands", splitDisconnectedIslands);
+        maxIslandsToSplit = EditorGUILayout.IntSlider("Max islands to split", maxIslandsToSplit, 1, 256);
+        autoDisableIslandsIfWorldDiagAbove = EditorGUILayout.FloatField("Auto-disable if world diag >", autoDisableIslandsIfWorldDiagAbove);
+        autoDisableIslandsIfTrisAbove = EditorGUILayout.IntField("Auto-disable if tris >", autoDisableIslandsIfTrisAbove);
+        useCellCentroidAveraging = EditorGUILayout.ToggleLeft("Use centroid averaging", useCellCentroidAveraging);
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawOutputSection()
+    {
+        EditorGUILayout.LabelField("Output", EditorStyles.boldLabel);
+        outputFolder = EditorGUILayout.TextField("Output folder", outputFolder);
+        EditorGUILayout.Space(10);
+    }
+
+    private void DrawLoggingSection()
+    {
+        EditorGUILayout.LabelField("Logging", EditorStyles.boldLabel);
+        verbosePerObjectLogging = EditorGUILayout.ToggleLeft("Verbose per-object logging", verbosePerObjectLogging);
+        EditorGUILayout.Space(10);
+    }
+
+    // -------------------------
+    // Generate / Remove
+    // -------------------------
     private void GenerateForActiveScene()
     {
         var targetLayer = LayerMask.NameToLayer(targetLayerName);
@@ -357,17 +428,28 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             return;
         }
 
-        EnsureUnityFolderExists(outputFolder);
+        try
+        {
+            EnsureUnityFolderExists(outputFolder);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Output folder is invalid: {ex.Message}");
+            return;
+        }
 
         var transforms = GetAllTransformsInScene(scene, includeInactive);
 
         if (removeEmptyTransformOnlyLeafNodes)
         {
-            RemoveTransformOnlyLeafNodes(transforms);
+            var removedEmpty = RemoveTransformOnlyLeafNodes(transforms, targetLayer);
+            if (removedEmpty > 0 && verbosePerObjectLogging)
+                Debug.Log($"Removed Transform-only leaf nodes: {removedEmpty}");
+
             transforms = GetAllTransformsInScene(scene, includeInactive);
         }
 
-        int removedBadArtistColliders = 0;
+        var removedBadArtistColliders = 0;
         if (removeCollidersIfNoMarker)
         {
             removedBadArtistColliders = RemoveCollidersOnObjectsWithoutMarker(transforms, targetLayer);
@@ -376,9 +458,9 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
         if (autoEnableReadWriteOnModelAssets)
         {
-            var changedCount = EnableReadWriteForCandidateMeshes(transforms, targetLayer, out var scannedNonReadable);
+            var changedCount = EnableReadWriteForCandidateMeshes(transforms, targetLayer, out var nonReadableFound);
             if (logReadWriteChanges)
-                Debug.Log($"Read/Write pre-pass: non-readable meshes found: {scannedNonReadable}, assets changed: {changedCount}");
+                Debug.Log($"Read/Write pre-pass: non-readable meshes found: {nonReadableFound}, assets changed: {changedCount}");
 
             transforms = GetAllTransformsInScene(scene, includeInactive);
         }
@@ -393,6 +475,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         foreach (var tr in transforms)
         {
             if (tr == null) continue;
+
             var go = tr.gameObject;
 
             if (go.layer != targetLayer) continue;
@@ -415,157 +498,47 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             if (alwaysReplaceCollidersOnUnmarkedObjects)
                 replacedColliders += RemoveAllCollidersOnObject(go);
 
-            var rb = go.GetComponent<Rigidbody>();
-            var isDynamic = rb != null;
-
-            var mf = go.GetComponent<MeshFilter>();
-            var sourceMesh = mf != null ? mf.sharedMesh : null;
-
-            if (sourceMesh == null)
+            try
             {
-                Fail(marker, "No MeshFilter/sharedMesh found on this object.");
-                LogPerObjectIfEnabled(go, marker, false);
-                continue;
-            }
-
-            if (!sourceMesh.isReadable)
-            {
-                var assetPath = AssetDatabase.GetAssetPath(sourceMesh);
-                Fail(marker, string.IsNullOrEmpty(assetPath)
-                    ? "Mesh is not readable and has no importable asset path."
-                    : $"Mesh is not readable even after Read/Write pass. Asset: {assetPath}");
-                LogPerObjectIfEnabled(go, marker, false);
-                continue;
-            }
-
-            var worldDiag = GetWorldBoundsDiagonal(go, sourceMesh);
-            var trisSrc = sourceMesh.triangles != null ? sourceMesh.triangles.Length / 3 : 0;
-
-            if (!isDynamic)
-            {
-                // Choose tier based on world size
-                var tier = PickStaticTier(worldDiag);
-
-                // Auto-disable island splitting for huge building meshes
-                bool allowIslandsForThis = splitDisconnectedIslands
-                                          && worldDiag <= autoDisableIslandsIfWorldDiagAbove
-                                          && trisSrc <= autoDisableIslandsIfTrisAbove;
-
-                var simplified = TryBuildCookableSimplifiedMesh(
-                    sourceMesh,
-                    worldDiag,
-                    tier.baseCellSize,
-                    tier.maxCellSize,
-                    tier.maxPasses,
-                    tier.cellGrowFactor,
-                    tier.targetMaxTriangles,
-                    tier.minCellsAcrossAxis,
-                    tier.planarMinCellsAcrossLargeAxes,
-                    convex: false,
-                    allowIslands: allowIslandsForThis,
-                    out var usedCell,
-                    out var triCount,
-                    out var failReason);
-
-                if (simplified == null)
+                // DYNAMIC (Rigidbody) -> VHACD runtime.
+                if (go.GetComponent<Rigidbody>() != null)
                 {
-                    Fail(marker, $"Static simplification/cooking failed: {failReason}");
+                    if (TryGenerateDynamicConvexWithVhacdRuntime(go, out var dynFail))
+                    {
+                        // Dynamic debug fields intentionally left empty/zero.
+                        marker.generatedMeshAssetPath = "";
+                        Succeed(marker, GeneratedColliderMarker.ColliderKind.DynamicConvexMeshCollider, "", 0f, 0);
+
+                        addedDynamicConvex++;
+                        LogPerObjectIfEnabled(go, marker, true);
+                    }
+                    else
+                    {
+                        Fail(marker, $"Dynamic VHACD failed: {dynFail}");
+                        LogPerObjectIfEnabled(go, marker, false);
+                    }
+
+                    continue;
+                }
+
+                // STATIC (no Rigidbody) -> simplified mesh asset + single MeshCollider.
+                if (!TryGenerateStaticMeshCollider(go, marker, out var staticUsedCell, out var staticTris, out var staticFail))
+                {
+                    Fail(marker, staticFail);
                     LogPerObjectIfEnabled(go, marker, false);
                     continue;
                 }
 
-                var assetPath = SaveMeshAsAsset(simplified, outputFolder, go, usedCell, out var saveReason);
-                if (string.IsNullOrEmpty(assetPath))
-                {
-                    Fail(marker, $"Failed to save generated mesh asset: {saveReason}");
-                    LogPerObjectIfEnabled(go, marker, false);
-                    continue;
-                }
-
-                var savedMesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
-                if (savedMesh == null)
-                {
-                    AssetDatabase.DeleteAsset(assetPath);
-                    Fail(marker, "Generated mesh asset created but could not be loaded.");
-                    LogPerObjectIfEnabled(go, marker, false);
-                    continue;
-                }
-
-                var mc = Undo.AddComponent<MeshCollider>(go);
-                mc.sharedMesh = null;
-                mc.convex = false;
-                mc.cookingOptions =
-                    MeshColliderCookingOptions.CookForFasterSimulation |
-                    MeshColliderCookingOptions.UseFastMidphase |
-                    MeshColliderCookingOptions.WeldColocatedVertices;
-                mc.sharedMesh = savedMesh;
-
-                marker.generatedMeshAssetPath = assetPath;
-                Succeed(marker, GeneratedColliderMarker.ColliderKind.StaticMeshCollider, "", usedCell, triCount);
-
+                Succeed(marker, GeneratedColliderMarker.ColliderKind.StaticMeshCollider, "", staticUsedCell, staticTris);
                 addedStaticMesh++;
                 LogPerObjectIfEnabled(go, marker, true);
             }
-            else
+            catch (Exception ex)
             {
-                // Dynamic convex: adaptive based on size
-                float baseCell = worldDiag <= dynamicSmallDiag ? dynamicSmallBaseCell : dynamicLargeBaseCell;
-                int targetTris = worldDiag <= dynamicSmallDiag ? dynamicSmallTargetTris : dynamicLargeTargetTris;
-
-                var simplified = TryBuildCookableSimplifiedMesh(
-                    sourceMesh,
-                    worldDiag,
-                    baseCell,
-                    dynamicMaxCell,
-                    dynamicMaxPasses,
-                    dynamicGrowFactor,
-                    targetTris,
-                    minCellsAcrossAxis: 4,
-                    planarMinCellsAcrossLargeAxes: 8,
-                    convex: true,
-                    allowIslands: false, // convex + islands often expensive; keep simple and stable
-                    out var usedCell,
-                    out var triCount,
-                    out var failReason);
-
-                if (simplified == null)
-                {
-                    Fail(marker, $"Dynamic convex simplification/cooking failed: {failReason}");
-                    LogPerObjectIfEnabled(go, marker, false);
-                    continue;
-                }
-
-                var assetPath = SaveMeshAsAsset(simplified, outputFolder, go, usedCell, out var saveReason);
-                if (string.IsNullOrEmpty(assetPath))
-                {
-                    Fail(marker, $"Failed to save convex generated mesh asset: {saveReason}");
-                    LogPerObjectIfEnabled(go, marker, false);
-                    continue;
-                }
-
-                var savedMesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
-                if (savedMesh == null)
-                {
-                    AssetDatabase.DeleteAsset(assetPath);
-                    Fail(marker, "Convex mesh asset created but could not be loaded.");
-                    LogPerObjectIfEnabled(go, marker, false);
-                    continue;
-                }
-
-                var mc = Undo.AddComponent<MeshCollider>(go);
-                mc.sharedMesh = null;
-                mc.convex = true;
-                mc.cookingOptions =
-                    MeshColliderCookingOptions.CookForFasterSimulation |
-                    MeshColliderCookingOptions.UseFastMidphase |
-                    MeshColliderCookingOptions.WeldColocatedVertices;
-                mc.sharedMesh = savedMesh;
-
-                marker.generatedMeshAssetPath = assetPath;
-                Succeed(marker, GeneratedColliderMarker.ColliderKind.DynamicConvexMeshCollider, "", usedCell, triCount);
-
-                addedDynamicConvex++;
-                LogPerObjectIfEnabled(go, marker, true);
+                // Catching here keeps the batch running even if one mesh explodes.
+                Fail(marker, $"Exception while generating colliders: {ex.Message}");
+                Debug.LogError($"Collider generation exception on '{GetHierarchyPath(go)}':\n{ex}");
+                LogPerObjectIfEnabled(go, marker, false);
             }
         }
 
@@ -579,13 +552,110 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             $"Skipped already marked: {skippedMarked}\n" +
             $"Existing colliders removed/replaced (unmarked targets): {replacedColliders}\n" +
             $"Generated static MeshColliders: {addedStaticMesh}\n" +
-            $"Generated dynamic convex MeshColliders: {addedDynamicConvex}\n" +
+            $"Generated dynamic convex (VHACD) colliders: {addedDynamicConvex}\n" +
             $"Output folder: {outputFolder}"
         );
     }
 
+    private bool TryGenerateStaticMeshCollider(
+        GameObject go,
+        GeneratedColliderMarker marker,
+        out float usedCell,
+        out int triCount,
+        out string failReason)
+    {
+        usedCell = 0f;
+        triCount = 0;
+        failReason = "";
+
+        var mf = go.GetComponent<MeshFilter>();
+        var sourceMesh = mf != null ? mf.sharedMesh : null;
+
+        if (sourceMesh == null)
+        {
+            failReason = "No MeshFilter/sharedMesh found on this object.";
+            return false;
+        }
+
+        if (!sourceMesh.isReadable)
+        {
+            var assetPath = AssetDatabase.GetAssetPath(sourceMesh);
+            failReason = string.IsNullOrEmpty(assetPath)
+                ? "Mesh is not readable and has no importable asset path."
+                : $"Mesh is not readable even after Read/Write pass. Asset: {assetPath}";
+            return false;
+        }
+
+        var worldDiag = GetWorldBoundsDiagonal(go, sourceMesh);
+        var trisSrc = sourceMesh.triangles != null ? sourceMesh.triangles.Length / 3 : 0;
+
+        var tier = PickStaticTier(worldDiag);
+
+        // Island splitting keeps thin disconnected parts, but it can be expensive on huge meshes.
+        var allowIslandsForThis =
+            splitDisconnectedIslands &&
+            worldDiag <= autoDisableIslandsIfWorldDiagAbove &&
+            trisSrc <= autoDisableIslandsIfTrisAbove;
+
+        var simplified = TryBuildCookableSimplifiedMesh(
+            sourceMesh,
+            worldDiag,
+            tier.baseCellSize,
+            tier.maxCellSize,
+            tier.maxPasses,
+            tier.cellGrowFactor,
+            tier.targetMaxTriangles,
+            tier.minCellsAcrossAxis,
+            tier.planarMinCellsAcrossLargeAxes,
+            convex: false,
+            allowIslands: allowIslandsForThis,
+            out usedCell,
+            out triCount,
+            out var simpFailReason);
+
+        if (simplified == null)
+        {
+            failReason = $"Static simplification/cooking failed: {simpFailReason}";
+            return false;
+        }
+
+        var assetPathOut = SaveMeshAsAsset(simplified, outputFolder, go, usedCell, out var saveReason);
+        if (string.IsNullOrEmpty(assetPathOut))
+        {
+            failReason = $"Failed to save generated mesh asset: {saveReason}";
+            return false;
+        }
+
+        var savedMesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPathOut);
+        if (savedMesh == null)
+        {
+            AssetDatabase.DeleteAsset(assetPathOut);
+            failReason = "Generated mesh asset created but could not be loaded.";
+            return false;
+        }
+
+        var mc = Undo.AddComponent<MeshCollider>(go);
+        mc.sharedMesh = null;
+        mc.convex = false;
+        mc.cookingOptions =
+            MeshColliderCookingOptions.CookForFasterSimulation |
+            MeshColliderCookingOptions.UseFastMidphase |
+            MeshColliderCookingOptions.WeldColocatedVertices;
+        mc.sharedMesh = savedMesh;
+
+        marker.generatedMeshAssetPath = assetPathOut;
+        return true;
+    }
+
     private void RemoveGeneratedForActiveScene()
     {
+        var targetLayer = LayerMask.NameToLayer(targetLayerName);
+        if (targetLayer < 0)
+        {
+            Debug.LogError($"Layer '{targetLayerName}' not found. Create it in Project Settings -> Tags and Layers.");
+            return;
+        }
+
         var scene = SceneManager.GetActiveScene();
         if (!scene.IsValid() || !scene.isLoaded)
         {
@@ -598,15 +668,25 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         var removedColliders = 0;
         var removedMarkers = 0;
         var deletedAssets = 0;
+        var removedDynamicContainers = 0;
 
         foreach (var tr in transforms)
         {
             if (tr == null) continue;
 
             var go = tr.gameObject;
+            if (go.layer != targetLayer) continue;
+
             var marker = go.GetComponent<GeneratedColliderMarker>();
-            if (marker == null)
-                continue;
+            if (marker == null) continue;
+
+            // Dynamic path creates a hull container. Delete it so regen doesn't stack.
+            var container = go.transform.Find(vhacdDynamicContainerName);
+            if (container != null)
+            {
+                Undo.DestroyObjectImmediate(container.gameObject);
+                removedDynamicContainers++;
+            }
 
             removedColliders += RemoveAllCollidersOnObject(go);
 
@@ -614,6 +694,8 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             {
                 if (AssetDatabase.DeleteAsset(marker.generatedMeshAssetPath))
                     deletedAssets++;
+                else
+                    Debug.LogWarning($"Failed to delete generated mesh asset: {marker.generatedMeshAssetPath}");
             }
 
             Undo.DestroyObjectImmediate(marker);
@@ -627,20 +709,185 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             "Removed generated colliders.\n" +
             $"Removed colliders: {removedColliders}\n" +
             $"Removed markers: {removedMarkers}\n" +
-            $"Deleted mesh assets: {deletedAssets}"
+            $"Deleted mesh assets: {deletedAssets}\n" +
+            $"Removed dynamic VHACD containers: {removedDynamicContainers}"
         );
     }
 
-    // ----------------------------
-    // Adaptive tier selection
-    // ----------------------------
+    // -------------------------
+    // Dynamic VHACD
+    // -------------------------
+    private bool TryGenerateDynamicConvexWithVhacdRuntime(GameObject go, out string failReason)
+    {
+        failReason = "";
 
+        // Clean old hull container so we don't stack duplicates.
+        var existingContainer = go.transform.Find(vhacdDynamicContainerName);
+        if (existingContainer != null)
+            Undo.DestroyObjectImmediate(existingContainer.gameObject);
+
+        var runtimeType = GetVhacdRuntimeType();
+        if (runtimeType == null)
+        {
+            failReason =
+                $"Could not find type '{vhacdRuntimeTypeName}'. " +
+                "Make sure the runtime script exists and the name matches (case-sensitive).";
+            Debug.LogError($"{GetHierarchyPath(go)}: {failReason}");
+            return false;
+        }
+
+        Component runtime = null;
+
+        try
+        {
+            runtime = Undo.AddComponent(go, runtimeType);
+
+            // Preferred: runtime handles generation + application internally.
+            if (InvokeIfExists(runtime, "GenerateAndApplyConvexColliders"))
+            {
+                Undo.DestroyObjectImmediate(runtime);
+                return true;
+            }
+
+            // Fallback: get convex meshes, then we apply compound MeshColliders here.
+            var meshes = InvokeGenerateConvexMeshes(runtime);
+            if (meshes == null || meshes.Count == 0)
+            {
+                failReason =
+                    "No convex meshes produced. Missing GenerateAndApplyConvexColliders and GenerateConvexMeshes returned nothing.";
+                Debug.LogError($"{GetHierarchyPath(go)}: {failReason}");
+                Undo.DestroyObjectImmediate(runtime);
+                return false;
+            }
+
+            ApplyConvexMeshesAsCompoundColliders(go, meshes, vhacdDynamicContainerName);
+
+            Undo.DestroyObjectImmediate(runtime);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            failReason = ex.Message;
+            Debug.LogError($"VHACD runtime exception on '{GetHierarchyPath(go)}':\n{ex}");
+
+            if (runtime != null)
+                Undo.DestroyObjectImmediate(runtime);
+
+            return false;
+        }
+    }
+
+    private static void ApplyConvexMeshesAsCompoundColliders(GameObject go, List<Mesh> meshes, string containerName)
+    {
+        var container = new GameObject(containerName);
+        Undo.RegisterCreatedObjectUndo(container, "Create VHACD Hull Container");
+        container.transform.SetParent(go.transform, false);
+
+        for (var i = 0; i < meshes.Count; i++)
+        {
+            var hullMesh = meshes[i];
+            if (hullMesh == null) continue;
+
+            var child = new GameObject($"Hull_{i}");
+            Undo.RegisterCreatedObjectUndo(child, "Create VHACD Hull");
+            child.transform.SetParent(container.transform, false);
+
+            var mc = Undo.AddComponent<MeshCollider>(child);
+            mc.sharedMesh = hullMesh;
+            mc.convex = true;
+        }
+    }
+
+    private Type GetVhacdRuntimeType()
+    {
+        // Cache is keyed by the current type name so changing the field in the UI works instantly.
+        if (_cachedVhacdRuntimeType != null && _cachedVhacdRuntimeTypeName == vhacdRuntimeTypeName)
+            return _cachedVhacdRuntimeType;
+
+        _cachedVhacdRuntimeTypeName = vhacdRuntimeTypeName;
+        _cachedVhacdRuntimeType = FindTypeByName(vhacdRuntimeTypeName);
+        return _cachedVhacdRuntimeType;
+    }
+
+    private static Type FindTypeByName(string typeName)
+    {
+        if (string.IsNullOrWhiteSpace(typeName))
+            return null;
+
+        // Works if typeName is assembly-qualified (rare, but useful).
+        var direct = Type.GetType(typeName, false);
+        if (direct != null) return direct;
+
+        // Otherwise scan loaded assemblies.
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        for (var i = 0; i < assemblies.Length; i++)
+        {
+            Type[] types;
+
+            try { types = assemblies[i].GetTypes(); }
+            catch { continue; }
+
+            for (var t = 0; t < types.Length; t++)
+            {
+                var candidate = types[t];
+                if (candidate == null) continue;
+
+                if (candidate.Name == typeName || candidate.FullName == typeName)
+                    return candidate;
+            }
+        }
+
+        return null;
+    }
+
+    private static bool InvokeIfExists(Component target, string methodName)
+    {
+        if (target == null) return false;
+
+        var mi = target.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        if (mi == null) return false;
+
+        if (mi.GetParameters().Length != 0)
+            return false;
+
+        mi.Invoke(target, null);
+        return true;
+    }
+
+    private static List<Mesh> InvokeGenerateConvexMeshes(Component target)
+    {
+        if (target == null) return null;
+
+        var mi = target.GetType().GetMethod("GenerateConvexMeshes", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        if (mi == null) return null;
+
+        var ps = mi.GetParameters();
+        object result;
+
+        if (ps.Length == 0)
+        {
+            result = mi.Invoke(target, null);
+        }
+        else if (ps.Length == 1)
+        {
+            // Pass null so the runtime can pull MeshFilter.sharedMesh internally if it wants.
+            result = mi.Invoke(target, new object[] { null });
+        }
+        else
+        {
+            return null;
+        }
+
+        return result as List<Mesh>;
+    }
+
+    // -------------------------
+    // Adaptive tier selection
+    // -------------------------
     private StaticAdaptiveTier PickStaticTier(float worldDiag)
     {
-        // Ensure tiers sorted by minDiag
         if (staticTiers == null || staticTiers.Length == 0)
         {
-            // Fallback safe tier
             return new StaticAdaptiveTier
             {
                 minDiag = 0f,
@@ -654,15 +901,14 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             };
         }
 
-        // pick last tier whose minDiag <= worldDiag
-        StaticAdaptiveTier best = staticTiers[0];
-        for (int i = 0; i < staticTiers.Length; i++)
+        var best = staticTiers[0];
+        for (var i = 0; i < staticTiers.Length; i++)
         {
             if (worldDiag >= staticTiers[i].minDiag)
                 best = staticTiers[i];
         }
 
-        // sanitize values
+        // Safety clamps so weird values don't break the generator.
         best.baseCellSize = Mathf.Max(0.0001f, best.baseCellSize);
         best.maxCellSize = Mathf.Max(best.baseCellSize, best.maxCellSize);
         best.targetMaxTriangles = Mathf.Max(50, best.targetMaxTriangles);
@@ -676,22 +922,20 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
     private float GetWorldBoundsDiagonal(GameObject go, Mesh mesh)
     {
-        // Prefer renderer bounds (world-space), because transforms/scales matter.
         var r = go.GetComponent<Renderer>();
         if (r != null)
             return r.bounds.size.magnitude;
 
-        // Fallback: approximate world size using mesh bounds + lossy scale.
+        // Fallback if object has no renderer.
         var s = mesh.bounds.size;
         var lossy = go.transform.lossyScale;
         var ws = new Vector3(Mathf.Abs(s.x * lossy.x), Mathf.Abs(s.y * lossy.y), Mathf.Abs(s.z * lossy.z));
         return ws.magnitude;
     }
 
-    // ----------------------------
-    // Mesh generation
-    // ----------------------------
-
+    // -------------------------
+    // Mesh generation (STATIC)
+    // -------------------------
     private Mesh TryBuildCookableSimplifiedMesh(
         Mesh sourceMesh,
         float worldDiag,
@@ -721,13 +965,13 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         passes = Mathf.Max(1, passes);
         growFactor = Mathf.Max(1.01f, growFactor);
 
-        float cell = Mathf.Max(0.0001f, startCellSize);
+        var cell = Mathf.Max(0.0001f, startCellSize);
 
         Mesh lastValid = null;
-        float lastValidCell = cell;
-        int lastValidTris = 0;
+        var lastValidCell = cell;
+        var lastValidTris = 0;
 
-        for (int pass = 1; pass <= passes; pass++)
+        for (var pass = 1; pass <= passes; pass++)
         {
             cell = Mathf.Min(cell, maxAllowedCellSize);
 
@@ -741,6 +985,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
                     minCellsAcrossAxis: minCellsAcrossAxis,
                     planarMinCellsAcrossLargeAxes: planarMinCellsAcrossLargeAxes,
                     out var simpReason);
+
                 if (simplified == null)
                 {
                     failReason = $"Pass {pass}/{passes}: island simplify failed: {simpReason}";
@@ -757,6 +1002,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
                     planarMinCellsAcrossLargeAxes: planarMinCellsAcrossLargeAxes);
 
                 simplified = SimplifyMeshByVertexClustering(sourceMesh, cellVec, out var simpReason);
+
                 if (simplified == null)
                 {
                     failReason = $"Pass {pass}/{passes}: simplify failed: {simpReason}";
@@ -765,7 +1011,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
                 }
             }
 
-            int tris = simplified.triangles.Length / 3;
+            var tris = simplified.triangles.Length / 3;
 
             lastValid = simplified;
             lastValidCell = cell;
@@ -791,7 +1037,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             return simplified;
         }
 
-        // Final fallback: if last valid is cookable, return it even if above target
+        // If we never hit the target, return the last cookable mesh we had.
         if (lastValid != null && CanPhysXCookMesh(lastValid, convex, out _))
         {
             usedCellSize = lastValidCell;
@@ -812,17 +1058,17 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
     {
         var b = bounds.size;
 
-        float maxAxis = Mathf.Max(b.x, Mathf.Max(b.y, b.z));
-        float minAxis = Mathf.Min(b.x, Mathf.Min(b.y, b.z));
-        bool isPlanar = enablePlanarMeshHandling && maxAxis > 1e-6f && (minAxis / maxAxis) < planarRatioThreshold;
+        var maxAxis = Mathf.Max(b.x, Mathf.Max(b.y, b.z));
+        var minAxis = Mathf.Min(b.x, Mathf.Min(b.y, b.z));
+        var isPlanar = enablePlanarMeshHandling && maxAxis > 1e-6f && (minAxis / maxAxis) < planarRatioThreshold;
 
-        int cellsX = minCellsAcrossAxis;
-        int cellsY = minCellsAcrossAxis;
-        int cellsZ = minCellsAcrossAxis;
+        var cellsX = minCellsAcrossAxis;
+        var cellsY = minCellsAcrossAxis;
+        var cellsZ = minCellsAcrossAxis;
 
         if (isPlanar)
         {
-            // Boost only the TWO large axes to keep planar surfaces stable.
+            // Thin axis keeps default, big axes get higher cell count for detail.
             if (b.x <= b.y && b.x <= b.z) { cellsY = planarMinCellsAcrossLargeAxes; cellsZ = planarMinCellsAcrossLargeAxes; }
             else if (b.y <= b.x && b.y <= b.z) { cellsX = planarMinCellsAcrossLargeAxes; cellsZ = planarMinCellsAcrossLargeAxes; }
             else { cellsX = planarMinCellsAcrossLargeAxes; cellsY = planarMinCellsAcrossLargeAxes; }
@@ -831,10 +1077,9 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         float ClampAxis(float axisSize, int cells)
         {
             if (axisSize <= 1e-6f) return baseCell;
-            float byCells = axisSize / Mathf.Max(2, cells);
-            // Key behavior:
-            // - Never use a cell larger than baseCell (keep detail when needed)
-            // - But enforce enough cells across axis (thin parts survive)
+
+            // Keep at least a few cells across the axis so thin features don't disappear.
+            var byCells = axisSize / Mathf.Max(2, cells);
             return Mathf.Min(baseCell, Mathf.Max(0.000001f, byCells));
         }
 
@@ -845,10 +1090,9 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         );
     }
 
-    // ----------------------------
+    // -------------------------
     // Island splitting (thin parts)
-    // ----------------------------
-
+    // -------------------------
     private sealed class UF
     {
         private readonly int[] parent;
@@ -858,7 +1102,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         {
             parent = new int[n];
             rank = new byte[n];
-            for (int i = 0; i < n; i++) parent[i] = i;
+            for (var i = 0; i < n; i++) parent[i] = i;
         }
 
         public int Find(int x)
@@ -873,7 +1117,8 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
         public void Union(int a, int b)
         {
-            int ra = Find(a), rb = Find(b);
+            var ra = Find(a);
+            var rb = Find(b);
             if (ra == rb) return;
 
             if (rank[ra] < rank[rb]) parent[ra] = rb;
@@ -907,9 +1152,9 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         var mergedVerts = new List<Vector3>(Mathf.Min(sourceMesh.vertexCount, 200000));
         var mergedTris = new List<int>(Mathf.Min(sourceMesh.triangles.Length, 400000));
 
-        int vertexOffset = 0;
+        var vertexOffset = 0;
 
-        for (int i = 0; i < islands.Count; i++)
+        for (var i = 0; i < islands.Count; i++)
         {
             var islandMesh = islands[i];
             if (islandMesh == null || islandMesh.vertexCount < 3 || islandMesh.triangles.Length < 3)
@@ -917,18 +1162,15 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
             var cellVec = ComputeCellVectorForBounds(islandMesh.bounds, baseCell, minCellsAcrossAxis, planarMinCellsAcrossLargeAxes);
 
-            var simp = SimplifyMeshByVertexClustering(islandMesh, cellVec, out var simpReason);
+            var simp = SimplifyMeshByVertexClustering(islandMesh, cellVec, out _);
             if (simp == null)
-            {
-                // Fallback: keep original island rather than losing it
                 simp = islandMesh;
-            }
 
             var v = simp.vertices;
             var t = simp.triangles;
 
             mergedVerts.AddRange(v);
-            for (int ti = 0; ti < t.Length; ti++)
+            for (var ti = 0; ti < t.Length; ti++)
                 mergedTris.Add(t[ti] + vertexOffset);
 
             vertexOffset += v.Length;
@@ -943,9 +1185,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         var merged = new Mesh
         {
             name = sourceMesh.name + "_ColliderMergedIslands",
-            indexFormat = mergedVerts.Count > 65535
-                ? UnityEngine.Rendering.IndexFormat.UInt32
-                : UnityEngine.Rendering.IndexFormat.UInt16
+            indexFormat = mergedVerts.Count > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16
         };
         merged.SetVertices(mergedVerts);
         merged.SetTriangles(mergedTris, 0);
@@ -976,11 +1216,12 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
         var uf = new UF(verts.Length);
 
-        for (int i = 0; i < tris.Length; i += 3)
+        // Union vertices that are connected by triangles.
+        for (var i = 0; i < tris.Length; i += 3)
         {
-            int a = tris[i];
-            int b = tris[i + 1];
-            int c = tris[i + 2];
+            var a = tris[i];
+            var b = tris[i + 1];
+            var c = tris[i + 2];
 
             if ((uint)a >= (uint)verts.Length || (uint)b >= (uint)verts.Length || (uint)c >= (uint)verts.Length)
                 continue;
@@ -992,26 +1233,24 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
         var compToTriStarts = new Dictionary<int, List<int>>(64);
 
-        for (int i = 0; i < tris.Length; i += 3)
+        for (var i = 0; i < tris.Length; i += 3)
         {
-            int a = tris[i];
+            var a = tris[i];
             if ((uint)a >= (uint)verts.Length) continue;
 
-            int root = uf.Find(a);
+            var root = uf.Find(a);
 
             if (!compToTriStarts.TryGetValue(root, out var list))
             {
                 list = new List<int>();
                 compToTriStarts[root] = list;
 
+                // Too many islands -> just treat as one mesh (avoid explosion).
                 if (compToTriStarts.Count > maxIslands)
-                {
-                    // Too many islands; return a single clone (no split)
                     return new List<Mesh>(1) { CloneMesh(sourceMesh, sourceMesh.name + "_IslandSingle") };
-                }
             }
 
-            list.Add(i); // store tri start index
+            list.Add(i);
         }
 
         var islands = new List<Mesh>(compToTriStarts.Count);
@@ -1025,17 +1264,17 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             var newVerts = new List<Vector3>(256);
             var newTris = new List<int>(triStarts.Count * 3);
 
-            for (int ti = 0; ti < triStarts.Count; ti++)
+            for (var ti = 0; ti < triStarts.Count; ti++)
             {
-                int t0 = triStarts[ti];
+                var t0 = triStarts[ti];
 
-                int a = tris[t0];
-                int b = tris[t0 + 1];
-                int c = tris[t0 + 2];
+                var a = tris[t0];
+                var b = tris[t0 + 1];
+                var c = tris[t0 + 2];
 
-                int na = RemapVertex(a, verts, map, newVerts);
-                int nb = RemapVertex(b, verts, map, newVerts);
-                int nc = RemapVertex(c, verts, map, newVerts);
+                var na = RemapVertex(a, verts, map, newVerts);
+                var nb = RemapVertex(b, verts, map, newVerts);
+                var nc = RemapVertex(c, verts, map, newVerts);
 
                 newTris.Add(na);
                 newTris.Add(nb);
@@ -1048,9 +1287,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             var m = new Mesh
             {
                 name = sourceMesh.name + "_Island",
-                indexFormat = newVerts.Count > 65535
-                    ? UnityEngine.Rendering.IndexFormat.UInt32
-                    : UnityEngine.Rendering.IndexFormat.UInt16
+                indexFormat = newVerts.Count > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16
             };
             m.SetVertices(newVerts);
             m.SetTriangles(newTris, 0);
@@ -1071,17 +1308,13 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
     private static int RemapVertex(int oldIndex, Vector3[] verts, Dictionary<int, int> map, List<Vector3> newVerts)
     {
-        if (map.TryGetValue(oldIndex, out int ni))
+        if (map.TryGetValue(oldIndex, out var ni))
             return ni;
 
         ni = newVerts.Count;
         map[oldIndex] = ni;
 
-        if ((uint)oldIndex < (uint)verts.Length)
-            newVerts.Add(verts[oldIndex]);
-        else
-            newVerts.Add(Vector3.zero);
-
+        newVerts.Add((uint)oldIndex < (uint)verts.Length ? verts[oldIndex] : Vector3.zero);
         return ni;
     }
 
@@ -1090,9 +1323,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         var m = new Mesh
         {
             name = name,
-            indexFormat = src.vertexCount > 65535
-                ? UnityEngine.Rendering.IndexFormat.UInt32
-                : UnityEngine.Rendering.IndexFormat.UInt16
+            indexFormat = src.vertexCount > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16
         };
         m.SetVertices(src.vertices);
         m.SetTriangles(src.triangles, 0);
@@ -1101,10 +1332,9 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         return m;
     }
 
-    // ----------------------------
+    // -------------------------
     // Vertex clustering simplifier
-    // ----------------------------
-
+    // -------------------------
     private Mesh SimplifyMeshByVertexClustering(Mesh sourceMesh, Vector3 cellSize, out string reason)
     {
         reason = "";
@@ -1130,12 +1360,13 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             return null;
         }
 
-        // Bounds-relative epsilon for removing truly-degenerate triangles
-        float diag = sourceMesh.bounds.size.magnitude;
+        // Degenerate filtering scale based on mesh bounds.
+        var diag = sourceMesh.bounds.size.magnitude;
         if (diag < 1e-6f) diag = 1e-6f;
-        float epsLen = diag * Mathf.Max(1e-12f, degenerateAreaEpsRelative);
-        float epsArea = epsLen * epsLen;
-        float areaEpsSqr = epsArea * epsArea; // compare against cross.sqrMagnitude
+
+        var epsLen = diag * Mathf.Max(1e-12f, degenerateAreaEpsRelative);
+        var epsArea = epsLen * epsLen;
+        var areaEpsSqr = epsArea * epsArea;
 
         var inv = new Vector3(1f / cellSize.x, 1f / cellSize.y, 1f / cellSize.z);
 
@@ -1144,7 +1375,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         var count = new List<int>(sourceVertices.Length);
         var oldToNew = new int[sourceVertices.Length];
 
-        for (int i = 0; i < sourceVertices.Length; i++)
+        for (var i = 0; i < sourceVertices.Length; i++)
         {
             var p = sourceVertices[i];
 
@@ -1154,7 +1385,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
                 Mathf.FloorToInt(p.z * inv.z)
             );
 
-            if (!cellToIndex.TryGetValue(key, out int newIndex))
+            if (!cellToIndex.TryGetValue(key, out var newIndex))
             {
                 newIndex = sum.Count;
                 cellToIndex[key] = newIndex;
@@ -1171,19 +1402,19 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
         if (useCellCentroidAveraging)
         {
-            for (int i = 0; i < sum.Count; i++)
+            for (var i = 0; i < sum.Count; i++)
                 newVertices.Add(count[i] > 0 ? (sum[i] / count[i]) : Vector3.zero);
         }
         else
         {
-            newVertices.Capacity = sum.Count;
-            for (int i = 0; i < sum.Count; i++)
+            // Keep indices aligned with sum/count by filling zeros first.
+            for (var i = 0; i < sum.Count; i++)
                 newVertices.Add(Vector3.zero);
 
             foreach (var kvp in cellToIndex)
             {
                 var key = kvp.Key;
-                int idx = kvp.Value;
+                var idx = kvp.Value;
 
                 newVertices[idx] = new Vector3(
                     (key.x + 0.5f) * cellSize.x,
@@ -1195,12 +1426,13 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
         var newTriangles = new List<int>(sourceTriangles.Length);
 
-        for (int i = 0; i < sourceTriangles.Length; i += 3)
+        for (var i = 0; i < sourceTriangles.Length; i += 3)
         {
-            int a = oldToNew[sourceTriangles[i]];
-            int b = oldToNew[sourceTriangles[i + 1]];
-            int c = oldToNew[sourceTriangles[i + 2]];
+            var a = oldToNew[sourceTriangles[i]];
+            var b = oldToNew[sourceTriangles[i + 1]];
+            var c = oldToNew[sourceTriangles[i + 2]];
 
+            // Collapse triangles that became degenerate due to clustering.
             if (a == b || b == c || a == c)
                 continue;
 
@@ -1235,9 +1467,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         var simplified = new Mesh
         {
             name = sourceMesh.name + "_ColliderSimplified",
-            indexFormat = newVertices.Count > 65535
-                ? UnityEngine.Rendering.IndexFormat.UInt32
-                : UnityEngine.Rendering.IndexFormat.UInt16
+            indexFormat = newVertices.Count > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16
         };
 
         simplified.SetVertices(newVertices);
@@ -1254,10 +1484,9 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         return simplified;
     }
 
-    // ----------------------------
+    // -------------------------
     // PhysX + validity
-    // ----------------------------
-
+    // -------------------------
     private static bool CanPhysXCookMesh(Mesh mesh, bool convex, out string reason)
     {
         reason = "";
@@ -1288,32 +1517,37 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         return true;
     }
 
-    // ----------------------------
+    // -------------------------
     // Scene traversal & cleanup
-    // ----------------------------
-
+    // -------------------------
     private static Transform[] GetAllTransformsInScene(Scene scene, bool includeInactiveObjects)
     {
         var roots = scene.GetRootGameObjects();
         var list = new List<Transform>(2048);
-        foreach (var root in roots)
-            list.AddRange(root.GetComponentsInChildren<Transform>(includeInactiveObjects));
+
+        for (var i = 0; i < roots.Length; i++)
+            list.AddRange(roots[i].GetComponentsInChildren<Transform>(includeInactiveObjects));
+
         return list.ToArray();
     }
 
-    private static int RemoveTransformOnlyLeafNodes(Transform[] allTransforms)
+    private static int RemoveTransformOnlyLeafNodes(Transform[] allTransforms, int targetLayer)
     {
         Array.Sort(allTransforms, (a, b) => GetDepth(b).CompareTo(GetDepth(a)));
 
-        int removed = 0;
+        var removed = 0;
 
-        foreach (var tr in allTransforms)
+        for (var i = 0; i < allTransforms.Length; i++)
         {
+            var tr = allTransforms[i];
             if (tr == null) continue;
             if (tr.childCount != 0) continue;
             if (tr.parent == null) continue;
 
             var go = tr.gameObject;
+            if (go.layer != targetLayer) continue;
+
+            // Only Transform means exactly one component: Transform.
             var comps = go.GetComponents<Component>();
             if (comps.Length != 1) continue;
 
@@ -1326,23 +1560,28 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
     private int RemoveCollidersOnObjectsWithoutMarker(Transform[] transforms, int targetLayer)
     {
-        int removed = 0;
+        var removed = 0;
 
-        foreach (var tr in transforms)
+        for (var i = 0; i < transforms.Length; i++)
         {
+            var tr = transforms[i];
             if (tr == null) continue;
+
             var go = tr.gameObject;
 
             if (removeCollidersNoMarker_TargetLayerOnly && go.layer != targetLayer)
                 continue;
 
+            if (!removeCollidersNoMarker_TargetLayerOnly && go.layer != targetLayer)
+                continue; // safety: original behavior was effectively target-layer only anyway
+
             if (go.GetComponent<GeneratedColliderMarker>() != null)
                 continue;
 
             var cols = go.GetComponents<Collider>();
-            for (int i = 0; i < cols.Length; i++)
+            for (var c = 0; c < cols.Length; c++)
             {
-                Undo.DestroyObjectImmediate(cols[i]);
+                Undo.DestroyObjectImmediate(cols[c]);
                 removed++;
             }
         }
@@ -1352,35 +1591,42 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
     private static int RemoveAllCollidersOnObject(GameObject go)
     {
-        int removed = 0;
+        var removed = 0;
         var cols = go.GetComponents<Collider>();
-        for (int i = 0; i < cols.Length; i++)
+
+        for (var i = 0; i < cols.Length; i++)
         {
             Undo.DestroyObjectImmediate(cols[i]);
             removed++;
         }
+
         return removed;
     }
 
     private static int GetDepth(Transform tr)
     {
-        int depth = 0;
-        while (tr.parent != null) { depth++; tr = tr.parent; }
+        var depth = 0;
+        while (tr.parent != null)
+        {
+            depth++;
+            tr = tr.parent;
+        }
         return depth;
     }
 
-    // ----------------------------
+    // -------------------------
     // Read/Write prepass
-    // ----------------------------
-
+    // -------------------------
     private int EnableReadWriteForCandidateMeshes(Transform[] transforms, int targetLayer, out int nonReadableMeshesFound)
     {
         nonReadableMeshesFound = 0;
         var pathsToFix = new HashSet<string>();
 
-        foreach (var tr in transforms)
+        for (var i = 0; i < transforms.Length; i++)
         {
+            var tr = transforms[i];
             if (tr == null) continue;
+
             var go = tr.gameObject;
 
             if (go.layer != targetLayer) continue;
@@ -1401,13 +1647,15 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
                 pathsToFix.Add(assetPath);
         }
 
-        int changed = 0;
+        var changed = 0;
 
         foreach (var assetPath in pathsToFix)
         {
-            var importer = AssetImporter.GetAtPath(assetPath) as ModelImporter;
-            if (importer == null) continue;
-            if (importer.isReadable) continue;
+            if (AssetImporter.GetAtPath(assetPath) is not ModelImporter importer)
+                continue;
+
+            if (importer.isReadable)
+                continue;
 
             importer.isReadable = true;
             importer.SaveAndReimport();
@@ -1423,10 +1671,9 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         return changed;
     }
 
-    // ----------------------------
+    // -------------------------
     // Marker helpers
-    // ----------------------------
-
+    // -------------------------
     private static void ResetMarkerForNewAttempt(GeneratedColliderMarker marker)
     {
         marker.generatedSuccessfully = false;
@@ -1442,11 +1689,16 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
     {
         marker.generatedSuccessfully = false;
         marker.generatedColliderKind = GeneratedColliderMarker.ColliderKind.None;
-        marker.lastFailureReason = reason;
+        marker.lastFailureReason = reason ?? "";
         EditorUtility.SetDirty(marker);
     }
 
-    private static void Succeed(GeneratedColliderMarker marker, GeneratedColliderMarker.ColliderKind kind, string reasonIfAny, float cellSizeUsedValue, int triCountValue)
+    private static void Succeed(
+        GeneratedColliderMarker marker,
+        GeneratedColliderMarker.ColliderKind kind,
+        string reasonIfAny,
+        float cellSizeUsedValue,
+        int triCountValue)
     {
         marker.generatedSuccessfully = true;
         marker.generatedColliderKind = kind;
@@ -1468,10 +1720,9 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             Debug.LogWarning($"[ColliderGen FAIL] {path} -> {marker.lastFailureReason}");
     }
 
-    // ----------------------------
-    // Asset saving
-    // ----------------------------
-
+    // -------------------------
+    // Asset saving (STATIC)
+    // -------------------------
     private static string SaveMeshAsAsset(Mesh mesh, string folder, GameObject owner, float usedCellSize, out string reason)
     {
         reason = "";
@@ -1515,7 +1766,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
             throw new Exception("Output folder must be under 'Assets/...'. Example: Assets/GeneratedColliders");
 
         var current = "Assets";
-        for (int i = 1; i < parts.Length; i++)
+        for (var i = 1; i < parts.Length; i++)
         {
             var next = current + "/" + parts[i];
             if (!AssetDatabase.IsValidFolder(next))
@@ -1527,8 +1778,10 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
 
     private static string SanitizeFileName(string name)
     {
-        foreach (var c in Path.GetInvalidFileNameChars())
-            name = name.Replace(c, '_');
+        var invalid = Path.GetInvalidFileNameChars();
+        for (var i = 0; i < invalid.Length; i++)
+            name = name.Replace(invalid[i], '_');
+
         return name.Replace(' ', '_');
     }
 
@@ -1536,11 +1789,13 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
     {
         var tr = go.transform;
         var path = tr.name;
+
         while (tr.parent != null)
         {
             tr = tr.parent;
             path = tr.name + "/" + path;
         }
+
         return path;
     }
 }

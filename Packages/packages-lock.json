@@ -63,13 +63,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.ide.vscode": {
-      "version": "1.2.5",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.inputsystem": {
       "version": "1.16.0",
       "depth": 0,
@@ -132,6 +125,13 @@
       "dependencies": {
         "com.unity.render-pipelines.core": "17.0.3"
       }
+    },
+    "com.unity.robotics.vhacd": {
+      "version": "https://github.com/Unity-Technologies/VHACD.git?path=/com.unity.robotics.vhacd",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "854b3d820901804c338365c63f067ad7f1c4b9c0"
     },
     "com.unity.searcher": {
       "version": "4.9.4",
