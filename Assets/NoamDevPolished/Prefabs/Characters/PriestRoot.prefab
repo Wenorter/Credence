@@ -258,6 +258,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PriestAnimationDriver
   isWalkingParam: IsWalking
   walkInputThreshold: 0.1
+  headBone: {fileID: 0}
+  cameraPitchPivot: {fileID: 0}
+  headMaxUp: 35
+  headMaxDown: 25
+  headWeight: 0.85
+  headSmooth: 18
+  invertPitch: 0
+  lookPitchSensitivity: 0.12
 --- !u!1 &7138456888331053979
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +275,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3769306218556742672}
-  - component: {fileID: 1941001256304019438}
   m_Layer: 0
   m_Name: CameraPivot
   m_TagString: Untagged
@@ -291,23 +298,6 @@ Transform:
   - {fileID: 8428629809159193249}
   m_Father: {fileID: 7653097776128101524}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1941001256304019438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7138456888331053979}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9856a1e9accf53b49a4e8c3e96f9c00d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraHeadFollow
-  animator: {fileID: 636522325850199754}
-  followMode: 0
-  headTransform: {fileID: 0}
-  localOffset: {x: 0, y: 0, z: 0.125}
-  followRotation: 0
 --- !u!1001 &968129774234837227
 PrefabInstance:
   m_ObjectHideFlags: 0

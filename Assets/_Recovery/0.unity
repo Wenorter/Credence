@@ -18659,14 +18659,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 959981055809388681, guid: 50bb3ebcf5778024c9c5626968128c07, type: 3}
-      propertyPath: maxPitch
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 959981055809388681, guid: 50bb3ebcf5778024c9c5626968128c07, type: 3}
-      propertyPath: minPitch
-      value: -60
-      objectReference: {fileID: 0}
-    - target: {fileID: 959981055809388681, guid: 50bb3ebcf5778024c9c5626968128c07, type: 3}
       propertyPath: moveSpeed
       value: 5
       objectReference: {fileID: 0}
@@ -18685,10 +18677,6 @@ PrefabInstance:
     - target: {fileID: 2230808775107155364, guid: 50bb3ebcf5778024c9c5626968128c07, type: 3}
       propertyPath: headMaxUp
       value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 2230808775107155364, guid: 50bb3ebcf5778024c9c5626968128c07, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2230808775107155364, guid: 50bb3ebcf5778024c9c5626968128c07, type: 3}
       propertyPath: followMode
@@ -18716,7 +18704,7 @@ PrefabInstance:
       objectReference: {fileID: 1538882107}
     - target: {fileID: 2230808775107155364, guid: 50bb3ebcf5778024c9c5626968128c07, type: 3}
       propertyPath: headPitchOffsetDegrees
-      value: -50
+      value: -18
       objectReference: {fileID: 0}
     - target: {fileID: 2950208476328358014, guid: 50bb3ebcf5778024c9c5626968128c07, type: 3}
       propertyPath: m_Name
