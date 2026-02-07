@@ -149,7 +149,7 @@ public sealed class ChurchColliderGeneratorWindow : EditorWindow
         "Bigger value => bigger cell size for big meshes => fewer triangles.\n" +
         "Small meshes keep baseline quality (no upscaling for ratio < 1).")]
     [Range(0f, 2f)]
-    [SerializeField] private float staticCellInverseScalePower = 0.75f; // was ~0.55, now much coarser for rooms
+    [SerializeField] private float staticCellInverseScalePower = 0.6f; // was ~0.55, now much coarser for rooms
 
     [Tooltip("Clamp the size ratio used for scaling (prevents extreme tiny/huge objects from exploding settings).")]
     [SerializeField] private float staticScaleClampMin = 0.30f;
