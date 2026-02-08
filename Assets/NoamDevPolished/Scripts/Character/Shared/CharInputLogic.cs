@@ -31,7 +31,7 @@ public class CharInputLogic : MonoBehaviour
     [SerializeField] private float stepCheckDistance = 0.25f;
 
     [Tooltip("Height above the controller bottom where we check for a 'step obstacle'.")]
-    [Range(0.0f, 0.3f)]
+    [Range(-2f, 2f)]
     [SerializeField] private float footCheckHeight = -1.025f;
 
     [Tooltip("If true, triggers are ignored for step checks.")]
@@ -74,17 +74,6 @@ public class CharInputLogic : MonoBehaviour
         if (characterCamera == null)
             characterCamera = GetComponentInChildren<Camera>(true)?.transform;
     }
-
-    private void OnValidate()
-    {
-        if (minPitch > -5f) minPitch = -5f;
-        if (maxPitch < 5f) maxPitch = 5f;
-        if (minPitch > maxPitch) minPitch = maxPitch - 1f;
-
-        if (stepCheckDistance < 0.05f) stepCheckDistance = 0.05f;
-        if (footCheckHeight < 0f) footCheckHeight = 0f;
-    }
-
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
