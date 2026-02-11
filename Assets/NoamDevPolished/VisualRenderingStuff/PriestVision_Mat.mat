@@ -1,0 +1,284 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1461179252412451962
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PriestVision_Mat
+  m_Shader: {fileID: 4800000, guid: 459425fb8e8978c4e90b65e217580e22, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - GEOM_TYPE_BRANCH
+  - _GLOSSYREFLECTIONS_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Material_Texture2D_0:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - AO_Contrast_main_layer: 1
+    - AO_Intensity_main_layer: 1
+    - Base_UV___U_Tiling_main_layer: 1
+    - Base_UV___V_Tiling_main_layer: 1
+    - Brightness_main_layer: 1
+    - Metallic_main_layer: 0
+    - Normal_intensity_main_layer: 1
+    - Rotation_custom_main_layer: 0
+    - Roughness_max_main_layer: 1
+    - Roughness_min_main_layer: 0
+    - Specular_main_layer: 0.15
+    - UV_Tiling_main_layer: 1
+    - U_tile_main_layer: 0
+    - V_tile_main_layer: 0
+    - _AddPrecomputedVelocity: 0
+    - _AfterimagePersistence: 0.95
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _BlackLevel: 0.85
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BumpFeather: 0.08
+    - _BumpGateEnd: 0.95
+    - _BumpGateStart: 0.65
+    - _BumpPower: 2
+    - _BumpScale: 1
+    - _BumpStrength: 0.55
+    - _BumpThreshold: 0.18
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _CloseAmbient: 0.06
+    - _CloseBoost: 1.5
+    - _CloseLift: 0.02
+    - _CoarseEdgeScale: 2
+    - _Compression: 1.8
+    - _ConsensusStrength: 0.85
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DecodeNormals: 0
+    - _DepthEdge: 0.002
+    - _DepthEdgeFeather: 0.0008
+    - _DepthEdgeThreshold: 0.0012
+    - _DepthEdgeWeight: 1
+    - _DetailAlbedoMapScale: 1
+    - _DetailCloseStepScale: 2.4
+    - _DetailFalloff: 4
+    - _DetailFarDepth: 6
+    - _DetailFeather: 0.1
+    - _DetailFlatAllowance: 0.15
+    - _DetailIntensity: 0.85
+    - _DetailKillEnd: 0.85
+    - _DetailKillStart: 0.55
+    - _DetailNearBoost: 1
+    - _DetailNearDepth: 0.25
+    - _DetailNormalMapScale: 1
+    - _DetailScale: 16
+    - _DetailThickness: 1
+    - _DetailThreshold: 0.2
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EdgeFeather: 0.03
+    - _EdgeGuardPixels: 2
+    - _EdgeMush: 5
+    - _EdgeSoftness: 2
+    - _EdgeStepPixels: 2
+    - _EdgeStridePx: 2.5
+    - _EdgeThreshold: 0.06
+    - _EnvironmentReflections: 1
+    - _FarDetail: 0
+    - _FarDetailBoost: 0.6
+    - _FarEdgeScale: 3
+    - _FarNoiseSuppression: 0.65
+    - _FarSampleMul: 2.25
+    - _FarThresholdMul: 3
+    - _FarThresholdScale: 2
+    - _FillStrength: 0.35
+    - _Gain: 2.4
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _HasMemory: 0
+    - _InsideFill: 0.05
+    - _Intensity: 1
+    - _MemoryCutoff: 0.04
+    - _MemoryHeightHalfRange: 1.75
+    - _MemoryHeightSoftness: 0.215
+    - _MemoryStrength: 0.75
+    - _Metallic: 0
+    - _MicroDetailSuppress: 1.25
+    - _MinSenseDepth: 0.15
+    - _Mode: 0
+    - _NearBoost: 2.75
+    - _NearDetail: 2
+    - _NearDetailBoost: 1.5
+    - _NearEdgeScale: 1
+    - _NearSampleMul: 0.75
+    - _NearThresholdMul: 0.7
+    - _NearThresholdScale: 0.5
+    - _NoiseAmount: 0.12
+    - _NoiseScale: 7
+    - _NoiseSpeed: 1
+    - _NormalEdge: 0.2
+    - _NormalEdgeFeather: 0.06
+    - _NormalEdgeThreshold: 0.1
+    - _NormalEdgeWeight: 0
+    - _NormalHighlightStrength: 1.6
+    - _NormalPower: 2.5
+    - _OcclusionBias: 0.006
+    - _OcclusionStrength: 1
+    - _OutlineBlurStrength: 0.35
+    - _OutlineClamp: 0.7
+    - _OutlineGamma: 1.35
+    - _OutlineIntensity: 0.85
+    - _OutlineStrength: 1
+    - _OutlineThickness: 1.15
+    - _OutputDarkness: 0.7
+    - _OutsideDarkness: 0.92
+    - _OverallIntensity: 0.85
+    - _Parallax: 0.005
+    - _PlaneReject: 0.0018
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ReliefBlurStrength: 0.65
+    - _ReliefMaskHi: 0.25
+    - _ReliefMaskLo: 0.05
+    - _ReliefPower: 1.5
+    - _ReliefResponse: 3
+    - _ReliefStepPixels: 2
+    - _ReliefStrength: 0.1
+    - _SenseBackRadius: 1.4
+    - _SenseDistanceScale: 0.1
+    - _SenseDownRadius: 2
+    - _SenseForwardRadius: 1.4
+    - _SenseRadius: 2.145
+    - _SenseSideRadius: 1.4
+    - _SenseSoftness: 0.75
+    - _SenseUpRadius: 2
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SoundBlobExpandSeconds: 0.075
+    - _SoundPulseGlobal: 1
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WindQuality: 0
+    - _WorkflowMode: 1
+    - _XRMotionVectorsPass: 1
+    - _ZWrite: 1
+    - color_tone_main_layer: 0
+    - contrast_main_layer: 0
+    m_Colors:
+    - LocalObjectBoundsMax: {r: 100, g: 100, b: 100, a: 0}
+    - LocalObjectBoundsMin: {r: 0, g: 0, b: 0, a: 0}
+    - SelectionColor: {r: 0, g: 0, b: 0, a: 0}
+    - Tint_base_color_main_layer: {r: 1, g: 1, b: 1, a: 1}
+    - View_BufferSizeAndInvSize: {r: 1920, g: 1080, b: 0.00052, a: 0.00092}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HueVariation: {r: 1, g: 0.5, b: 0, a: 0.1}
+    - _OutlineColor: {r: 0.85, g: 0.92, b: 1, a: 1}
+    - _SenseCenterWS: {r: -13.362434, g: 1.2036959, b: -26.541555, a: 0}
+    - _SenseLightDirWS: {r: -0.46535078, g: 0.8587962, b: -0.21428458, a: 0}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _VisionColor: {r: 0.54999995, g: 0.6, b: 0.65, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

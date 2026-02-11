@@ -1,0 +1,92 @@
+# =========================================================
+# Unity .gitignore (good default)
+# Put this file at the ROOT of your Unity project
+# =========================================================
+
+# --- Unity generated folders (never commit) ---
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+._*
+*.swp
+
+# --- IDE / Editor files ---
+.vs/
+.idea/
+.gradle/
+.consulo/
+ExportedObj/
+
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.opendb
+*.VC.db
+*.mdb
+*.pdb
+
+# Rider
+*.DotSettings.user
+
+# --- Unity crash reports ---
+sysinfo.txt
+mono_crash.*
+crashlytics-build.properties
+
+# --- Unity-generated meta for IDE/db files only (safe to ignore) ---
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# --- Build artifacts ---
+*.apk
+*.aab
+*.app
+*.exe
+*.unitypackage
+
+# --- Addressables / StreamingAssets build output (generated) ---
+/ServerData/
+/[Aa]ssets/StreamingAssets/aa*
+/[Aa]ssets/Addressables_Temp/
+/[Aa]ssets/AddressableAssetsData/*/*.bin*
+
+# --- Burst/IL2CPP caches (generated) ---
+/[Bb]urstCache/
+/Il2cppBuildCache/
+
+# --- Visual Scripting generated (optional to ignore) ---
+/[Aa]ssets/Unity.VisualScripting.Generated/
+
+# --- Test runner auto scenes ---
+/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# =========================================================
+# IMPORTANT UNITY RULES
+# =========================================================
+# ✅ DO commit:
+#   Assets/** (INCLUDING .meta)
+#   ProjectSettings/**
+#   Packages/manifest.json (+ packages-lock.json recommended)
+#
+# ❌ DO NOT ignore Assets/*.meta
+#   Meta files contain GUIDs used by scenes/prefabs.

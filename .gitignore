@@ -1,0 +1,87 @@
+# =========================
+# Unity / C# .gitignore
+# (based on GitHub's Unity.gitignore)
+# Put this file at the ROOT of the Unity project
+# =========================
+
+# --- Unity generated ---
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# --- Visual Studio / Rider / IDE ---
+.vs/
+.gradle/
+ExportedObj/
+.consulo/
+
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.VC.db
+*.opendb
+*.mdb
+*.pdb
+
+# Rider
+.idea/
+*.DotSettings.user
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+._*
+
+# --- Crash reports ---
+sysinfo.txt
+mono_crash.*
+
+# --- Unity auto-generated meta for IDE/db files ---
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# --- Packages cache (keep manifest/lockfile; ignore cache) ---
+/Packages/packages-lock.json.tmp
+/Packages/.packages
+/Packages/*/package.json.meta
+
+# --- Build outputs ---
+*.apk
+*.aab
+*.app
+*.unitypackage
+
+# --- IL2CPP / Burst / Addressables caches (generated) ---
+/Il2cppBuildCache/
+/[Bb]urstCache/
+/[Aa]ssets/AddressableAssetsData/*/*.bin*
+/[Aa]ssets/Addressables_Temp/
+/ServerData/
+/[Aa]ssets/StreamingAssets/aa*
+
+# --- Visual Scripting generated ---
+/[Aa]ssets/Unity.VisualScripting.Generated/
+
+# --- Test runner auto scenes ---
+/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# =========================
+# IMPORTANT UNITY RULES
+# =========================
+# Do NOT ignore .meta files in Assets.
+# Do NOT ignore Assets/ or Packages/ProjectSettings in general.
