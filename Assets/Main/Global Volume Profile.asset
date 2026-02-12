@@ -95,7 +95,7 @@ MonoBehaviour:
     m_Value: {x: 1, y: 1, z: 1, w: -0.064861104}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 0.9015389, y: 0.9556718, z: 1, w: 0}
 --- !u!114 &3050474315063295064
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FilmGrain
   active: 1
   type:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 9
   intensity:
     m_OverrideState: 1
