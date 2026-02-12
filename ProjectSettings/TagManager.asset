@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Throwable
   - Building
+  - Priest
   layers:
   - Default
   - TransparentFX

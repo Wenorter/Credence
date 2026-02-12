@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3932587496987061209}
   m_Layer: 0
   m_Name: PriestCam
-  m_TagString: Untagged
+  m_TagString: Priest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 2230808775107155364}
   m_Layer: 0
   m_Name: PriestRoot
-  m_TagString: Untagged
+  m_TagString: Priest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,6 +235,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharInputLogic
   characterCamera: {fileID: 3769306218556742672}
   moveSpeed: 5.5
+  isLerpMove: 1
+  moveLerpSpeed: 12
   useGravity: 1
   gravity: 18
   groundedStickVelocity: 2
@@ -242,8 +244,38 @@ MonoBehaviour:
   minPitch: -80
   maxPitch: 80
   invertY: 0
+  isLerpLook: 1
+  lookLerpSpeed: 18
+  restrictToBuildingTag: 1
+  buildingTag: Building
+  nextSurfaceProbeDistance: 0.55
+  groundProbeDownDistance: 1.6
+  groundProbeRadiusScale: 0.9
+  nonBuildingHeightRiseBlock: 0.03
+  nonBuildingSlopeNormalYBlock: 0.985
+  stepObstacleCheckDistance: 0.18
+  surfaceProbeMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  predictedFeetYOffset: 0
+  nextGroundCastExtraStartLift: 0.18
+  nextGroundCastLiftSteps: 3
+  nextGroundCastLiftStepSize: 0.1
+  blockedStickyTime: 0.12
+  characterMass: 80
+  maxPushableMassRatio: 3
+  pushPerSpeed: 0.12
+  maxDeltaV: 2.5
+  minSpeedToPush: 0.15
+  ignoreVerticalPush: 1
+  pushCooldown: 0.08
+  drawSurfaceRestrictionGizmos: 1
+  gizmoProbeIdleColor: {r: 0.15, g: 0.9, b: 0.15, a: 1}
+  gizmoProbeBuildingHitColor: {r: 0.15, g: 0.55, b: 1, a: 1}
+  gizmoProbeBlockedHitColor: {r: 1, g: 0.25, b: 0.25, a: 1}
   lockMouseCursor: 1
   escapeUnlocksCursor: 1
+  logSetupWarnings: 1
 --- !u!114 &2230808775107155364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,14 +290,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PriestAnimationDriver
   isWalkingParam: IsWalking
   walkInputThreshold: 0.1
-  headBone: {fileID: 0}
-  cameraPitchPivot: {fileID: 0}
-  headMaxUp: 35
-  headMaxDown: 25
-  headWeight: 0.85
-  headSmooth: 18
-  invertPitch: 0
-  lookPitchSensitivity: 0.12
+  cameraTransform: {fileID: 0}
+  localOffset: {x: 0, y: 0, z: 0.125}
+  headPitchOffsetDegrees: -50
 --- !u!1 &7138456888331053979
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +304,7 @@ GameObject:
   - component: {fileID: 3769306218556742672}
   m_Layer: 0
   m_Name: CameraPivot
-  m_TagString: Untagged
+  m_TagString: Priest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -361,6 +388,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
       propertyPath: m_Name
       value: priest_fbx
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
+      propertyPath: m_TagString
+      value: Priest
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
