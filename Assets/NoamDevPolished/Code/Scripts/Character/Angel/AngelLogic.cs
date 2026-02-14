@@ -331,4 +331,9 @@ public sealed class AngelLogic : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawRay(origin, dir * lookRayLength);
     }
+
+    public void OnSwitchToAngel()
+    {
+        characterCamera.gameObject.SetActive(!characterCamera.gameObject.activeSelf);
+    }
 }
