@@ -26,6 +26,29 @@ MonoBehaviour:
     BlurQuality: 0
     Falloff: 100
     SampleCount: -1
+--- !u!114 &-3922996968536626887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea32448d69bda8e4ba6ea1bf004bb237, type: 3}
+  m_Name: VisionTagMaskFeature
+  m_EditorClassIdentifier: Assembly-CSharp::VisionTagMaskFeature
+  m_Active: 1
+  settings:
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 128
+    overrideMaterial: {fileID: 2100000, guid: 67cb4482e9b00ad488849fa5845a20c4, type: 2}
+    passEvent: 300
+    useDepthOcclusion: 1
+    globalTextureName: _VisionTagMaskTex
+    downsample: 1
+    drawTransparents: 1
 --- !u!114 &-256412401666034106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,8 +90,9 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -6447305015387025305}
   - {fileID: 1309528187752603869}
+  - {fileID: -3922996968536626887}
   - {fileID: 5788872912814490212}
-  m_RendererFeatureMap: 6710436f3f9286a6dde05ad6f2602c12644230523e355650
+  m_RendererFeatureMap: 6710436f3f9286a6dde05ad6f2602c1239a970c30ab78ec9644230523e355650
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -131,7 +155,7 @@ MonoBehaviour:
   m_Name: FullScreenPassRendererFeature
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
   m_Active: 1
-  injectionPoint: 450
+  injectionPoint: 550
   fetchColorBuffer: 1
   requirements: -1
   passMaterial: {fileID: 2100000, guid: 88a5dc5ee1bee69479d736207106c8f1, type: 2}

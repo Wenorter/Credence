@@ -1,18 +1,29 @@
 // Assets/Shaders/PriestVisionFullscreen.shader
 //
 // Copy-paste ready.
-// Change included in this version:
-// - Sound blob brightness matches memory brightness:
-//   SoundBlobMask multiplies by _MemoryStrength (so strength only affects radius, not brightness).
+// Adds a simple "collectible boost" so masked objects (Vision_Collectible layer rendered into _VisionTagMaskTex)
+// can look more vibrant and brighter than the default vision color.
 //
-// Assumes you already have the "no roof reveal" height-gate in place (player-height only).
-// If your current file has extra stuff, replace the whole shader with this.
+// What this version adds:
+// - _CollectibleColor (tint for collectibles)
+// - _CollectibleBoost (brightness multiplier for collectibles)
+// - _CollectibleSaturation (saturation push for collectibles)
+//
+// Notes:
+// - This does NOT add a blurred halo. It just makes the collectible pixels pop more.
+// - Works best when your _VisionTagMaskTex is a clean 0/1 mask.
+// - Keep ENDHLSL (not ENDHLSLPROGRAM).
 
 Shader "PriestVisionFullscreen"
 {
     Properties
     {
         _VisionColor ("Vision Color", Color) = (0.55, 0.60, 0.65, 1.0)
+
+        // ---- TAG / LAYER COLORING ----
+        _CollectibleColor ("Collectible Color", Color) = (1.0, 1.0, 0.0, 1.0)
+        _CollectibleBoost ("Collectible Boost", Range(1, 6)) = 2.0
+        _CollectibleSaturation ("Collectible Saturation", Range(0, 2)) = 1.2
 
         // ---- OUTLINE ----
         _OutlineIntensity ("Outline Intensity", Range(0, 2)) = 1.0
@@ -94,7 +105,15 @@ Shader "PriestVisionFullscreen"
             TEXTURE2D(_MemoryTex);
             SAMPLER(sampler_MemoryTex);
 
+            // Tag/layer mask texture (set globally by your renderer feature).
+            TEXTURE2D(_VisionTagMaskTex);
+            SAMPLER(sampler_VisionTagMaskTex);
+
             float4 _VisionColor;
+
+            float4 _CollectibleColor;
+            float _CollectibleBoost;
+            float _CollectibleSaturation;
 
             float _OutlineIntensity;
             float _OutlineThickness;
@@ -189,6 +208,13 @@ Shader "PriestVisionFullscreen"
             inline float3 WorldPosFromDepth(float2 uv, float rawDepth)
             {
                 return ComputeWorldSpacePosition(uv, rawDepth, UNITY_MATRIX_I_VP);
+            }
+
+            inline float3 ApplySaturation(float3 col, float saturation)
+            {
+                // Luma weights are stable and avoid hue shift.
+                float luma = dot(col, float3(0.2126, 0.7152, 0.0722));
+                return lerp(luma.xxx, col, saturation);
             }
 
             inline float DepthEdgeRobust_Neighbors(
@@ -331,11 +357,10 @@ Shader "PriestVisionFullscreen"
                     float startTime = _SoundPulseData[i].w;
 
                     float radius = max(_SoundPulseParams[i].x, 0.01);
-                    float intensity = saturate(_SoundPulseParams[i].y); // expected to be 1.0 from script
+                    float intensity = saturate(_SoundPulseParams[i].y);
                     float lastHeardTime = _SoundPulseParams[i].z;
                     float edgeSoft = max(_SoundPulseParams[i].w, 0.01);
 
-                    // Expand only once from the original start time.
                     float age = nowT - startTime;
                     if (age < 0.0)
                         continue;
@@ -343,7 +368,6 @@ Shader "PriestVisionFullscreen"
                     float expand01 = saturate(age / expandSec);
                     float curR = radius * smoothstep(0.0, 1.0, expand01);
 
-                    // Fade is driven by "time since last refresh".
                     float silentAge = nowT - lastHeardTime;
                     float fade01 = saturate(1.0 - (silentAge / fadeSec));
                     if (fade01 <= 0.0001)
@@ -358,10 +382,7 @@ Shader "PriestVisionFullscreen"
                     best = max(best, m);
                 }
 
-                // Master knobs (and THE important change):
                 best *= saturate(_SoundPulseGlobal);
-
-                // Make sound blob brightness match memory brightness.
                 best *= saturate(_MemoryStrength);
 
                 best *= heightGate;
@@ -396,7 +417,6 @@ Shader "PriestVisionFullscreen"
                 }
 
                 float soundMask = SoundBlobMask(wsPos);
-
                 float mask = max(liveMask, max(memoryMask, soundMask));
 
                 float2 texel = rcp(_ScreenParams.xy);
@@ -441,9 +461,19 @@ Shader "PriestVisionFullscreen"
                 float edgeKill = smoothstep(_DetailKillStart, _DetailKillEnd, edge);
                 detail *= (1.0 - edgeKill);
 
-                // ---- COLOR ----
-                float3 c = _VisionColor.rgb;
+                // ---- TAG/LAYER TINT (with boost) ----
+                float collectibleMask = SAMPLE_TEXTURE2D(_VisionTagMaskTex, sampler_VisionTagMaskTex, uv).r;
+                collectibleMask = smoothstep(0.25, 0.75, collectibleMask);
 
+                float3 baseCol = _VisionColor.rgb;
+
+                float3 collectibleCol = _CollectibleColor.rgb;
+                collectibleCol = ApplySaturation(collectibleCol, _CollectibleSaturation);
+                collectibleCol *= max(_CollectibleBoost, 1.0);
+
+                float3 c = lerp(baseCol, collectibleCol, collectibleMask);
+
+                // ---- FINAL COLOR ----
                 float3 outCol = 0.0;
                 outCol += c * (edge * _OutlineIntensity);
                 outCol += c * (detail * _DetailIntensity);
