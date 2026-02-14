@@ -75,56 +75,5 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 296d40484324fc3439af0f2d37a4cb95, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8012019688869206483}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 296d40484324fc3439af0f2d37a4cb95, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6961069326444468159}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 296d40484324fc3439af0f2d37a4cb95, type: 3}
---- !u!1 &3153044927819005594 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 296d40484324fc3439af0f2d37a4cb95, type: 3}
-  m_PrefabInstance: {fileID: 2810444603146273739}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8012019688869206483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3153044927819005594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3efc0585a3c7eca4fb13db001f967b63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GeneratedColliderMarker
-  generatedSuccessfully: 1
-  generatedColliderKind: 1
-  lastFailureReason: 
-  cellSizeUsed: 0.1
-  triangleCount: 462
-  generatedMeshAssetPath: Assets/GeneratedColliders/daronositsa_48692_cell0_1_Collider.asset
---- !u!64 &6961069326444468159
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3153044927819005594}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 26
-  m_Mesh: {fileID: 4300000, guid: a0e4253de164a7b46ae1b3454febf3db, type: 2}
