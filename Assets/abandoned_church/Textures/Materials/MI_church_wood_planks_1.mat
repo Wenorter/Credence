@@ -1,0 +1,210 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MI_church_wood_planks_1
+  m_Shader: {fileID: 4800000, guid: abc00000000014863250739178071869, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Material_Texture2D_0:
+        m_Texture: {fileID: 2800000, guid: abc00000000011352901236964127294, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_1:
+        m_Texture: {fileID: 2800000, guid: abc00000000011352901236964127294, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_2:
+        m_Texture: {fileID: 2800000, guid: abc00000000002095383035180883045, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_3:
+        m_Texture: {fileID: 2800000, guid: abc00000000002095383035180883045, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_4:
+        m_Texture: {fileID: 2800000, guid: abc00000000001285369175650453185, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_5:
+        m_Texture: {fileID: 2800000, guid: abc00000000009037583517390869105, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_6:
+        m_Texture: {fileID: 2800000, guid: abc00000000012086378412871708097, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_7:
+        m_Texture: {fileID: 2800000, guid: abc00000000007556614179274258254, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_8:
+        m_Texture: {fileID: 2800000, guid: abc00000000009037583517390869105, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_9:
+        m_Texture: {fileID: 2800000, guid: abc00000000011352901236964127294, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_10:
+        m_Texture: {fileID: 2800000, guid: abc00000000015027519618683053716, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_11:
+        m_Texture: {fileID: 2800000, guid: abc00000000009037583517390869105, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_12:
+        m_Texture: {fileID: 2800000, guid: abc00000000001285369175650453185, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_13:
+        m_Texture: {fileID: 2800000, guid: abc00000000009037583517390869105, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_14:
+        m_Texture: {fileID: 2800000, guid: abc00000000017053589522737460657, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_15:
+        m_Texture: {fileID: 2800000, guid: abc00000000017053589522737460657, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_16:
+        m_Texture: {fileID: 2800000, guid: abc00000000007311414032274490156, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Material_Texture2D_17:
+        m_Texture: {fileID: 2800000, guid: abc00000000007714654671591910010, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Rotation_custom_main_layer: 0.000000
+    - U_tile_main_layer: 0.000000
+    - V_tile_main_layer: 0.000000
+    - UV_Tiling_main_layer: 10.000000
+    - Base_UV___U_Tiling_main_layer: 1.000000
+    - Base_UV___V_Tiling_main_layer: 1.000000
+    - Normal_intensity_main_layer: 1.000000
+    - Rotation_custom_R_channel: 0.000000
+    - U_tile_R_channel: 0.000000
+    - V_tile_R_channel: 0.000000
+    - UV_Tiling_R_channel: 10.000000
+    - Base_UV___U_Tiling_R_channel: 1.000000
+    - Base_UV___V_Tiling_R_channel: 1.000000
+    - Normal_intensity_R_channel: 1.000000
+    - R_channel_contrast: 1.000000
+    - Disp_Contrast_main_layer: 0.000000
+    - Disp_Intensity_main_layer: 1.000000
+    - Disp_Contrast_R_channel: 0.000000
+    - Disp_Intensity_R_channel: 1.000000
+    - R_channel_blend: 1.000000
+    - R_channel_extend: 0.300000
+    - UVmask_R_opacity_bloor: 1.000000
+    - UVmask_R_opacity: 1.000000
+    - Grunge_tiling_R_channel: 50.000000
+    - Grunge_channel_R_power: 300.000000
+    - Rotation_custom_G_channel: 0.000000
+    - U_tile_G_channel: 0.000000
+    - V_tile_G_channel: 0.000000
+    - UV_Tiling_G_channel: 10.000000
+    - Base_UV___U_Tiling_G_channel: 1.000000
+    - Base_UV___V_Tiling_G_channel: 1.000000
+    - Normal_intensity_G_channel: 1.000000
+    - G_channel_contrast: 1.000000
+    - Disp_Contrast_G_channel: 0.000000
+    - Disp_Intensity_G_channel: 1.000000
+    - G_channel_blend: 1.000000
+    - G_channel_extend: 0.300000
+    - UVmask_G_opacity_bloor: 1.000000
+    - UVmask_G_opacity: 1.000000
+    - Grunge_tiling_G_channel: 10.000000
+    - Grunge_channel_G_power: 100.000000
+    - Rotation_custom_B_channel: 0.000000
+    - U_tile_B_channel: 0.000000
+    - V_tile_B_channel: 0.000000
+    - UV_Tiling_B_channel: 15.000000
+    - Base_UV___U_Tiling_B_channel: 1.000000
+    - Base_UV___V_Tiling_B_channel: 1.000000
+    - Normal_intensity_B_channel: 1.000000
+    - B_channel_contrast: 2.000000
+    - Disp_Contrast_B_channel: 0.000000
+    - Disp_Intensity_B_channel: 1.000000
+    - B_channel_blend: 1.000000
+    - B_channel_extend: 0.000000
+    - UVmask_B_opacity_bloor: 1.000000
+    - UVmask_B_opacity: 1.000000
+    - Grunge_tiling_B_channel: 50.000000
+    - Grunge_channel_B_power: 33.193413
+    - UVmask_Ab_opacity_bloor: 1.000000
+    - UVmask_Ab_opacity: 1.000000
+    - Grunge_tiling_Ab_channel: 1.000000
+    - Grunge_channel_Ab_power: 1.000000
+    - color_tone_main_layer: 0.000000
+    - Brightness_main_layer: 1.000000
+    - contrast_main_layer: 0.000000
+    - color_tone_R_channel: 0.000000
+    - Brightness_R_channel: 0.822334
+    - contrast_R_channel: -1.706784
+    - color_tone_G_channel: 1.034735
+    - Brightness_G_channel: 0.317333
+    - contrast_G_channel: -0.948610
+    - color_tone_B_channel: 0.000000
+    - Brightness_B_channel: 0.468000
+    - contrast_B_channel: 0.000000
+    - color_tone_B_all_mask: 0.000000
+    - Brightness_B_all_mask: 0.500000
+    - contrast_B_all_mask: 0.000000
+    - Metallic_main_layer: 0.000000
+    - Metallic_R_channel: 0.000000
+    - Metallic_G_channel: 0.000000
+    - Metallic_B_channel: 0.000000
+    - Specular_main_layer: 0.150000
+    - Specular_R_channel: 0.150000
+    - Specular_G_channel: 0.150000
+    - Specular_B_channel: 0.150000
+    - Roughness_min_main_layer: 0.000000
+    - Roughness_max_main_layer: 1.000000
+    - Roughness_min_R_channel: 0.000000
+    - Roughness_max_R_channel: 1.000000
+    - Roughness_min_G_channel: 0.000000
+    - Roughness_max_G_channel: 1.000000
+    - Roughness_min_B_channel: 0.000000
+    - Roughness_max_B_channel: 1.000000
+    - Roughness_min_B_all_mask: 0.000000
+    - Roughness_max_B_all_mask: 1.000000
+    - AO_Contrast_main_layer: 1.000000
+    - AO_Intensity_main_layer: 1.000000
+    - AO_Contrast_R_channel: 1.000000
+    - AO_Intensity_R_channel: 1.000000
+    - AO_Contrast_G_channel: 1.000000
+    - AO_Intensity_G_channel: 1.000000
+    - AO_Contrast_B_channel: 1.000000
+    - AO_Intensity_B_channel: 1.000000
+    - _DstBlend: 0
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - SelectionColor: {r: 0.000000, g: 0.000000, b: 0.000000, a: 0.000000}
+    - Tint_base_color_main_layer: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
+    - Tint_base_color_R_channel: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
+    - Tint_base_color_G_channel: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
+    - Tint_base_color_B_channel: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
+    - Tint_base_color_B_all_mask: {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
