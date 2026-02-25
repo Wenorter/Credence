@@ -6,17 +6,15 @@ TagManager:
   tags:
   - Throwable
   - Building
-  - Priest
-  - Collectible
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - Church
-  - Vision_Collectible
+  - 
+  - 
   - 
   - 
   - 

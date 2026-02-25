@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1216979443179852929}
-  - component: {fileID: 191621365175161384}
   m_Layer: 0
   m_Name: SM_iconostasis_2 (1)
   m_TagString: Untagged
@@ -33,28 +32,6 @@ Transform:
   - {fileID: 1419951604247546745}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 5.331, y: 28.418, z: 9.553}
---- !u!64 &191621365175161384
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3572572702525067504}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300004, guid: abc00000000003322013511261855265, type: 3}
 --- !u!1 &5109622310326507051
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,6 +43,7 @@ GameObject:
   - component: {fileID: 1419951604247546745}
   - component: {fileID: 8592674992675999203}
   - component: {fileID: 8548962984770349348}
+  - component: {fileID: 8045993101608931560}
   m_Layer: 0
   m_Name: SM_iconostasis_2
   m_TagString: Untagged
@@ -144,4 +122,26 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5109622310326507051}
+  m_Mesh: {fileID: 4300000, guid: abc00000000003322013511261855265, type: 3}
+--- !u!64 &8045993101608931560
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5109622310326507051}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: abc00000000003322013511261855265, type: 3}

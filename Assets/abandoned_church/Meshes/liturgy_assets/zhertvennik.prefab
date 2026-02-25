@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 1994329326425296138}
   - component: {fileID: 3171269032287814319}
   - component: {fileID: 857490598983546469}
-  - component: {fileID: 6873617402650140601}
-  - component: {fileID: 7890684708581358672}
   m_Layer: 6
   m_Name: podlozhka
   m_TagString: Untagged
@@ -92,46 +90,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6873617402650140601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1217827154000680880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3efc0585a3c7eca4fb13db001f967b63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GeneratedColliderMarker
-  generatedSuccessfully: 1
-  generatedColliderKind: 1
-  lastFailureReason: 
-  cellSizeUsed: 0.1256399
-  triangleCount: 116
-  generatedMeshAssetPath: Assets/GeneratedColliders/podlozhka_51354_cell0_126_Collider.asset
---- !u!64 &7890684708581358672
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1217827154000680880}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 26
-  m_Mesh: {fileID: 4300000, guid: b2f62dffa87287d4ca808b1e224246a9, type: 2}
 --- !u!1 &6705805078415269223
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +101,7 @@ GameObject:
   - component: {fileID: 6216127041130170333}
   - component: {fileID: 7055949884780480632}
   - component: {fileID: 5048308960606321842}
+  - component: {fileID: 8180715256999632868}
   m_Layer: 0
   m_Name: zhertvennik
   m_TagString: Untagged
@@ -223,3 +182,24 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8180715256999632868
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6705805078415269223}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.008851067, y: 0.010295185, z: 0.007582111}
+  m_Center: {x: -0.0000415106, y: 0.00013362459, z: 0.00001097214}

@@ -87,13 +87,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 9164922441709877437, guid: ebd27f71dbf7c18458ac99f3172ba2d6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3640683492011094518}
-    - targetCorrespondingSourceObject: {fileID: 9164922441709877437, guid: ebd27f71dbf7c18458ac99f3172ba2d6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3179277379476004257}
-    - targetCorrespondingSourceObject: {fileID: 8088352606315715724, guid: ebd27f71dbf7c18458ac99f3172ba2d6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1534155649036656165}
+      addedObject: {fileID: 1110184526265713943}
     - targetCorrespondingSourceObject: {fileID: 8088352606315715724, guid: ebd27f71dbf7c18458ac99f3172ba2d6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3434619454121449427}
@@ -103,24 +97,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8088352606315715724, guid: ebd27f71dbf7c18458ac99f3172ba2d6, type: 3}
   m_PrefabInstance: {fileID: 8345480307642674806}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1534155649036656165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 283308725018735354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3efc0585a3c7eca4fb13db001f967b63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GeneratedColliderMarker
-  generatedSuccessfully: 1
-  generatedColliderKind: 1
-  lastFailureReason: 
-  cellSizeUsed: 0.12825398
-  triangleCount: 200
-  generatedMeshAssetPath: Assets/GeneratedColliders/Plane_50282_cell0_128_Collider.asset
 --- !u!64 &3434619454121449427
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -148,26 +124,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9164922441709877437, guid: ebd27f71dbf7c18458ac99f3172ba2d6, type: 3}
   m_PrefabInstance: {fileID: 8345480307642674806}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3640683492011094518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 928096083610982091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3efc0585a3c7eca4fb13db001f967b63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GeneratedColliderMarker
-  generatedSuccessfully: 1
-  generatedColliderKind: 1
-  lastFailureReason: 
-  cellSizeUsed: 0.14774542
-  triangleCount: 64
-  generatedMeshAssetPath: Assets/GeneratedColliders/Frame03_(1)_50284_cell0_148_Collider.asset
---- !u!64 &3179277379476004257
-MeshCollider:
+--- !u!65 &1110184526265713943
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -184,7 +142,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 26
-  m_Mesh: {fileID: 4300000, guid: 869bbbe409de91349be39072054ae09f, type: 2}
+  serializedVersion: 3
+  m_Size: {x: 2.0562909, y: 2.0105734, z: 0.19180833}
+  m_Center: {x: 0.00055950996, y: 0.004852414, z: -0.0959041}
