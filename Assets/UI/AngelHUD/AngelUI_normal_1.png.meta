@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 073068bc1bdded74dae3b8e21524e2f1
+guid: f82b1b11adeef174dbc9557bbe8469b0
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AngelUI_scared_3_0
+      name: AngelUI_normal_1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -106,14 +106,14 @@ TextureImporter:
         height: 2160
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 1697}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a192d76e9c2f0140bb0226595399ce0
-      internalID: 1739325076
+      spriteID: 943c512e8de5ac144a5db1a961abae3c
+      internalID: 17271302
       vertices: []
       indices: 
       edges: []
@@ -122,7 +122,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 906fe177a58a21849b9a48d2a2d0fd90
+    spriteID: a809e1e0f78b4b9498fa8f1136a38d55
     internalID: 0
     vertices: []
     indices: 
@@ -131,12 +131,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries:
-      - key: SpriteEditor.SliceOnImport
-        value: False
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      - key: SpriteEditor.SliceOnImport
+        value: False
     nameFileIdTable:
-      AngelUI_scared_3_0: 1739325076
+      AngelUI_normal_1_0: 17271302
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
