@@ -8,8 +8,13 @@ public class PriestPlayerScript : MonoBehaviour
     
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float mouseSensitivity = 0.15f;
+    [SerializeField] private PriestCameraScript playerCamera;
+    [SerializeField] private float minPitch = -85f;
+    [SerializeField] private float maxPitch = 85f;
 
+    private float _pitch;
     private Rigidbody _rb;
+    
     private float _pendingYaw;
     
     public Vector2 MoveInput { get; private set; }
@@ -40,9 +45,11 @@ public class PriestPlayerScript : MonoBehaviour
     private void Update()
     {
         MoveInput = moveAction.action.ReadValue<Vector2>();
-        
         Vector2 mouseDelta = lookAction.action.ReadValue<Vector2>();
+
         _pendingYaw += mouseDelta.x * mouseSensitivity;
+        _pitch -= mouseDelta.y * mouseSensitivity;
+        _pitch = Mathf.Clamp(_pitch, minPitch, maxPitch);
     }
     
     private void FixedUpdate()
@@ -53,6 +60,8 @@ public class PriestPlayerScript : MonoBehaviour
             _rb.MoveRotation(rotation);
             _pendingYaw = 0f;
         }
+        
+        playerCamera.SetPitch(_pitch);
 
         Vector2 input = Vector2.ClampMagnitude(MoveInput, 1f);
         Vector3 localDirection = new Vector3(
