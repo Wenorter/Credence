@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PriestCameraScript : MonoBehaviour
+public class CameraScript : MonoBehaviour
 {
     [SerializeField] private Transform target;
 
@@ -46,5 +46,28 @@ public class PriestCameraScript : MonoBehaviour
             baseRotation * Quaternion.Euler(_pitch, 0f, 0f);
 
         transform.SetPositionAndRotation(position, rotation);
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+
+        Vector3 origin = transform.position;
+        Vector3 forward = transform.forward;
+        Vector3 tip = origin + forward * 2f;
+
+        Gizmos.DrawLine(origin, tip);
+
+        Vector3 headBase = tip - forward * 0.3f;
+
+        Gizmos.DrawLine(
+            tip,
+            headBase + transform.right * 0.3f * 0.5f
+        );
+
+        Gizmos.DrawLine(
+            tip,
+            headBase - transform.right * 0.3f * 0.5f
+        );
     }
 }
