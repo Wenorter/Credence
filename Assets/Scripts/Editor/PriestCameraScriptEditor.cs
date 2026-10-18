@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Editor
 {
-    [CustomEditor(typeof(PriestCameraScript))]
+    [CustomEditor(typeof(CameraScript))]
     public class PriestCameraScriptEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -15,8 +15,8 @@ namespace Editor
 
             if (GUILayout.Button("Snap Camera To Priest"))
             {
-                PriestCameraScript cameraScript =
-                    (PriestCameraScript)target;
+                CameraScript cameraScript =
+                    (CameraScript)target;
 
                 Undo.RecordObject(
                     cameraScript.transform,
