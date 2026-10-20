@@ -42,23 +42,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70054865
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.09608155
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70054865
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.09608155
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 15.619
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -516,7 +516,7 @@ PrefabInstance:
       addedObject: {fileID: 2025344827524243086}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6647247902998826861}
+      addedObject: {fileID: 772290435451800324}
     - targetCorrespondingSourceObject: {fileID: 7159287325147580457, guid: 0b5a817e789b3b14081a6e9ad0944d04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3092768737859020639}
@@ -841,9 +841,9 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &6647247902998826861
+--- !u!114 &772290435451800324
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -852,12 +852,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8206481761488765482}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67cca80b7723fd24696da79aa53f8b2d, type: 3}
+  m_Script: {fileID: 11500000, guid: 392e27b8df4d59847b10ea7f2dd77182, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
-  moveAction: {fileID: 2929245584633735806, guid: 5ae83e9c35ede8b4aaac7f5d09f0dd30, type: 3}
-  lookAction: {fileID: 4130174768917862247, guid: 5ae83e9c35ede8b4aaac7f5d09f0dd30, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::Player.PriestPlayerScript
+  moveAction: {fileID: 0}
+  lookAction: {fileID: 0}
+  sprintAction: {fileID: 0}
   moveSpeed: 3.4
+  sprintSpeed: 5
   mouseSensitivity: 0.12
   playerCamera: {fileID: 0}
   minPitch: -60
