@@ -6,18 +6,23 @@ namespace Player
     [RequireComponent(typeof(Rigidbody))]
     public class PriestPlayerScript : MonoBehaviour
     {
+        [Header("Input")]
         [SerializeField] private InputActionReference moveAction;
         [SerializeField] private InputActionReference lookAction;
         [SerializeField] private InputActionReference sprintAction;
 
-    
+        [Header("Movement")]
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float sprintSpeed = 7f;
+        
+        [Header("Rotation")]
         [SerializeField] private float mouseSensitivity = 0.15f;
-        [SerializeField] private CameraScript playerCamera;
         [SerializeField] private float minPitch = -85f;
         [SerializeField] private float maxPitch = 85f;
 
+        [Header("Camera")]
+        [SerializeField] private CameraScript playerCamera;
+        
         private float _pitch;
         private Rigidbody _rb;
     

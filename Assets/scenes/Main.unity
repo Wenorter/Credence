@@ -780,7 +780,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &932289543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -894,7 +894,7 @@ Transform:
   m_GameObject: {fileID: 932289542}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30.574617, y: 1.328, z: -11.499}
+  m_LocalPosition: {x: 30.574617, y: 4.286, z: -13.524}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1292,7 +1292,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1425563713121952169}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48646fedc365417abbbe626f719362d7, type: 3}
   m_Name: 
@@ -1467,6 +1467,10 @@ PrefabInstance:
     - target: {fileID: 1115173919136226997, guid: a29308c741bf53a4ba0daa7a0fd28aa5, type: 3}
       propertyPath: m_Name
       value: PriestCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115173919136226997, guid: a29308c741bf53a4ba0daa7a0fd28aa5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7929369477517864433, guid: a29308c741bf53a4ba0daa7a0fd28aa5, type: 3}
       propertyPath: m_Pivot.x
@@ -1649,6 +1653,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AngelCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7094914721104643239, guid: db46c2f5a78b5d940b946d557415ad52, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8293414969001498305, guid: db46c2f5a78b5d940b946d557415ad52, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1669,6 +1677,10 @@ PrefabInstance:
     - target: {fileID: 679967311182657691, guid: 0e2aeb1d58a8f7a46b8c62d7dcef3832, type: 3}
       propertyPath: m_Name
       value: Angel
+      objectReference: {fileID: 0}
+    - target: {fileID: 3723871696615260619, guid: 0e2aeb1d58a8f7a46b8c62d7dcef3832, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7962905910960637868, guid: 0e2aeb1d58a8f7a46b8c62d7dcef3832, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1780,6 +1792,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 772290435451800324, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 772290435451800324, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
       propertyPath: lookAction
       value: 
