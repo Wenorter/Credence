@@ -1,0 +1,2148 @@
+fileFormatVersion: 2
+guid: 47a010ee5beb66941923c0eac65bd11e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5434439614440388724
+    second: Autumn Leaf Sprite Collection_0
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 516
+        width: 294
+        height: 508
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8748fba6fdf494b0800000000000000
+      internalID: -5434439614440388724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_1
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 756
+        width: 273
+        height: 249
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d6a18be5efab3144a106fddbf7220fd
+      internalID: -1094102912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_2
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 742
+        width: 207
+        height: 269
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd122f6a77ebf8443bbcf38ab663b830
+      internalID: -1055819052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_3
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 738
+        width: 319
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fbec8ecca58fb147a628c3890725708
+      internalID: 723348643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_4
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 962
+        width: 51
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60c1f8449e4a3e547afcd11a08dbd313
+      internalID: 984064812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_5
+      rect:
+        serializedVersion: 2
+        x: 1017
+        y: 756
+        width: 249
+        height: 253
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b685baae7ac00cb41929d83ce91f2053
+      internalID: -657985541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_6
+      rect:
+        serializedVersion: 2
+        x: 1017
+        y: 989
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e272dcfeeab0d1949b16ad25eedfb5cc
+      internalID: -1995797821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_7
+      rect:
+        serializedVersion: 2
+        x: 1265
+        y: 507
+        width: 268
+        height: 500
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ab6f53ef6714fd4bbbaaaa0ba61169c
+      internalID: -436651575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_8
+      rect:
+        serializedVersion: 2
+        x: 1017
+        y: 954
+        width: 13
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 469020cb4ac2fe34da4e25aa15ced8f9
+      internalID: 1892566120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_9
+      rect:
+        serializedVersion: 2
+        x: 1031
+        y: 954
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eea9596b37f27ab44963aa8bdc68ff2e
+      internalID: 1479290620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_10
+      rect:
+        serializedVersion: 2
+        x: 1025
+        y: 840
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bcf840d3605677a42b62e1fdba11f4f1
+      internalID: 442609264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_11
+      rect:
+        serializedVersion: 2
+        x: 1249
+        y: 810
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8c6b3db64106414a8e5f157ca616872
+      internalID: -584449505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_12
+      rect:
+        serializedVersion: 2
+        x: 1271
+        y: 792
+        width: 29
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4aa86ca70b6beb54c927d38207605fbb
+      internalID: -507538664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_13
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 798
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00b989b43a5888448986307e25ee1579
+      internalID: -643879167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_14
+      rect:
+        serializedVersion: 2
+        x: 1013
+        y: 793
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f02b4c3a07c2d634ca7ce2e3c0fdd8b1
+      internalID: -922383373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_15
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 720
+        width: 42
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 705f3044ca18b7640b5b7c425911aafb
+      internalID: -1375813654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_16
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 723
+        width: 49
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1085cf94a978b5f45bcc8594f5d4d067
+      internalID: 542106329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_17
+      rect:
+        serializedVersion: 2
+        x: 999
+        y: 772
+        width: 11
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 380a8d7b91d03c147b2e6090492ff0b9
+      internalID: 2007969353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_18
+      rect:
+        serializedVersion: 2
+        x: 1215
+        y: 756
+        width: 41
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60ca37c3a9860ac4298c4a6d4984c56d
+      internalID: 221037258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_19
+      rect:
+        serializedVersion: 2
+        x: 941
+        y: 748
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0026bd52664a1b489335e3f788c8c5a
+      internalID: -1412677908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_20
+      rect:
+        serializedVersion: 2
+        x: 1013
+        y: 728
+        width: 31
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfc7a1445dea9bc49a0bb32df114d90c
+      internalID: 1507808942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_21
+      rect:
+        serializedVersion: 2
+        x: 1267
+        y: 766
+        width: 4
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aae5c58a5ccab974ebb80da7629a0da7
+      internalID: 495569895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_22
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 486
+        width: 245
+        height: 269
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2354cbe8cf7f10743a68b49ada17516c
+      internalID: 1394538644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_23
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 736
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c57aa34da00345d49a7aa4e7524aa8ba
+      internalID: 2025760190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_24
+      rect:
+        serializedVersion: 2
+        x: 1045
+        y: 484
+        width: 261
+        height: 269
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2263cacc97337144ebd2e54ccb581ec6
+      internalID: 60369721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_25
+      rect:
+        serializedVersion: 2
+        x: 1209
+        y: 750
+        width: 17
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23fe5b9f220fd6e48bfd7d931ef30df0
+      internalID: 1092867729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_26
+      rect:
+        serializedVersion: 2
+        x: 525
+        y: 506
+        width: 229
+        height: 237
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43905d60a04e451409351f66d0ae5f2b
+      internalID: -1913377917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_27
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 498
+        width: 279
+        height: 245
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ee39682b6777164eb378a3e93148d6d
+      internalID: 32216803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_28
+      rect:
+        serializedVersion: 2
+        x: 811
+        y: 733
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3ca2fa05e6a8cb4dbc692236a991ec5
+      internalID: -1213818440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_29
+      rect:
+        serializedVersion: 2
+        x: 991
+        y: 719
+        width: 15
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffea07bf981f0ee4fb62a56e5e6f3038
+      internalID: 1045623756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_30
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 735
+        width: 5
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de50c9742b69a5d4f85e2040d1a4eec8
+      internalID: -1348601299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_31
+      rect:
+        serializedVersion: 2
+        x: 1015
+        y: 687
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7deeb7c18106fe7499101bb558b60a12
+      internalID: -778314509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_32
+      rect:
+        serializedVersion: 2
+        x: 1031
+        y: 676
+        width: 27
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9630b9a1c91122542af0b291adfd8fcd
+      internalID: 537282545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_33
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 664
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db43d8a862402874991b6e321c6ea472
+      internalID: 1346332387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_34
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 562
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2aeaaf7be365f494599826c3e3a9e008
+      internalID: -823633005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_35
+      rect:
+        serializedVersion: 2
+        x: 731
+        y: 538
+        width: 69
+        height: 55
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 026a20e5d1e4dd24bade8c0ab8bbd552
+      internalID: 1479724161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_36
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 306
+        height: 514
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cbb20bbf359948428f736a5c5909a4e
+      internalID: -1168433170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_37
+      rect:
+        serializedVersion: 2
+        x: 389
+        y: 490
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da8b72587cebc574b87f0fc096a36b4e
+      internalID: 1910034544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_38
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 496
+        width: 35
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2622bec2ae0ddd4a9adf4c4f49ffc44
+      internalID: 412690857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_39
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 232
+        width: 247
+        height: 276
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97fe3b1160faab14fb822dd9a0782776
+      internalID: 964104210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_40
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 507
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de24163e41f292641b225b794c5b65c4
+      internalID: 143517932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_41
+      rect:
+        serializedVersion: 2
+        x: 743
+        y: 248
+        width: 269
+        height: 272
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10a4be9ae2216554580153e2c8e88351
+      internalID: -111684138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_42
+      rect:
+        serializedVersion: 2
+        x: 1321
+        y: 255
+        width: 201
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 969da2cbb61f513458ad4a27f9de5cde
+      internalID: -1594977832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_43
+      rect:
+        serializedVersion: 2
+        x: 1419
+        y: 506
+        width: 5
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c83b52274d338304fa821fbe789d0d15
+      internalID: -1080239140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_44
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 488
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f384ba0bf51de149970c99d4facf733
+      internalID: 1639505932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_45
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 487
+        width: 23
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 288e33a342599f945b86060382438548
+      internalID: -1431923873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_46
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 486
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d1c9fce021f3fb41803c81e2f0fe8da
+      internalID: -1162228273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_47
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 482
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d00551a312f4b545887e44dbebbee7e
+      internalID: 444483068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_48
+      rect:
+        serializedVersion: 2
+        x: 1012
+        y: 242
+        width: 292
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8265e9ae7dc7c4e4fb9e4fdc66a78d17
+      internalID: -1577333478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_49
+      rect:
+        serializedVersion: 2
+        x: 1284
+        y: 494
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96ac1dcc4d50d9c40ac80d9ca14f2fc1
+      internalID: 1025887187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_50
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 270
+        width: 198
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edeb5f8e7eff60040a8b1f7e0ec2dbbf
+      internalID: -541583671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_51
+      rect:
+        serializedVersion: 2
+        x: 999
+        y: 452
+        width: 9
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 258f2b39a768bdb4595e958eb3da8061
+      internalID: -291178630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_52
+      rect:
+        serializedVersion: 2
+        x: 1005
+        y: 430
+        width: 33
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8f33749d75e5144483b17bac5e1be61
+      internalID: -1175276516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_53
+      rect:
+        serializedVersion: 2
+        x: 1005
+        y: 462
+        width: 7
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60bdccc88a01c3b4d8200e3a6874488a
+      internalID: 1368628161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_54
+      rect:
+        serializedVersion: 2
+        x: 1305
+        y: 468
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71f21b2f22d0c28458ca186b79166bc0
+      internalID: -1510762841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_55
+      rect:
+        serializedVersion: 2
+        x: 1319
+        y: 471
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c930d51289893a4cb7e85e7baa0da9e
+      internalID: 2104205407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_56
+      rect:
+        serializedVersion: 2
+        x: 1327
+        y: 454
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d97783b4a75d4424bbbceaa74bdd11c6
+      internalID: 821370584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_57
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 452
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64b6ac2157b93de408212c29e523bddc
+      internalID: 1628119405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_58
+      rect:
+        serializedVersion: 2
+        x: 739
+        y: 426
+        width: 25
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0645e9fec94b822418ba5352869b09ca
+      internalID: -1059794559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_59
+      rect:
+        serializedVersion: 2
+        x: 1301
+        y: 412
+        width: 23
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b76219a6a0f53754cbac7b31e8951244
+      internalID: 1278028967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_60
+      rect:
+        serializedVersion: 2
+        x: 1323
+        y: 436
+        width: 5
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdeba2c8cc8d3184699c32d7343eb2e4
+      internalID: 1734517870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_61
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 408
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be8c849d85158004cbd3533394990d39
+      internalID: -263030974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_62
+      rect:
+        serializedVersion: 2
+        x: 1303
+        y: 366
+        width: 19
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 975c0d254c35e48479692b3d59ace2f5
+      internalID: 1297263655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_63
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 374
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9183d17bd94dd5949a50863b1a60b027
+      internalID: -117661252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_64
+      rect:
+        serializedVersion: 2
+        x: 1319
+        y: 370
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb8a05c664a0a8244b936bc4dc339294
+      internalID: -476785399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_65
+      rect:
+        serializedVersion: 2
+        x: 1017
+        y: 328
+        width: 5
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76e1b53cba32f344ba8cbfe765bde35e
+      internalID: -166113303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_66
+      rect:
+        serializedVersion: 2
+        x: 1287
+        y: 294
+        width: 27
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0159bbca6f904c64db8f0343e5f83c7a
+      internalID: -333990423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_67
+      rect:
+        serializedVersion: 2
+        x: 1315
+        y: 296
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f7385f9fb8db1f45b3c3f25edc24838
+      internalID: 1991575397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_68
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 0
+        width: 285
+        height: 272
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9893e0c67faa0f41a6829a626d9bb69
+      internalID: -1082017483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_69
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 236
+        width: 33
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21a99abf7c05e1843b04a8907f524f7f
+      internalID: -1723373883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_70
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 262
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d04e372808afbfc4ea30179117f99343
+      internalID: 710387598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_71
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 268
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 032ec68c229b0e94abb4c975b0a1a954
+      internalID: 599542875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_72
+      rect:
+        serializedVersion: 2
+        x: 1247
+        y: 0
+        width: 283
+        height: 284
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9fce0ef40e58ca448d966d99a45cb56
+      internalID: -1907643019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_73
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 0
+        width: 245
+        height: 244
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ce694c49995ad949aaead4506335694
+      internalID: 1456368378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_74
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 0
+        width: 269
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b003cf024623b6f4f9e66973653187e8
+      internalID: -614677274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_75
+      rect:
+        serializedVersion: 2
+        x: 1025
+        y: 228
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff3f18c7bdde0094f808b628f52ef77d
+      internalID: -1662531708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_76
+      rect:
+        serializedVersion: 2
+        x: 1039
+        y: 0
+        width: 229
+        height: 263
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ec646a1fe79e814082e9be2dc9fb063
+      internalID: -568636827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_77
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 192
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43f340dc75af6ed4888c7db2754e4cb9
+      internalID: -1478721532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_78
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 104
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad82b98eef2dc38488764841af028330
+      internalID: -1385685730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_79
+      rect:
+        serializedVersion: 2
+        x: 791
+        y: 88
+        width: 5
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59db0c244a5a32f4697de06995a6cc41
+      internalID: 499578914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_80
+      rect:
+        serializedVersion: 2
+        x: 1505
+        y: 58
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b93b4735bdca0c41ad3c072dae13d7d
+      internalID: 102410428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_81
+      rect:
+        serializedVersion: 2
+        x: 509
+        y: 22
+        width: 19
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8d64163b87e8b84a9d7c9ce977b3c1b
+      internalID: 1963871919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_82
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 24
+        width: 5
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ccac4f12c99b5994b8764f8aa2bf4bb1
+      internalID: -413548443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_83
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 18
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88e997cca0bb6bc43b9f5048856a119f
+      internalID: 443680237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_84
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 18
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83ca9a64256cd074a916f7df7fb03746
+      internalID: 586948943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_85
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 18
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 620204c4f66fae04f97903ec4a7326e1
+      internalID: -1324683570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_86
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 24
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58033c825efb7e2488d7033ec09b7023
+      internalID: -1520571872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Autumn Leaf Sprite Collection_87
+      rect:
+        serializedVersion: 2
+        x: 1311
+        y: 16
+        width: 11
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d29210a553182d44188b5363883ac435
+      internalID: -1139354655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: fd098afa159c1024f87bef2fb281333f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceOnImport
+        value: True
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":true,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Autumn Leaf Sprite Collection_0: -5434439614440388724
+      Autumn Leaf Sprite Collection_1: -1094102912
+      Autumn Leaf Sprite Collection_10: 442609264
+      Autumn Leaf Sprite Collection_11: -584449505
+      Autumn Leaf Sprite Collection_12: -507538664
+      Autumn Leaf Sprite Collection_13: -643879167
+      Autumn Leaf Sprite Collection_14: -922383373
+      Autumn Leaf Sprite Collection_15: -1375813654
+      Autumn Leaf Sprite Collection_16: 542106329
+      Autumn Leaf Sprite Collection_17: 2007969353
+      Autumn Leaf Sprite Collection_18: 221037258
+      Autumn Leaf Sprite Collection_19: -1412677908
+      Autumn Leaf Sprite Collection_2: -1055819052
+      Autumn Leaf Sprite Collection_20: 1507808942
+      Autumn Leaf Sprite Collection_21: 495569895
+      Autumn Leaf Sprite Collection_22: 1394538644
+      Autumn Leaf Sprite Collection_23: 2025760190
+      Autumn Leaf Sprite Collection_24: 60369721
+      Autumn Leaf Sprite Collection_25: 1092867729
+      Autumn Leaf Sprite Collection_26: -1913377917
+      Autumn Leaf Sprite Collection_27: 32216803
+      Autumn Leaf Sprite Collection_28: -1213818440
+      Autumn Leaf Sprite Collection_29: 1045623756
+      Autumn Leaf Sprite Collection_3: 723348643
+      Autumn Leaf Sprite Collection_30: -1348601299
+      Autumn Leaf Sprite Collection_31: -778314509
+      Autumn Leaf Sprite Collection_32: 537282545
+      Autumn Leaf Sprite Collection_33: 1346332387
+      Autumn Leaf Sprite Collection_34: -823633005
+      Autumn Leaf Sprite Collection_35: 1479724161
+      Autumn Leaf Sprite Collection_36: -1168433170
+      Autumn Leaf Sprite Collection_37: 1910034544
+      Autumn Leaf Sprite Collection_38: 412690857
+      Autumn Leaf Sprite Collection_39: 964104210
+      Autumn Leaf Sprite Collection_4: 984064812
+      Autumn Leaf Sprite Collection_40: 143517932
+      Autumn Leaf Sprite Collection_41: -111684138
+      Autumn Leaf Sprite Collection_42: -1594977832
+      Autumn Leaf Sprite Collection_43: -1080239140
+      Autumn Leaf Sprite Collection_44: 1639505932
+      Autumn Leaf Sprite Collection_45: -1431923873
+      Autumn Leaf Sprite Collection_46: -1162228273
+      Autumn Leaf Sprite Collection_47: 444483068
+      Autumn Leaf Sprite Collection_48: -1577333478
+      Autumn Leaf Sprite Collection_49: 1025887187
+      Autumn Leaf Sprite Collection_5: -657985541
+      Autumn Leaf Sprite Collection_50: -541583671
+      Autumn Leaf Sprite Collection_51: -291178630
+      Autumn Leaf Sprite Collection_52: -1175276516
+      Autumn Leaf Sprite Collection_53: 1368628161
+      Autumn Leaf Sprite Collection_54: -1510762841
+      Autumn Leaf Sprite Collection_55: 2104205407
+      Autumn Leaf Sprite Collection_56: 821370584
+      Autumn Leaf Sprite Collection_57: 1628119405
+      Autumn Leaf Sprite Collection_58: -1059794559
+      Autumn Leaf Sprite Collection_59: 1278028967
+      Autumn Leaf Sprite Collection_6: -1995797821
+      Autumn Leaf Sprite Collection_60: 1734517870
+      Autumn Leaf Sprite Collection_61: -263030974
+      Autumn Leaf Sprite Collection_62: 1297263655
+      Autumn Leaf Sprite Collection_63: -117661252
+      Autumn Leaf Sprite Collection_64: -476785399
+      Autumn Leaf Sprite Collection_65: -166113303
+      Autumn Leaf Sprite Collection_66: -333990423
+      Autumn Leaf Sprite Collection_67: 1991575397
+      Autumn Leaf Sprite Collection_68: -1082017483
+      Autumn Leaf Sprite Collection_69: -1723373883
+      Autumn Leaf Sprite Collection_7: -436651575
+      Autumn Leaf Sprite Collection_70: 710387598
+      Autumn Leaf Sprite Collection_71: 599542875
+      Autumn Leaf Sprite Collection_72: -1907643019
+      Autumn Leaf Sprite Collection_73: 1456368378
+      Autumn Leaf Sprite Collection_74: -614677274
+      Autumn Leaf Sprite Collection_75: -1662531708
+      Autumn Leaf Sprite Collection_76: -568636827
+      Autumn Leaf Sprite Collection_77: -1478721532
+      Autumn Leaf Sprite Collection_78: -1385685730
+      Autumn Leaf Sprite Collection_79: 499578914
+      Autumn Leaf Sprite Collection_8: 1892566120
+      Autumn Leaf Sprite Collection_80: 102410428
+      Autumn Leaf Sprite Collection_81: 1963871919
+      Autumn Leaf Sprite Collection_82: -413548443
+      Autumn Leaf Sprite Collection_83: 443680237
+      Autumn Leaf Sprite Collection_84: 586948943
+      Autumn Leaf Sprite Collection_85: -1324683570
+      Autumn Leaf Sprite Collection_86: -1520571872
+      Autumn Leaf Sprite Collection_87: -1139354655
+      Autumn Leaf Sprite Collection_9: 1479290620
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
