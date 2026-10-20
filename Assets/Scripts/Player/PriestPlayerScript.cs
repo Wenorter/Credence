@@ -8,8 +8,11 @@ namespace Player
     {
         [SerializeField] private InputActionReference moveAction;
         [SerializeField] private InputActionReference lookAction;
+        [SerializeField] private InputActionReference sprintAction;
+
     
         [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private float sprintSpeed = 7f;
         [SerializeField] private float mouseSensitivity = 0.15f;
         [SerializeField] private CameraScript playerCamera;
         [SerializeField] private float minPitch = -85f;
@@ -19,7 +22,8 @@ namespace Player
         private Rigidbody _rb;
     
         private float _pendingYaw;
-    
+        private bool _isSprinting;
+        
         public Vector2 MoveInput { get; private set; }
     
         private void Awake()
@@ -32,12 +36,14 @@ namespace Player
         {
             moveAction.action.Enable();
             lookAction.action.Enable();
+            sprintAction.action.Enable();
         }
 
         private void OnDisable()
         {
             moveAction.action.Disable();
             lookAction.action.Disable();
+            sprintAction.action.Disable();
 
             MoveInput = Vector2.zero;
             _pendingYaw = 0f;
@@ -48,6 +54,7 @@ namespace Player
         private void Update()
         {
             MoveInput = moveAction.action.ReadValue<Vector2>();
+            _isSprinting = sprintAction.action.ReadValue<float>() > 0.5f;
             Vector2 mouseDelta = lookAction.action.ReadValue<Vector2>();
 
             _pendingYaw += mouseDelta.x * mouseSensitivity;
@@ -73,7 +80,8 @@ namespace Player
                 input.y
             );
 
-            Vector3 movement = rotation * localDirection * moveSpeed;
+            float speed = _isSprinting ? sprintSpeed : moveSpeed;
+            Vector3 movement = rotation * localDirection * speed;
             _rb.linearVelocity = new Vector3(
                 movement.x,
                 _rb.linearVelocity.y,
