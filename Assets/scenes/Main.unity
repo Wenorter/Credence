@@ -22349,7 +22349,6 @@ GameObject:
   - component: {fileID: 932289545}
   - component: {fileID: 932289544}
   - component: {fileID: 932289543}
-  - component: {fileID: 932289547}
   - component: {fileID: 932289548}
   m_Layer: 0
   m_Name: Angel_Camera
@@ -22478,21 +22477,6 @@ Transform:
   - {fileID: 2127799127}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 56.184, y: -236.118, z: 0}
---- !u!114 &932289547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 932289542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 352bdc0e90ac448195ac2a14bc7158cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraScript
-  target: {fileID: 1760565779}
-  offset: {x: 0, y: 0, z: 0}
-  lookOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &932289548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39404,7 +39388,7 @@ MonoBehaviour:
   characters:
   - name: Priest
     behaviours:
-    - {fileID: 0}
+    - {fileID: 835813370}
     gameObjects:
     - {fileID: 1705920657}
     - {fileID: 703023576}
