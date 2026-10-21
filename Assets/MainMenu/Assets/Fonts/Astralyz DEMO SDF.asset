@@ -69,13 +69,13 @@ Material:
     - _LightAngle: 3.1416
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
-    - _OutlineSoftness: 0.5
+    - _OutlineSoftness: 0.2
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
     - _OutlineWidth: 1
     - _PerspectiveFilter: 0.768
     - _Reflectivity: 10
-    - _ScaleRatioA: 0.18604651
+    - _ScaleRatioA: 0.20942408
     - _ScaleRatioB: 0
     - _ScaleRatioC: 0
     - _ScaleX: 2
@@ -90,7 +90,7 @@ Material:
     - _StencilWriteMask: 255
     - _TextureHeight: 512
     - _TextureWidth: 512
-    - _UnderlayDilate: 0
+    - _UnderlayDilate: 0.53
     - _UnderlayOffsetX: 1
     - _UnderlayOffsetY: -1
     - _UnderlaySoftness: 1
