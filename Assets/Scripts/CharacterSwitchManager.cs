@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class CharacterSwitchManager : MonoBehaviour
 {
+    public const int NoneIndex = -1;
+
     [Serializable]
     public struct CharacterEntry
     {
@@ -15,35 +17,30 @@ public class CharacterSwitchManager : MonoBehaviour
 
     [SerializeField] private InputActionReference switchAction;
     [SerializeField] private List<CharacterEntry> characters = new List<CharacterEntry>();
+
+    [Tooltip("Character enabled on Awake. -1 = start with every character off.")]
     [SerializeField] private int startIndex;
 
-    private int _currentIndex = -1;
+    private int _currentIndex = NoneIndex;
 
     public int CurrentIndex => _currentIndex;
+    public int Count => characters.Count;
+    public IReadOnlyList<CharacterEntry> Characters => characters;
 
-    public string CurrentName =>
-        _currentIndex >= 0 && _currentIndex < characters.Count
-            ? characters[_currentIndex].name
-            : string.Empty;
+    public string CurrentName => _currentIndex >= 0 && _currentIndex < characters.Count ? characters[_currentIndex].name : string.Empty;
 
     private void Awake()
     {
-        for (int i = 0; i < characters.Count; i++)
-        {
-            SetCharacterEnabled(i, false);
-        }
+        TurnOffAll();
 
-        if (characters.Count == 0)
-            return;
+        if (characters.Count == 0 || startIndex < 0) return;
 
-        _currentIndex = Mathf.Clamp(startIndex, 0, characters.Count - 1);
-        SetCharacterEnabled(_currentIndex, true);
+        SwitchTo(Mathf.Clamp(startIndex, 0, characters.Count - 1));
     }
 
     private void OnEnable()
     {
-        if (!switchAction || switchAction.action == null)
-            return;
+        if (!switchAction || switchAction.action == null) return;
 
         switchAction.action.performed += OnSwitchPerformed;
         switchAction.action.Enable();
@@ -51,8 +48,7 @@ public class CharacterSwitchManager : MonoBehaviour
 
     private void OnDisable()
     {
-        if (switchAction == null || switchAction.action == null)
-            return;
+        if (!switchAction || switchAction.action == null) return;
 
         switchAction.action.performed -= OnSwitchPerformed;
         switchAction.action.Disable();
@@ -65,18 +61,69 @@ public class CharacterSwitchManager : MonoBehaviour
 
     public void SwitchToNext()
     {
-        if (characters.Count <= 1)
-            return;
+        if (characters.Count == 0) return;
 
         int nextIndex = (_currentIndex + 1) % characters.Count;
+        if (nextIndex == _currentIndex) return;
 
-        if (_currentIndex >= 0)
+        SwitchTo(nextIndex);
+    }
+
+    public void SwitchTo(int index)
+    {
+        if (index < 0 || index >= characters.Count)
         {
-            SetCharacterEnabled(_currentIndex, false);
+            TurnOffAll();
+            return;
         }
 
-        _currentIndex = nextIndex;
-        SetCharacterEnabled(_currentIndex, true);
+        for (int i = 0; i < characters.Count; i++)
+        {
+            if (i != index) SetCharacterEnabled(i, false);
+        }
+
+        _currentIndex = index;
+        SetCharacterEnabled(index, true);
+    }
+
+    public void TurnOffAll()
+    {
+        for (int i = 0; i < characters.Count; i++)
+        {
+            SetCharacterEnabled(i, false);
+        }
+
+        _currentIndex = NoneIndex;
+    }
+
+    public bool IsCharacterEnabled(int index)
+    {
+        if (index < 0 || index >= characters.Count) return false;
+
+        CharacterEntry character = characters[index];
+        bool hasAny = false;
+
+        if (character.gameObjects != null)
+        {
+            foreach (GameObject obj in character.gameObjects)
+            {
+                if (!obj || transform.IsChildOf(obj.transform)) continue;
+                hasAny = true;
+                if (!obj.activeSelf) return false;
+            }
+        }
+
+        if (character.behaviours != null)
+        {
+            foreach (MonoBehaviour behaviour in character.behaviours)
+            {
+                if (!behaviour || behaviour == this) continue;
+                hasAny = true;
+                if (!behaviour.enabled) return false;
+            }
+        }
+
+        return hasAny;
     }
 
     private void SetCharacterEnabled(int index, bool isEnabled)
@@ -95,17 +142,13 @@ public class CharacterSwitchManager : MonoBehaviour
         }
     }
 
-    private void SetBehavioursEnabled(
-        List<MonoBehaviour> behaviours,
-        bool isEnabled)
+    private void SetBehavioursEnabled(List<MonoBehaviour> behaviours, bool isEnabled)
     {
-        if (behaviours == null)
-            return;
+        if (behaviours == null) return;
 
         foreach (MonoBehaviour behaviour in behaviours)
         {
-            if (!behaviour || behaviour == this)
-                continue;
+            if (!behaviour || behaviour == this) continue;
 
             behaviour.enabled = isEnabled;
         }
@@ -113,8 +156,7 @@ public class CharacterSwitchManager : MonoBehaviour
 
     private void SetGameObjectsActive(List<GameObject> gameObjects, bool isActive)
     {
-        if (gameObjects == null)
-            return;
+        if (gameObjects == null) return;
 
         foreach (GameObject obj in gameObjects)
         {
