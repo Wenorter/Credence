@@ -858,9 +858,9 @@ MonoBehaviour:
   moveAction: {fileID: 0}
   lookAction: {fileID: 0}
   sprintAction: {fileID: 0}
-  moveSpeed: 1.5
-  sprintSpeed: 5
+  moveSpeed: 3.5
+  sprintSpeed: 1.2
   mouseSensitivity: 0.12
-  minPitch: -60
-  maxPitch: 60
+  minPitch: -90
+  maxPitch: 68
   playerCamera: {fileID: 0}
