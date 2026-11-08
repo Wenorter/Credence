@@ -3,7 +3,14 @@ name: Discord commit notification
 on:
   push:
     branches:
-      - '**'   # every branch; replace with e.g. [main, Dev] to limit it
+      - main
+      - Dev
+      - TechArt
+      - Art
+
+# Read-only: needed to look up which files each commit changed
+permissions:
+  contents: read
 
 jobs:
   notify:
@@ -17,32 +24,75 @@ jobs:
           COMPARE_URL: ${{ github.event.compare }}
           # Passed via env (not inlined into the script) so commit messages can't inject shell code.
           COMMITS: ${{ toJSON(github.event.commits) }}
+          HEAD_MSG: ${{ github.event.head_commit.message }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$WEBHOOK" ]; then
             echo "DISCORD_WEBHOOK secret is not set"; exit 1
+          fi
+
+          # The push event payload has no per-commit file lists, so ask the API for them (first 5 commits).
+          if [ "$BRANCH" != "main" ]; then
+            FM='{}'
+            for sha in $(jq -r '.[0:5][].id' <<<"$COMMITS"); do
+              f=$(gh api "repos/$REPO/commits/$sha" --jq '[.files[]? | {f: .filename, s: .status}]') || f='[]'
+              FM=$(jq -c --arg k "$sha" --argjson v "$f" '. + {($k): $v}' <<<"$FM")
+            done
+            COMMITS=$(jq -c --argjson fm "$FM" 'map(. as $c | ($fm[$c.id] // []) as $f | $c + {
+              added:    [$f[] | select(.s == "added") | .f],
+              removed:  [$f[] | select(.s == "removed") | .f],
+              modified: [$f[] | select(.s != "added" and .s != "removed") | .f]
+            })' <<<"$COMMITS")
           fi
 
           payload=$(jq -n \
             --arg branch "$BRANCH" \
             --arg repo "$REPO" \
             --arg url "$COMPARE_URL" \
+            --arg headmsg "$HEAD_MSG" \
             --argjson commits "$COMMITS" '
+            # Plain file list (no diff formatting); .meta files are hidden as noise
             def files:
-              [ (.added[]?    | "+ " + .),
-                (.modified[]? | "~ " + .),
-                (.removed[]?  | "- " + .) ] | join("\n");
+              [ (.added[]?    | select(endswith(".meta") | not) | "➕ `" + . + "`"),
+                (.modified[]? | select(endswith(".meta") | not) | "✏️ `" + . + "`"),
+                (.removed[]?  | select(endswith(".meta") | not) | "🗑️ `" + . + "`") ]
+              | join("\n");
+
+            # Which kinds of assets a commit touched (.meta files are ignored)
+            def stats:
+              ([ (.added[]?, .modified[]?, .removed[]?) | select(endswith(".meta") | not) ]) as $t
+              | def m(f): if ($t | any(f)) then "✅" else "❌" end;
+              "Scenes " + m(endswith(".unity"))
+              + "\nPrefabs " + m(endswith(".prefab"))
+              + "\nCode " + m(endswith(".cs"))
+              + "\nShaders " + m(endswith(".shadergraph") or endswith(".shader") or endswith(".hlsl"))
+              + "\nMaterials " + m(endswith(".mat"))
+              + "\nAnimations " + m(endswith(".anim") or endswith(".controller"))
+              + "\nArt/Audio " + m(test("\\.(png|jpe?g|tga|psd|fbx|obj|blend|wav|mp3|ogg)$"))
+              + "\nSettings " + m(startswith("ProjectSettings/") or startswith("Assets/Settings/") or endswith(".asset"))
+              + "\nCI/CD " + m(startswith(".github/"));
 
             def block:
-              "**" + .message + "**\n"
-              + "`" + (.id[0:7]) + "` by " + .author.name + "\n"
-              + "```diff\n" + files + "\n```";
+              (.message | split("\n")) as $lines
+              | "**" + $lines[0] + "**"
+                + (if ($lines | length) > 1 then "\n" + ($lines[1:] | join("\n")) else "" end)
+                + "\n`" + (.id[0:7]) + "` by " + .author.name + "\n"
+                + stats + "\n\n"
+                + files;
 
             if $branch == "main" then
               # main: short notice only, no commit details
               {
                 username: "GitHub",
+                allowed_mentions: { parse: [] },
                 embeds: [{
                   title: "main updated",
+                  description: (
+                    ($headmsg | split("\n")[0]) as $first
+                    | ($first | capture("^Merge pull request #(?<n>[0-9]+) from (?<src>[^ ]+)") // null ) as $m
+                    | if $m then "Merge from `" + ($m.src | split("/") | .[1:] | join("/")) + "` (PR #" + $m.n + ")"
+                      else $first end
+                  ),
                   footer: { text: $repo },
                   color: 5763719
                 }]
@@ -50,6 +100,7 @@ jobs:
             else
               {
                 username: "GitHub",
+                allowed_mentions: { parse: [] },
                 embeds: [{
                   title: ("Commit on branch " + $branch),
                   url: $url,
@@ -71,4 +122,4 @@ jobs:
             *) echo "DISCORD_WEBHOOK must look like https://discord.com/api/webhooks/<id>/<token>"; exit 1 ;;
           esac
 
-          curl -sS --fail -H "Content-Type: application/json" -d "$payload" "$WEBHOOK"
+          curl -sS --fail --proto "=https" --max-time 20 -H "Content-Type: application/json" -d "$payload" "$WEBHOOK"
