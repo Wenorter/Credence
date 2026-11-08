@@ -32,10 +32,12 @@ jobs:
             --arg url "$COMPARE_URL" \
             --arg headmsg "$HEAD_MSG" \
             --argjson commits "$COMMITS" '
+            # Plain file list (no diff formatting); .meta files are hidden as noise
             def files:
-              [ (.added[]?    | "+ " + .),
-                (.modified[]? | "~ " + .),
-                (.removed[]?  | "- " + .) ] | join("\n");
+              [ (.added[]?    | select(endswith(".meta") | not) | "➕ `" + . + "`"),
+                (.modified[]? | select(endswith(".meta") | not) | "✏️ `" + . + "`"),
+                (.removed[]?  | select(endswith(".meta") | not) | "🗑️ `" + . + "`") ]
+              | join("\n");
 
             # Which kinds of assets a commit touched (.meta files are ignored)
             def stats:
@@ -52,10 +54,12 @@ jobs:
               + "\nCI/CD " + m(startswith(".github/"));
 
             def block:
-              "**" + .message + "**\n"
-              + "`" + (.id[0:7]) + "` by " + .author.name + "\n"
-              + stats + "\n"
-              + "```diff\n" + files + "\n```";
+              (.message | split("\n")) as $lines
+              | "**" + $lines[0] + "**"
+                + (if ($lines | length) > 1 then "\n" + ($lines[1:] | join("\n")) else "" end)
+                + "\n`" + (.id[0:7]) + "` by " + .author.name + "\n"
+                + stats + "\n\n"
+                + files;
 
             if $branch == "main" then
               # main: short notice only, no commit details
