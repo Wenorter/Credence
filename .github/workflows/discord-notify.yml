@@ -26,6 +26,8 @@ jobs:
           COMMITS: ${{ toJSON(github.event.commits) }}
           HEAD_MSG: ${{ github.event.head_commit.message }}
           GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.sha }}
+          HEAD_COMMIT: ${{ toJSON(github.event.head_commit) }}
         run: |
           if [ -z "$WEBHOOK" ]; then
             echo "DISCORD_WEBHOOK secret is not set"; exit 1
@@ -33,6 +35,13 @@ jobs:
 
           # The push event payload has no per-commit file lists, so ask the API for them (first 5 commits).
           if [ "$BRANCH" != "main" ]; then
+            # A merge brings in all of the merged branch's commits. Show only the merge commit itself
+            # (its file list is the whole merge) instead of one block per merged commit.
+            parents=$(gh api "repos/$REPO/commits/$HEAD_SHA" --jq '.parents | length') || parents=1
+            if [ "$parents" -gt 1 ]; then
+              COMMITS=$(jq -c --arg id "$HEAD_SHA" --argjson h "$HEAD_COMMIT"                 '[.[] | select(.id == $id)] | if length > 0 then . else [$h] end' <<<"$COMMITS")
+            fi
+
             FM='{}'
             for sha in $(jq -r '.[0:5][].id' <<<"$COMMITS"); do
               f=$(gh api "repos/$REPO/commits/$sha" --jq '[.files[]? | {f: .filename, s: .status}]') || f='[]'
