@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Building
+  - Player Priest
+  - Player Angel
+  - Angel Reset Point
+  - Angel Reset Zone
   layers:
   - Default
   - TransparentFX

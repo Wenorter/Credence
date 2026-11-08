@@ -1,0 +1,74 @@
+name: Discord commit notification
+
+on:
+  push:
+    branches:
+      - '**'   # every branch; replace with e.g. [main, Dev] to limit it
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send commits to Discord
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          BRANCH: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+          COMPARE_URL: ${{ github.event.compare }}
+          # Passed via env (not inlined into the script) so commit messages can't inject shell code.
+          COMMITS: ${{ toJSON(github.event.commits) }}
+        run: |
+          if [ -z "$WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK secret is not set"; exit 1
+          fi
+
+          payload=$(jq -n \
+            --arg branch "$BRANCH" \
+            --arg repo "$REPO" \
+            --arg url "$COMPARE_URL" \
+            --argjson commits "$COMMITS" '
+            def files:
+              [ (.added[]?    | "+ " + .),
+                (.modified[]? | "~ " + .),
+                (.removed[]?  | "- " + .) ] | join("\n");
+
+            def block:
+              "**" + .message + "**\n"
+              + "`" + (.id[0:7]) + "` by " + .author.name + "\n"
+              + "```diff\n" + files + "\n```";
+
+            if $branch == "main" then
+              # main: short notice only, no commit details
+              {
+                username: "GitHub",
+                embeds: [{
+                  title: "main updated",
+                  footer: { text: $repo },
+                  color: 5763719
+                }]
+              }
+            else
+              {
+                username: "GitHub",
+                embeds: [{
+                  title: ("Commit on branch " + $branch),
+                  url: $url,
+                  description: ( ($commits[0:5] | map(block) | join("\n"))
+                                 + (if ($commits|length) > 5
+                                    then "\n…and \(($commits|length) - 5) more commits" else "" end)
+                               )[0:4000],
+                  footer: { text: $repo },
+                  color: 5814783
+                }]
+              }
+            end')
+
+          # Strip whitespace, newlines and stray quotes that sneak in when pasting the secret
+          WEBHOOK=$(printf '%s' "$WEBHOOK" | tr -d ' \t\r\n"'"'")
+
+          case "$WEBHOOK" in
+            https://discord.com/api/webhooks/*|https://discordapp.com/api/webhooks/*) ;;
+            *) echo "DISCORD_WEBHOOK must look like https://discord.com/api/webhooks/<id>/<token>"; exit 1 ;;
+          esac
+
+          curl -sS --fail -H "Content-Type: application/json" -d "$payload" "$WEBHOOK"
