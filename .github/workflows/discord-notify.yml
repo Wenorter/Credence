@@ -38,14 +38,15 @@ jobs:
             def stats:
               ([ (.added[]?, .modified[]?, .removed[]?) | select(endswith(".meta") | not) ]) as $t
               | def m(f): if ($t | any(f)) then "✅" else "❌" end;
-              "Сцены " + m(endswith(".unity"))
-              + " · Префабы " + m(endswith(".prefab"))
-              + " · Код " + m(endswith(".cs"))
-              + " · Шейдеры " + m(endswith(".shadergraph") or endswith(".shader") or endswith(".hlsl"))
-              + " · Материалы " + m(endswith(".mat"))
-              + " · Анимации " + m(endswith(".anim") or endswith(".controller"))
-              + " · Арт/звук " + m(test("\\.(png|jpe?g|tga|psd|fbx|obj|blend|wav|mp3|ogg)$"))
-              + " · Настройки " + m(startswith("ProjectSettings/") or startswith("Assets/Settings/") or endswith(".asset"));
+              "Scenes " + m(endswith(".unity"))
+              + " · Prefabs " + m(endswith(".prefab"))
+              + " · Code " + m(endswith(".cs"))
+              + " · Shaders " + m(endswith(".shadergraph") or endswith(".shader") or endswith(".hlsl"))
+              + " · Materials " + m(endswith(".mat"))
+              + " · Animations " + m(endswith(".anim") or endswith(".controller"))
+              + " · Art/Audio " + m(test("\\.(png|jpe?g|tga|psd|fbx|obj|blend|wav|mp3|ogg)$"))
+              + " · Settings " + m(startswith("ProjectSettings/") or startswith("Assets/Settings/") or endswith(".asset"))
+              + " · CI/CD " + m(startswith(".github/"));
 
             def block:
               "**" + .message + "**\n"
