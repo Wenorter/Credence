@@ -63,4 +63,12 @@ jobs:
               }
             end')
 
+          # Strip whitespace, newlines and stray quotes that sneak in when pasting the secret
+          WEBHOOK=$(printf '%s' "$WEBHOOK" | tr -d ' \t\r\n"'"'")
+
+          case "$WEBHOOK" in
+            https://discord.com/api/webhooks/*|https://discordapp.com/api/webhooks/*) ;;
+            *) echo "DISCORD_WEBHOOK must look like https://discord.com/api/webhooks/<id>/<token>"; exit 1 ;;
+          esac
+
           curl -sS --fail -H "Content-Type: application/json" -d "$payload" "$WEBHOOK"
