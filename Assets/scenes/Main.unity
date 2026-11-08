@@ -1218,6 +1218,20 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   fontSize: 6
   resetPositionSphereRadius: 0.1
+--- !u!114 &682273893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Priest/Slow Move
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 5ae83e9c35ede8b4aaac7f5d09f0dd30, type: 3}
+  m_ActionId: d6b1c226-3900-468c-8d78-c5c9a469bad1
 --- !u!224 &695389907 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3743722527130631919, guid: a80becb83f570ce42b3f5b026dcdb33f, type: 3}
@@ -1468,7 +1482,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 772290435451800324, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
   m_PrefabInstance: {fileID: 6013738355561397959}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6013738355561397961}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 392e27b8df4d59847b10ea7f2dd77182, type: 3}
@@ -3875,6 +3889,14 @@ PrefabInstance:
       propertyPath: sprintAction
       value: 
       objectReference: {fileID: 1528414766}
+    - target: {fileID: 772290435451800324, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
+      propertyPath: extraMoveSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772290435451800324, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
+      propertyPath: extraMoveAction
+      value: 
+      objectReference: {fileID: 682273893}
     - target: {fileID: 3000711042887290762, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
       propertyPath: m_Height
       value: 157.3335
@@ -3946,8 +3968,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8206481761488765482, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6013738355561397962}
   m_SourcePrefab: {fileID: 100100000, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
+--- !u!54 &6013738355561397960 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 2025344827524243086, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
+  m_PrefabInstance: {fileID: 6013738355561397959}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6013738355561397961 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8206481761488765482, guid: a99f61c02d40f9247bec1c37aba579b7, type: 3}
+  m_PrefabInstance: {fileID: 6013738355561397959}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6013738355561397962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013738355561397961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c20e6477aca34d94e89cf85d171549dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player.PriestVisionMaterialMechanics
+  target: {fileID: 6013738355561397960}
+  material: {fileID: 2100000, guid: 2da29d9e3fe884248ae4cecbf759bbdb, type: 2}
+  minSpeed: 0
+  maxSpeed: 3.5
+  valueAtMinSpeed: 1.5
+  valueAtMaxSpeed: 5.5
+  smoothTime: 0.15
 --- !u!1001 &7796427731559549044
 PrefabInstance:
   m_ObjectHideFlags: 0
