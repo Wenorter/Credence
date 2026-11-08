@@ -3,10 +3,14 @@ name: Discord commit notification
 on:
   push:
     branches:
-      - '**'   # every branch; replace with e.g. [main, Dev] to limit it
+      - main
+      - Dev
+      - TechArt
+      - Art
 
-# The job needs no access to the repo through GITHUB_TOKEN
-permissions: {}
+# Read-only: needed to look up which files each commit changed
+permissions:
+  contents: read
 
 jobs:
   notify:
@@ -21,9 +25,24 @@ jobs:
           # Passed via env (not inlined into the script) so commit messages can't inject shell code.
           COMMITS: ${{ toJSON(github.event.commits) }}
           HEAD_MSG: ${{ github.event.head_commit.message }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$WEBHOOK" ]; then
             echo "DISCORD_WEBHOOK secret is not set"; exit 1
+          fi
+
+          # The push event payload has no per-commit file lists, so ask the API for them (first 5 commits).
+          if [ "$BRANCH" != "main" ]; then
+            FM='{}'
+            for sha in $(jq -r '.[0:5][].id' <<<"$COMMITS"); do
+              f=$(gh api "repos/$REPO/commits/$sha" --jq '[.files[]? | {f: .filename, s: .status}]') || f='[]'
+              FM=$(jq -c --arg k "$sha" --argjson v "$f" '. + {($k): $v}' <<<"$FM")
+            done
+            COMMITS=$(jq -c --argjson fm "$FM" 'map(. as $c | ($fm[$c.id] // []) as $f | $c + {
+              added:    [$f[] | select(.s == "added") | .f],
+              removed:  [$f[] | select(.s == "removed") | .f],
+              modified: [$f[] | select(.s != "added" and .s != "removed") | .f]
+            })' <<<"$COMMITS")
           fi
 
           payload=$(jq -n \
