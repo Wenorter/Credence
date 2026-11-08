@@ -17,6 +17,7 @@ jobs:
           COMPARE_URL: ${{ github.event.compare }}
           # Passed via env (not inlined into the script) so commit messages can't inject shell code.
           COMMITS: ${{ toJSON(github.event.commits) }}
+          HEAD_MSG: ${{ github.event.head_commit.message }}
         run: |
           if [ -z "$WEBHOOK" ]; then
             echo "DISCORD_WEBHOOK secret is not set"; exit 1
@@ -26,15 +27,30 @@ jobs:
             --arg branch "$BRANCH" \
             --arg repo "$REPO" \
             --arg url "$COMPARE_URL" \
+            --arg headmsg "$HEAD_MSG" \
             --argjson commits "$COMMITS" '
             def files:
               [ (.added[]?    | "+ " + .),
                 (.modified[]? | "~ " + .),
                 (.removed[]?  | "- " + .) ] | join("\n");
 
+            # Which kinds of assets a commit touched (.meta files are ignored)
+            def stats:
+              ([ (.added[]?, .modified[]?, .removed[]?) | select(endswith(".meta") | not) ]) as $t
+              | def m(f): if ($t | any(f)) then "✅" else "❌" end;
+              "Сцены " + m(endswith(".unity"))
+              + " · Префабы " + m(endswith(".prefab"))
+              + " · Код " + m(endswith(".cs"))
+              + " · Шейдеры " + m(endswith(".shadergraph") or endswith(".shader") or endswith(".hlsl"))
+              + " · Материалы " + m(endswith(".mat"))
+              + " · Анимации " + m(endswith(".anim") or endswith(".controller"))
+              + " · Арт/звук " + m(test("\\.(png|jpe?g|tga|psd|fbx|obj|blend|wav|mp3|ogg)$"))
+              + " · Настройки " + m(startswith("ProjectSettings/") or startswith("Assets/Settings/") or endswith(".asset"));
+
             def block:
               "**" + .message + "**\n"
               + "`" + (.id[0:7]) + "` by " + .author.name + "\n"
+              + stats + "\n"
               + "```diff\n" + files + "\n```";
 
             if $branch == "main" then
@@ -43,6 +59,12 @@ jobs:
                 username: "GitHub",
                 embeds: [{
                   title: "main updated",
+                  description: (
+                    ($headmsg | split("\n")[0]) as $first
+                    | ($first | capture("^Merge pull request #(?<n>[0-9]+) from (?<src>[^ ]+)") // null ) as $m
+                    | if $m then "Merge from `" + ($m.src | split("/") | .[1:] | join("/")) + "` (PR #" + $m.n + ")"
+                      else $first end
+                  ),
                   footer: { text: $repo },
                   color: 5763719
                 }]
